@@ -3,7 +3,9 @@
 using namespace std;
 void printBanner();
 int startingPage();
-int loginPage();
+string inputUsername();
+string inputPassword();
+char inputRole();
 main()
 {
 }
@@ -27,7 +29,7 @@ void printBanner()
 
 int startingPage()
 {
-    cout << "Welcome Back" << endl;
+    cout << "Welcome" << endl;
     cout << "Choose one of the following......" << endl;
     cout << "1. Login" << endl;
     cout << "2. Sign Up" << endl;
@@ -36,4 +38,25 @@ int startingPage()
     int choice;
     cin >> choice;
     return choice;
+}
+string inputUsername()
+{
+    string username;
+    cout << "Username: ";
+    cin >> username;
+    return username;
+}
+string inputPassword()
+{
+    string password;
+    cout << "Password: ";
+    cin >> password;
+    return password;
+}
+
+char inputRole(){
+    char role;
+    cout<<"Role:\ta)Admin\tb)Salesman";
+    cin>>role;
+    return role;
 }

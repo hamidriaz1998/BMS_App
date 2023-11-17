@@ -13,11 +13,12 @@ void signUp();
 // Validation
 int searchArray(string arr[], string object);
 // Data Structures
-string usernames[], passwords[];
-char roles[];
+string usernames[100], passwords[100];
+char roles[100];
 int userCount = 0;
 main()
 {
+    mainPage:
     int choice = startingPage();
     if (choice == 3)
     {
@@ -26,10 +27,19 @@ main()
     }
     else if (choice == 1)
     {
-        printBanner();
-        string username = inputUsername();
-        string password = inputPassword();
-        char role = inputRole();
+        if(login()){
+            cout<<"You have logged in successfully."<<endl;
+        }
+        else{
+            cout<<"Invalid Credentials."<<endl;
+        }
+        cout<<"Press any key to continue.........";
+        getch();
+        goto mainPage;
+    }
+    else if (choice==2){
+        signUp();
+        goto mainPage;
     }
 }
 void printBanner()
@@ -81,7 +91,7 @@ string inputPassword()
 char inputRole()
 {
     char role;
-    cout << "Role:\ta)Admin\tb)Salesman";
+    cout << "Role: \t a) Admin \t b) Salesman"<<endl;
     cin >> role;
     return role;
 }

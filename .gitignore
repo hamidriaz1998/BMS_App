@@ -32,3 +32,4 @@
 *.app
 task05.cpp
 .vscode
+test.cpp

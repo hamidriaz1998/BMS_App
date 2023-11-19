@@ -1,5 +1,6 @@
 #include <iostream>
 #include <conio.h>
+#include <iomanip>
 using namespace std;
 // Start
 void printBanner();
@@ -15,7 +16,7 @@ void signUp();
 int ownerDashboard();
 int salesManDashboard();
 // Common Options
-// when listing books check if name == "" then skip that entry
+// when listing books check if name == "" then skip that entry. Also add a currency variable
 void printAllBooks();
 // Owner Option
 void addBook();
@@ -69,6 +70,12 @@ mainPage:
                     getch();
                     goto DashBoardOwner;
                 }
+                else if (choice == 4){
+                    printAllBooks();
+                    cout<<"Press any key to return to Dashboard................";
+                    getch();
+                    goto DashBoardOwner;
+                }
             }
             else if (roles[currentUserIdx] == 'b')
             {
@@ -82,6 +89,8 @@ mainPage:
         else
         {
             cout << "Invalid Credentials." << endl;
+            cout << "Press any key to try again..........." << endl;
+            getch();
             goto Login;
         }
     }
@@ -111,6 +120,7 @@ void printBanner()
 
 int startingPage()
 {
+    printBanner();
     cout << "Welcome" << endl;
     cout << "Choose one of the following......" << endl;
     cout << "1. Login" << endl;
@@ -220,13 +230,19 @@ int salesManDashboard()
     return choice;
 }
 
-void printAllBooks(){
-    for(int i=0;i<bookCount;i++){
+void printAllBooks()
+{
+    printBanner();
+    cout << left << setw(20) << "Book Name" << setw(20) << "Author Name" << setw(20) << "Price";
+    for (int i = 0; i < bookCount; i++)
+    {
+        cout << left << setw(20) << bookName[i] << setw(20) << authorName[i] << setw(20) << bookPrice[i] << endl;
     }
 }
 
 void addBook()
 {
+    printBanner();
     string name, author;
     int price;
     cout << "Enter name of the book: ";
@@ -257,6 +273,7 @@ void addBook()
 
 void removeBook()
 {
+    printBanner();
     string name, author;
     cout << "Enter name of the book: ";
     getline(cin, name);

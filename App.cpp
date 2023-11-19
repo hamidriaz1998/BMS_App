@@ -16,7 +16,7 @@ void signUp();
 int ownerDashboard();
 int salesManDashboard();
 // Common Options
-// when listing books check if name == "" then skip that entry. Also add a currency variable
+// when listing books check if name == "" then skip that entry
 void printAllBooks();
 // Owner Option
 void addBook();
@@ -33,6 +33,9 @@ int currentBookIdx = 0;
 string usernames[100], passwords[100];
 char roles[100];
 int userCount = 0;
+// Global Settings
+char currency = '$';
+
 main()
 {
 mainPage:
@@ -79,10 +82,17 @@ mainPage:
             }
             else if (roles[currentUserIdx] == 'b')
             {
+                DashBoardSalesMan:
                 choice = salesManDashboard();
                 if (choice == 11)
                 {
                     goto mainPage;
+                }
+                if (choice == 3){
+                    printAllBooks();
+                    cout<<"Press any key to return to Dashboard................";
+                    getch();
+                    goto DashBoardSalesMan;                    
                 }
             }
         }
@@ -233,7 +243,7 @@ int salesManDashboard()
 void printAllBooks()
 {
     printBanner();
-    cout << left << setw(20) << "Book Name" << setw(20) << "Author Name" << setw(20) << "Price";
+    cout << left << setw(20) << "Book Name" << setw(20) << "Author Name" << setw(20) <<currency<< "Price"<<endl;
     for (int i = 0; i < bookCount; i++)
     {
         cout << left << setw(20) << bookName[i] << setw(20) << authorName[i] << setw(20) << bookPrice[i] << endl;

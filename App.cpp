@@ -268,13 +268,7 @@ void addBook()
     cout << "Enter Price: ";
     cin >> price;
     int index = searchArray(bookName, name);
-    if (index == -1)
-    {
-        bookName[bookCount] = name;
-        authorName[bookCount] = author;
-        bookPrice[bookCount] = price;
-    }
-    else if (author != authorName[index])
+    if (index == -1 || author !=authorName[index])
     {
         bookName[bookCount] = name;
         authorName[bookCount] = author;
@@ -301,7 +295,7 @@ void removeBook()
         bookName[index] = "";
         authorName[index] = "";
         bookPrice[index] = 0;
-        bookQuantity = 0;
+        bookQuantity[index] = 0;
     }
     else
     {

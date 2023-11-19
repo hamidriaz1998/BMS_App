@@ -259,14 +259,14 @@ int salesManDashboard()
 void printAllBooks()
 {
     printBanner();
-    cout << left << setw(20) << "Book Name" << setw(20) << "Author Name" << setw(20) << currency << "Price" << setw(20) << "Quantity" << endl;
+    cout << left << setw(20) << "Book Name" << setw(20) << "Author Name" << setw(20) << "Price" << setw(20) << "Quantity" << endl;
     for (int i = 0; i < bookCount; i++)
     {
         if (bookName[i] == "")
         {
             continue;
         }
-        cout << left << setw(20) << bookName[i] << setw(20) << authorName[i] << setw(20) << bookPrice[i] << setw(20) << bookQuantity[i] << endl;
+        cout << left << setw(20) << bookName[i] << setw(20) << authorName[i] << setw(0) <<currency<<setw(20)<< bookPrice[i] << setw(20) << bookQuantity[i] << endl;
     }
 }
 

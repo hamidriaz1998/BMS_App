@@ -5,11 +5,15 @@ using namespace std;
 void printBanner();
 int startingPage();
 // Login and Signup
+int currentIdx = 0;
 string inputUsername();
 string inputPassword();
 char inputRole();
 bool login();
 void signUp();
+// Dashboards
+int ownerDashboard();
+int salesManDashboard();
 // Validation
 int searchArray(string arr[], string object);
 // Data Structures
@@ -18,7 +22,8 @@ char roles[100];
 int userCount = 0;
 main()
 {
-    mainPage:
+mainPage:
+    system("cls");
     int choice = startingPage();
     if (choice == 3)
     {
@@ -27,17 +32,34 @@ main()
     }
     else if (choice == 1)
     {
-        if(login()){
-            cout<<"You have logged in successfully."<<endl;
+    Login:
+        if (login())
+        {
+            if (roles[currentIdx] == 'a')
+            {
+                choice = ownerDashboard();
+                if (choice == 11)
+                {
+                    goto mainPage;
+                }
+            }
+            else if (roles[currentIdx] == 'b')
+            {
+                choice = salesManDashboard();
+                if (choice==11)
+                {
+                    goto mainPage;
+                }
+            }
         }
-        else{
-            cout<<"Invalid Credentials."<<endl;
+        else
+        {
+            cout << "Invalid Credentials." << endl;
+            goto Login;
         }
-        cout<<"Press any key to continue.........";
-        getch();
-        goto mainPage;
     }
-    else if (choice==2){
+    else if (choice == 2)
+    {
         signUp();
         goto mainPage;
     }
@@ -91,16 +113,18 @@ string inputPassword()
 char inputRole()
 {
     char role;
-    cout << "Role: \t a) Admin \t b) Salesman"<<endl;
+    cout << "Role: \t a) Admin \t b) Salesman" << endl;
     cin >> role;
     return role;
 }
 bool login()
 {
+    system("cls");
     printBanner();
     string username = inputUsername();
     string password = inputPassword();
     int index = searchArray(usernames, username);
+    currentIdx = index;
     if (username == usernames[index] && password == passwords[index])
     {
         return true;
@@ -110,6 +134,7 @@ bool login()
 
 void signUp()
 {
+    system("cls");
     printBanner();
     usernames[userCount] = inputUsername();
     passwords[userCount] = inputPassword();
@@ -120,6 +145,49 @@ void signUp()
     getch();
 }
 
+int ownerDashboard()
+{
+    printBanner();
+    cout << "Logged in as " << usernames[currentIdx] << " (Owner)" << endl;
+    cout << "Choose one of the following: " << endl;
+    cout << "1. Add a new Book" << endl;
+    cout << "2. Remove a Book" << endl;
+    cout << "3. Search for a Book" << endl;
+    cout << "4. Update a Book's details" << endl;
+    cout << "5. Add a new user" << endl;
+    cout << "6. Remove an existing user" << endl;
+    cout << "7. Search for a user" << endl;
+    cout << "8. Update an user's details" << endl;
+    cout << "9. Manage Discounts" << endl;
+    cout << "10. Settings" << endl;
+    cout << "11. Logout" << endl;
+    cout << "Your Choice (1-11): ";
+    int choice;
+    cin >> choice;
+    return choice;
+}
+
+int salesManDashboard()
+{
+    printBanner();
+    cout << "Logged in as " << usernames[currentIdx] << " (Salesman)" << endl;
+    cout << "Choose one of the following: " << endl;
+    cout << "1. Search for a Book" << endl;
+    cout << "2. Check availablity" << endl;
+    cout << "3. Browse all Available Books" << endl;
+    cout << "4. Place Customer Order" << endl;
+    cout << "5. View Customer Order" << endl;
+    cout << "6. Finalize Order" << endl;
+    cout << "7. Check Balance" << endl;
+    cout << "8. Sales Target" << endl;
+    cout << "9. Return a Book" << endl;
+    cout << "10. Settings" << endl;
+    cout << "11. Logout" << endl;
+    cout << "Your Choice (1-11): ";
+    int choice;
+    cin >> choice;
+    return choice;
+}
 // If object is not in array it will return -1, that can be used to add a condition that it does not exist.
 int searchArray(string arr[], string object)
 {

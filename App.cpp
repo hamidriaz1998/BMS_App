@@ -246,6 +246,9 @@ void printAllBooks()
     cout << left << setw(20) << "Book Name" << setw(20) << "Author Name" << setw(20) <<currency<< "Price"<<endl;
     for (int i = 0; i < bookCount; i++)
     {
+        if (bookName[i]==""){
+            continue;
+        }
         cout << left << setw(20) << bookName[i] << setw(20) << authorName[i] << setw(20) << bookPrice[i] << endl;
     }
 }

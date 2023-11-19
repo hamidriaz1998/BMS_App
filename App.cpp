@@ -1,6 +1,7 @@
 #include <iostream>
 #include <conio.h>
 #include <iomanip>
+#include <limits>
 using namespace std;
 // Start
 void printBanner();
@@ -260,13 +261,13 @@ void printAllBooks()
 {
     printBanner();
     cout << left << setw(20) << "Book Name" << setw(20) << "Author Name" << setw(20) << "Price" << setw(20) << "Quantity" << endl;
-    for (int i = 0; i < bookCount; i++)
+    for (int i = 0; i <= bookCount; i++)
     {
         if (bookName[i] == "")
         {
             continue;
         }
-        cout << left << setw(20) << bookName[i] << setw(20) << authorName[i] << setw(0) <<currency<<setw(20)<< bookPrice[i] << setw(20) << bookQuantity[i] << endl;
+        cout << left << setw(20) << bookName[i] << setw(20) << authorName[i] << setw(0) << currency << setw(20) << bookPrice[i] << setw(20) << bookQuantity[i] << endl;
     }
 }
 
@@ -276,11 +277,12 @@ void searchBook()
     cout << "Enter the name of the book: ";
     string name;
     getline(cin, name);
+    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
     int index = searchArray(bookName, name);
     if (index != -1)
     {
-        cout << left << setw(20) << "Book Name" << setw(20) << "Author Name" << setw(20) << currency << "Price" << setw(20) << "Quantity" << endl;
-        cout << left << setw(20) << bookName[index] << setw(20) << authorName[index] << setw(20) << bookPrice[index] << setw(20) << bookQuantity[index] << endl;
+        cout << left << setw(20) << "Book Name" << setw(20) << "Author Name" << setw(20) << "Price" << setw(20) << "Quantity" << endl;
+        cout << left << setw(20) << bookName[index] << setw(20) << authorName[index] << setw(0) << currency << setw(20) << bookPrice[index] << setw(20) << bookQuantity[index] << endl;
     }
 }
 
@@ -288,19 +290,23 @@ void addBook()
 {
     printBanner();
     string name, author;
-    int price;
+    int price, quantity;
     cout << "Enter name of the book: ";
     getline(cin, name);
+    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
     cout << "Enter name of the author: ";
     getline(cin, author);
     cout << "Enter Price: ";
     cin >> price;
+    cout << "Enter Quantity: ";
+    cin >> quantity;
     int index = searchArray(bookName, name);
     if (index == -1 || author != authorName[index])
     {
         bookName[bookCount] = name;
         authorName[bookCount] = author;
         bookPrice[bookCount] = price;
+        bookQuantity[bookCount] = quantity;
     }
     else
     {

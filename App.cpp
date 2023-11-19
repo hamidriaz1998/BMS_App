@@ -16,8 +16,8 @@ void signUp();
 int ownerDashboard();
 int salesManDashboard();
 // Common Options
-// when listing books check if name == "" then skip that entry
 void printAllBooks();
+void searchBook();
 // Owner Option
 void addBook();
 void removeBook();
@@ -27,7 +27,7 @@ int searchArray(string arr[], string object);
 // Books
 string bookName[100];
 string authorName[100];
-int bookCount = 0, bookPrice[100];
+int bookCount = 0, bookPrice[100], bookQuantity[100];
 int currentBookIdx = 0;
 // Credentials
 string usernames[100], passwords[100];
@@ -73,26 +73,28 @@ mainPage:
                     getch();
                     goto DashBoardOwner;
                 }
-                else if (choice == 4){
+                else if (choice == 4)
+                {
                     printAllBooks();
-                    cout<<"Press any key to return to Dashboard................";
+                    cout << "Press any key to return to Dashboard................";
                     getch();
                     goto DashBoardOwner;
                 }
             }
             else if (roles[currentUserIdx] == 'b')
             {
-                DashBoardSalesMan:
+            DashBoardSalesMan:
                 choice = salesManDashboard();
                 if (choice == 11)
                 {
                     goto mainPage;
                 }
-                if (choice == 3){
+                if (choice == 3)
+                {
                     printAllBooks();
-                    cout<<"Press any key to return to Dashboard................";
+                    cout << "Press any key to return to Dashboard................";
                     getch();
-                    goto DashBoardSalesMan;                    
+                    goto DashBoardSalesMan;
                 }
             }
         }
@@ -243,10 +245,11 @@ int salesManDashboard()
 void printAllBooks()
 {
     printBanner();
-    cout << left << setw(20) << "Book Name" << setw(20) << "Author Name" << setw(20) <<currency<< "Price"<<endl;
+    cout << left << setw(20) << "Book Name" << setw(20) << "Author Name" << setw(20) << currency << "Price" << endl;
     for (int i = 0; i < bookCount; i++)
     {
-        if (bookName[i]==""){
+        if (bookName[i] == "")
+        {
             continue;
         }
         cout << left << setw(20) << bookName[i] << setw(20) << authorName[i] << setw(20) << bookPrice[i] << endl;
@@ -298,6 +301,7 @@ void removeBook()
         bookName[index] = "";
         authorName[index] = "";
         bookPrice[index] = 0;
+        bookQuantity = 0;
     }
     else
     {

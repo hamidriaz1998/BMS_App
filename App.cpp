@@ -62,14 +62,21 @@ mainPage:
                 else if (choice == 1)
                 {
                     addBook();
-                    cout << "Press any key to continue.............";
+                    cout << "Press any key to return to Dashboard................";
                     getch();
                     goto DashBoardOwner;
                 }
                 else if (choice == 2)
                 {
                     removeBook();
-                    cout << "Press any key to continue.............";
+                    cout << "Press any key to return to Dashboard................";
+                    getch();
+                    goto DashBoardOwner;
+                }
+                else if (choice == 3)
+                {
+                    searchBook();
+                    cout << "Press any key to return to Dashboard................";
                     getch();
                     goto DashBoardOwner;
                 }
@@ -88,6 +95,13 @@ mainPage:
                 if (choice == 11)
                 {
                     goto mainPage;
+                }
+                if (choice == 1)
+                {
+                    searchBook();
+                    cout << "Press any key to return to Dashboard................";
+                    getch();
+                    goto DashBoardOwner;
                 }
                 if (choice == 3)
                 {
@@ -245,14 +259,28 @@ int salesManDashboard()
 void printAllBooks()
 {
     printBanner();
-    cout << left << setw(20) << "Book Name" << setw(20) << "Author Name" << setw(20) << currency << "Price" <<setw(20)<<"Quantity"<< endl;
+    cout << left << setw(20) << "Book Name" << setw(20) << "Author Name" << setw(20) << currency << "Price" << setw(20) << "Quantity" << endl;
     for (int i = 0; i < bookCount; i++)
     {
         if (bookName[i] == "")
         {
             continue;
         }
-        cout << left << setw(20) << bookName[i] << setw(20) << authorName[i] << setw(20) << bookPrice[i]<<setw(20)<<bookQuantity[i] << endl;
+        cout << left << setw(20) << bookName[i] << setw(20) << authorName[i] << setw(20) << bookPrice[i] << setw(20) << bookQuantity[i] << endl;
+    }
+}
+
+void searchBook()
+{
+    printBanner();
+    cout << "Enter the name of the book: ";
+    string name;
+    getline(cin, name);
+    int index = searchArray(bookName, name);
+    if (index != -1)
+    {
+        cout << left << setw(20) << "Book Name" << setw(20) << "Author Name" << setw(20) << currency << "Price" << setw(20) << "Quantity" << endl;
+        cout << left << setw(20) << bookName[index] << setw(20) << authorName[index] << setw(20) << bookPrice[index] << setw(20) << bookQuantity[index] << endl;
     }
 }
 
@@ -268,7 +296,7 @@ void addBook()
     cout << "Enter Price: ";
     cin >> price;
     int index = searchArray(bookName, name);
-    if (index == -1 || author !=authorName[index])
+    if (index == -1 || author != authorName[index])
     {
         bookName[bookCount] = name;
         authorName[bookCount] = author;

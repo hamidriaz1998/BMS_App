@@ -11,10 +11,10 @@ int currentUserIdx = 0;
 string inputUsername();
 string inputPassword();
 char inputRole();
-bool login();
+bool login(string uName, string pass, string usernames[], string passwords[]);
 bool signUp(int userCount, string uName, string pass, char role, string usernames[], string passwords[], char roles[]);
 // Dashboards
-int ownerDashboard();
+int ownerDashboard(string uName);
 int salesManDashboard();
 // Common Options
 void printAllBooks();
@@ -50,12 +50,17 @@ mainPage:
     else if (choice == 1)
     {
     Login:
-        if (login())
+        system("cls");
+        printBanner();
+        string uName = inputUsername();
+        string pass = inputPassword();
+        if (login(uName, pass, usernames, passwords))
         {
+            currentUserIdx = searchArray(usernames, uName);
             if (roles[currentUserIdx] == 'a')
             {
             DashBoardOwner:
-                choice = ownerDashboard();
+                choice = ownerDashboard(uName);
                 if (choice == 11)
                 {
                     goto mainPage;
@@ -196,23 +201,19 @@ string inputPassword()
 char inputRole()
 {
     char role;
-    cout << "Role: \t a) Admin \t b) Salesman" << endl;
+    cout << "Choose Role ('a' for Admin and 'b' for Salesman): " << endl;
     cin >> role;
     return role;
 }
-bool login()
+bool login(string uName, string pass, string usernames[], string passwords[])
 {
-    system("cls");
-    printBanner();
-    string username = inputUsername();
-    string password = inputPassword();
-    int index = searchArray(usernames, username);
+
+    int index = searchArray(usernames, uName);
     if (index == -1)
     {
         return false;
     }
-    currentUserIdx = index;
-    if (username == usernames[index] && password == passwords[index])
+    if (uName == usernames[index] && pass == passwords[index])
     {
         return true;
     }
@@ -226,15 +227,14 @@ bool signUp(int userCount, string uName, string pass, char role, string username
     if (index == -1)
     {
         usernames[userCount] = uName;
-        passwords[userCount]= pass;
+        passwords[userCount] = pass;
         roles[userCount] = role;
         isSignedUp = true;
     }
     return isSignedUp;
-    
 }
 
-int ownerDashboard()
+int ownerDashboard(string uName)
 {
     printBanner();
     cout << "Logged in as " << usernames[currentUserIdx] << " (Owner)" << endl;

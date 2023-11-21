@@ -16,7 +16,7 @@ bool signUp(int userCount, string uName, string pass, char role, string username
 int ownerDashboard(string uName);
 int salesManDashboard(string uName);
 // Common Options
-void printAllBooks();
+void printAllBooks(int bookCount,int bookPrice[],int bookQuantity[],char currency,string bookName[],string authorName[]);
 void searchBook();
 // Owner Option
 void addBook();
@@ -34,11 +34,13 @@ char currency = '$';
 
 main()
 {
+
     // Credentials
     string usernames[100], passwords[100];
     char roles[100];
     int userCount = 0;
     int currentUserIdx = 0;
+
 mainPage:
     system("cls");
     int choice = startingPage();
@@ -88,7 +90,7 @@ mainPage:
                 }
                 else if (choice == 4)
                 {
-                    printAllBooks();
+                    printAllBooks(bookCount,bookPrice,bookQuantity,currency,bookName,authorName);
                     cout << "Press any key to return to Dashboard................";
                     getch();
                     goto DashBoardOwner;
@@ -111,7 +113,7 @@ mainPage:
                 }
                 if (choice == 3)
                 {
-                    printAllBooks();
+                    printAllBooks(bookCount,bookPrice,bookQuantity,currency,bookName,authorName);
                     cout << "Press any key to return to Dashboard................";
                     getch();
                     goto DashBoardSalesMan;
@@ -278,7 +280,7 @@ int salesManDashboard(string uName)
     return choice;
 }
 
-void printAllBooks()
+void printAllBooks(int bookCount,int bookPrice[],int bookQuantity[],char currency,string bookName[],string authorName[])
 {
     printBanner();
     cout << left << setw(20) << "Book Name" << setw(20) << "Author Name" << setw(20) << "Price" << setw(20) << "Quantity" << endl;

@@ -16,8 +16,8 @@ bool signUp(int userCount, string uName, string pass, char role, string username
 int ownerDashboard(string uName);
 int salesManDashboard(string uName);
 // Common Options
-void printAllBooks(int bookCount,int bookPrice[],int bookQuantity[],char currency,string bookName[],string authorName[]);
-void searchBook();
+void printAllBooks(int bookCount, int bookPrice[], int bookQuantity[], char currency, string bookNames[], string authorNames[]);
+bool searchBook();
 // Owner Option
 void addBook();
 void removeBook();
@@ -25,8 +25,8 @@ void removeBook();
 int searchArray(string arr[], string object, int userCount);
 // Data Structures
 // Books
-string bookName[100];
-string authorName[100];
+string bookNames[100];
+string authorNames[100];
 int bookCount = 0, bookPrice[100], bookQuantity[100];
 int currentBookIdx = 0;
 // Global Settings
@@ -56,7 +56,7 @@ mainPage:
         printBanner();
         string uName = inputUsername();
         string pass = inputPassword();
-        if (login(userCount,uName, pass, usernames, passwords))
+        if (login(userCount, uName, pass, usernames, passwords))
         {
             currentUserIdx = searchArray(usernames, uName, userCount);
             if (roles[currentUserIdx] == 'a')
@@ -83,14 +83,28 @@ mainPage:
                 }
                 else if (choice == 3)
                 {
-                    searchBook();
+                    printBanner();
+                    cout << "Enter the name of the book: ";
+                    string bName;
+                    getline(cin, bName);
+                    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                    if (searchBook())
+                    {
+                        int index = searchArray(bookNames, bName, bookCount);
+                        cout << left << setw(20) << "Book Name" << setw(20) << "Author Name" << setw(20) << "Price" << setw(20) << "Quantity" << endl;
+                        cout << left << setw(20) << bookNames[index] << setw(20) << authorNames[index] << setw(0) << currency << setw(20) << bookPrice[index] << setw(20) << bookQuantity[index] << endl;
+                    }
+                    else
+                    {
+                        cout << "Book Not found" << endl;
+                    }
                     cout << "Press any key to return to Dashboard................";
                     getch();
                     goto DashBoardOwner;
                 }
                 else if (choice == 4)
                 {
-                    printAllBooks(bookCount,bookPrice,bookQuantity,currency,bookName,authorName);
+                    printAllBooks(bookCount, bookPrice, bookQuantity, currency, bookNames, authorNames);
                     cout << "Press any key to return to Dashboard................";
                     getch();
                     goto DashBoardOwner;
@@ -113,7 +127,7 @@ mainPage:
                 }
                 if (choice == 3)
                 {
-                    printAllBooks(bookCount,bookPrice,bookQuantity,currency,bookName,authorName);
+                    printAllBooks(bookCount, bookPrice, bookQuantity, currency, bookNames, authorNames);
                     cout << "Press any key to return to Dashboard................";
                     getch();
                     goto DashBoardSalesMan;
@@ -280,33 +294,28 @@ int salesManDashboard(string uName)
     return choice;
 }
 
-void printAllBooks(int bookCount,int bookPrice[],int bookQuantity[],char currency,string bookName[],string authorName[])
+void printAllBooks(int bookCount, int bookPrice[], int bookQuantity[], char currency, string bookNames[], string authorNames[])
 {
     printBanner();
     cout << left << setw(20) << "Book Name" << setw(20) << "Author Name" << setw(20) << "Price" << setw(20) << "Quantity" << endl;
     for (int i = 0; i <= bookCount; i++)
     {
-        if (bookName[i] == "")
+        if (bookNames[i] == "")
         {
             continue;
         }
-        cout << left << setw(20) << bookName[i] << setw(20) << authorName[i] << setw(0) << currency << setw(20) << bookPrice[i] << setw(20) << bookQuantity[i] << endl;
+        cout << left << setw(20) << bookNames[i] << setw(20) << authorNames[i] << setw(0) << currency << setw(20) << bookPrice[i] << setw(20) << bookQuantity[i] << endl;
     }
 }
 
-void searchBook()
+bool searchBook(string bName, string bookNames[], int bookCount)
 {
-    printBanner();
-    cout << "Enter the name of the book: ";
-    string name;
-    getline(cin, name);
-    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-    int index = searchArray(bookName, name, bookCount);
+    int index = searchArray(bookNames, bName, bookCount);
     if (index != -1)
     {
-        cout << left << setw(20) << "Book Name" << setw(20) << "Author Name" << setw(20) << "Price" << setw(20) << "Quantity" << endl;
-        cout << left << setw(20) << bookName[index] << setw(20) << authorName[index] << setw(0) << currency << setw(20) << bookPrice[index] << setw(20) << bookQuantity[index] << endl;
+        return true;
     }
+    return false;
 }
 
 void addBook()
@@ -323,11 +332,11 @@ void addBook()
     cin >> price;
     cout << "Enter Quantity: ";
     cin >> quantity;
-    int index = searchArray(bookName, name, bookCount);
-    if (index == -1 || author != authorName[index])
+    int index = searchArray(bookNames, name, bookCount);
+    if (index == -1 || author != authorNames[index])
     {
-        bookName[bookCount] = name;
-        authorName[bookCount] = author;
+        bookNames[bookCount] = name;
+        authorNames[bookCount] = author;
         bookPrice[bookCount] = price;
         bookQuantity[bookCount] = quantity;
     }
@@ -347,11 +356,11 @@ void removeBook()
     std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
     cout << "Enter name of the author: ";
     getline(cin, author);
-    int index = searchArray(bookName, name, bookCount);
-    if (index != -1 && author == authorName[index])
+    int index = searchArray(bookNames, name, bookCount);
+    if (index != -1 && author == authorNames[index])
     {
-        bookName[index] = "";
-        authorName[index] = "";
+        bookNames[index] = "";
+        authorNames[index] = "";
         bookPrice[index] = 0;
         bookQuantity[index] = 0;
     }
@@ -362,9 +371,9 @@ void removeBook()
 }
 
 // If object is not in array it will return -1, that can be used to add a condition that it does not exist.
-int searchArray(string arr[], string object, int userCount)
+int searchArray(string arr[], string object, int arrLength)
 {
-    for (int i = 0; i <= userCount; i++)
+    for (int i = 0; i <= arrLength; i++)
     {
         if (arr[i] == object)
         {

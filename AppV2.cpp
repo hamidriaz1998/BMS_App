@@ -24,13 +24,6 @@ bool removeBook(string bName, string auName, string bookNames[], string authorNa
 // Validation
 int searchArray(string arr[], string object, int userCount);
 // Data Structures
-// Books
-string bookNames[100];
-string authorNames[100];
-int bookCount = 0, bookPrice[100], bookQuantity[100];
-int currentBookIdx = 0;
-// Global Settings
-char currency = '$';
 
 main()
 {
@@ -40,6 +33,13 @@ main()
     char roles[100];
     int userCount = 0;
     int currentUserIdx = 0;
+    // Books
+    string bookNames[100];
+    string authorNames[100];
+    int bookCount = 0, bookPrice[100], bookQuantity[100];
+    int currentBookIdx = 0;
+    // Global Settings
+    char currency = '$';
 
 mainPage:
     system("cls");
@@ -94,7 +94,7 @@ mainPage:
                     goto DashBoardOwner;
                 }
                 else if (choice == 2)
-                {// Remove Book
+                { // Remove Book
                     printBanner();
                     string bName, auName;
                     cout << "Enter name of the book: ";
@@ -102,7 +102,7 @@ mainPage:
                     std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
                     cout << "Enter name of the author: ";
                     getline(cin, auName);
-                    if (removeBook(bName,auName,bookNames,authorNames,bookPrice,bookQuantity,bookCount))
+                    if (removeBook(bName, auName, bookNames, authorNames, bookPrice, bookQuantity, bookCount))
                     {
                         cout << "Book removed successfully." << endl;
                     }
@@ -381,7 +381,7 @@ bool addBook(string bName, string auName, int price, int quantity, string bookNa
 }
 
 bool removeBook(string bName, string auName, string bookNames[], string authorNames[], int bookPrice[], int bookQuantity[], int bookCount)
-{// Book might exist but it will still say that it does not if author doesn't match
+{ // Book might exist but it will still say that it does not if author doesn't match
     int index = searchArray(bookNames, bName, bookCount);
     if (index != -1 && auName == authorNames[index])
     {

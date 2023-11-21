@@ -33,3 +33,4 @@
 task05.cpp
 .vscode
 test.cpp
+*.txt

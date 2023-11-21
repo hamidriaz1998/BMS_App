@@ -321,6 +321,7 @@ void removeBook()
     string name, author;
     cout << "Enter name of the book: ";
     getline(cin, name);
+    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
     cout << "Enter name of the author: ";
     getline(cin, author);
     int index = searchArray(bookName, name);

@@ -7,7 +7,6 @@ using namespace std;
 void printBanner();
 int startingPage();
 // Login and Signup
-int currentUserIdx = 0;
 string inputUsername();
 string inputPassword();
 char inputRole();
@@ -15,7 +14,7 @@ bool login(string uName, string pass, string usernames[], string passwords[]);
 bool signUp(int userCount, string uName, string pass, char role, string usernames[], string passwords[], char roles[]);
 // Dashboards
 int ownerDashboard(string uName);
-int salesManDashboard();
+int salesManDashboard(string uName);
 // Common Options
 void printAllBooks();
 void searchBook();
@@ -23,22 +22,23 @@ void searchBook();
 void addBook();
 void removeBook();
 // Validation
-int searchArray(string arr[], string object);
+int searchArray(string arr[], string object, int userCount);
 // Data Structures
 // Books
 string bookName[100];
 string authorName[100];
 int bookCount = 0, bookPrice[100], bookQuantity[100];
 int currentBookIdx = 0;
-// Credentials
-string usernames[100], passwords[100];
-char roles[100];
-int userCount = 0;
 // Global Settings
 char currency = '$';
 
 main()
 {
+    // Credentials
+    string usernames[100], passwords[100];
+    char roles[100];
+    int userCount = 0;
+    int currentUserIdx = 0;
 mainPage:
     system("cls");
     int choice = startingPage();
@@ -56,7 +56,7 @@ mainPage:
         string pass = inputPassword();
         if (login(uName, pass, usernames, passwords))
         {
-            currentUserIdx = searchArray(usernames, uName);
+            currentUserIdx = searchArray(usernames, uName, userCount);
             if (roles[currentUserIdx] == 'a')
             {
             DashBoardOwner:
@@ -97,7 +97,7 @@ mainPage:
             else if (roles[currentUserIdx] == 'b')
             {
             DashBoardSalesMan:
-                choice = salesManDashboard();
+                choice = salesManDashboard(uName);
                 if (choice == 11)
                 {
                     goto mainPage;
@@ -205,10 +205,10 @@ char inputRole()
     cin >> role;
     return role;
 }
-bool login(string uName, string pass, string usernames[], string passwords[])
+bool login(int userCount, string uName, string pass, string usernames[], string passwords[])
 {
 
-    int index = searchArray(usernames, uName);
+    int index = searchArray(usernames, uName, userCount);
     if (index == -1)
     {
         return false;
@@ -223,7 +223,7 @@ bool login(string uName, string pass, string usernames[], string passwords[])
 bool signUp(int userCount, string uName, string pass, char role, string usernames[], string passwords[], char roles[])
 {
     bool isSignedUp = false;
-    int index = searchArray(usernames, uName);
+    int index = searchArray(usernames, uName, userCount);
     if (index == -1)
     {
         usernames[userCount] = uName;
@@ -237,7 +237,7 @@ bool signUp(int userCount, string uName, string pass, char role, string username
 int ownerDashboard(string uName)
 {
     printBanner();
-    cout << "Logged in as " << usernames[currentUserIdx] << " (Owner)" << endl;
+    cout << "Logged in as " << uName << " (Owner)" << endl;
     cout << "Choose one of the following: " << endl;
     cout << "1. Add a new Book" << endl;
     cout << "2. Remove a Book" << endl;
@@ -256,10 +256,10 @@ int ownerDashboard(string uName)
     return choice;
 }
 
-int salesManDashboard()
+int salesManDashboard(string uName)
 {
     printBanner();
-    cout << "Logged in as " << usernames[currentUserIdx] << " (Salesman)" << endl;
+    cout << "Logged in as " << uName << " (Salesman)" << endl;
     cout << "Choose one of the following: " << endl;
     cout << "1. Search for a Book" << endl;
     cout << "2. Check availablity" << endl;
@@ -299,7 +299,7 @@ void searchBook()
     string name;
     getline(cin, name);
     std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-    int index = searchArray(bookName, name);
+    int index = searchArray(bookName, name, bookCount);
     if (index != -1)
     {
         cout << left << setw(20) << "Book Name" << setw(20) << "Author Name" << setw(20) << "Price" << setw(20) << "Quantity" << endl;
@@ -321,7 +321,7 @@ void addBook()
     cin >> price;
     cout << "Enter Quantity: ";
     cin >> quantity;
-    int index = searchArray(bookName, name);
+    int index = searchArray(bookName, name, bookCount);
     if (index == -1 || author != authorName[index])
     {
         bookName[bookCount] = name;
@@ -345,7 +345,7 @@ void removeBook()
     std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
     cout << "Enter name of the author: ";
     getline(cin, author);
-    int index = searchArray(bookName, name);
+    int index = searchArray(bookName, name, bookCount);
     if (index != -1 && author == authorName[index])
     {
         bookName[index] = "";
@@ -360,7 +360,7 @@ void removeBook()
 }
 
 // If object is not in array it will return -1, that can be used to add a condition that it does not exist.
-int searchArray(string arr[], string object)
+int searchArray(string arr[], string object, int userCount)
 {
     for (int i = 0; i <= userCount; i++)
     {

@@ -10,7 +10,7 @@ int startingPage();
 string inputUsername();
 string inputPassword();
 char inputRole();
-bool login(string uName, string pass, string usernames[], string passwords[]);
+bool login(int userCount, string uName, string pass, string usernames[], string passwords[]);
 bool signUp(int userCount, string uName, string pass, char role, string usernames[], string passwords[], char roles[]);
 // Dashboards
 int ownerDashboard(string uName);
@@ -54,7 +54,7 @@ mainPage:
         printBanner();
         string uName = inputUsername();
         string pass = inputPassword();
-        if (login(uName, pass, usernames, passwords))
+        if (login(userCount,uName, pass, usernames, passwords))
         {
             currentUserIdx = searchArray(usernames, uName, userCount);
             if (roles[currentUserIdx] == 'a')

@@ -19,7 +19,7 @@ int salesManDashboard(string uName);
 void printAllBooks(int bookCount, int bookPrice[], int bookQuantity[], char currency, string bookNames[], string authorNames[]);
 bool searchBook(string bName, string bookNames[], int bookCount);
 // Owner Option
-void addBook();
+bool addBook(string bName, string auName, int price, int quantity, string bookNames[], string authorNames[], int bookPrice[], int bookQuantity[], int bookCount);
 void removeBook();
 // Validation
 int searchArray(string arr[], string object, int userCount);
@@ -68,8 +68,27 @@ mainPage:
                     goto mainPage;
                 }
                 else if (choice == 1)
-                {
-                    addBook();
+                { // Add Book
+                    printBanner();
+                    string bName, auName;
+                    int price, quantity;
+                    cout << "Enter name of the book: ";
+                    getline(cin, bName);
+                    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                    cout << "Enter name of the author: ";
+                    getline(cin, auName);
+                    cout << "Enter Price: ";
+                    cin >> price;
+                    cout << "Enter Quantity: ";
+                    cin >> quantity;
+                    if (addBook(bName, auName, price, quantity, bookNames, authorNames, bookPrice, bookQuantity, bookCount))
+                    {
+                        cout << "Book Added to the catalog" << endl;
+                    }
+                    else
+                    {
+                        cout << "Book already exists" << endl;
+                    }
                     cout << "Press any key to return to Dashboard................";
                     getch();
                     goto DashBoardOwner;
@@ -88,7 +107,7 @@ mainPage:
                     string bName;
                     getline(cin, bName);
                     std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-                    if (searchBook(bName,bookNames,bookCount))
+                    if (searchBook(bName, bookNames, bookCount))
                     {
                         int index = searchArray(bookNames, bName, bookCount);
                         cout << left << setw(20) << "Book Name" << setw(20) << "Author Name" << setw(20) << "Price" << setw(20) << "Quantity" << endl;
@@ -104,6 +123,7 @@ mainPage:
                 }
                 else if (choice == 4)
                 {
+                    printBanner();
                     printAllBooks(bookCount, bookPrice, bookQuantity, currency, bookNames, authorNames);
                     cout << "Press any key to return to Dashboard................";
                     getch();
@@ -125,7 +145,7 @@ mainPage:
                     string bName;
                     getline(cin, bName);
                     std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-                    if (searchBook(bName,bookNames,bookCount))
+                    if (searchBook(bName, bookNames, bookCount))
                     {
                         int index = searchArray(bookNames, bName, bookCount);
                         cout << left << setw(20) << "Book Name" << setw(20) << "Author Name" << setw(20) << "Price" << setw(20) << "Quantity" << endl;
@@ -140,6 +160,7 @@ mainPage:
                 }
                 if (choice == 3)
                 {
+                    printBanner();
                     printAllBooks(bookCount, bookPrice, bookQuantity, currency, bookNames, authorNames);
                     cout << "Press any key to return to Dashboard................";
                     getch();
@@ -230,7 +251,7 @@ string inputPassword()
 char inputRole()
 {
     char role;
-    cout << "Choose Role ('a' for Admin and 'b' for Salesman): " << endl;
+    cout << "Choose Role ('a' for Admin and 'b' for Salesman): ";
     cin >> role;
     return role;
 }
@@ -309,7 +330,6 @@ int salesManDashboard(string uName)
 
 void printAllBooks(int bookCount, int bookPrice[], int bookQuantity[], char currency, string bookNames[], string authorNames[])
 {
-    printBanner();
     cout << left << setw(20) << "Book Name" << setw(20) << "Author Name" << setw(20) << "Price" << setw(20) << "Quantity" << endl;
     for (int i = 0; i <= bookCount; i++)
     {
@@ -331,32 +351,18 @@ bool searchBook(string bName, string bookNames[], int bookCount)
     return false;
 }
 
-void addBook()
+bool addBook(string bName, string auName, int price, int quantity, string bookNames[], string authorNames[], int bookPrice[], int bookQuantity[], int bookCount)
 {
-    printBanner();
-    string name, author;
-    int price, quantity;
-    cout << "Enter name of the book: ";
-    getline(cin, name);
-    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-    cout << "Enter name of the author: ";
-    getline(cin, author);
-    cout << "Enter Price: ";
-    cin >> price;
-    cout << "Enter Quantity: ";
-    cin >> quantity;
-    int index = searchArray(bookNames, name, bookCount);
-    if (index == -1 || author != authorNames[index])
+    int index = searchArray(bookNames, bName, bookCount);
+    if (index == -1 || auName != authorNames[index])
     {
-        bookNames[bookCount] = name;
-        authorNames[bookCount] = author;
+        bookNames[bookCount] = bName;
+        authorNames[bookCount] = auName;
         bookPrice[bookCount] = price;
         bookQuantity[bookCount] = quantity;
+        return true;
     }
-    else
-    {
-        cout << "Book already exists" << endl;
-    }
+    return false;
     bookCount++;
 }
 

@@ -12,7 +12,7 @@ string inputUsername();
 string inputPassword();
 char inputRole();
 bool login();
-void signUp();
+bool signUp(int userCount, string uName, string pass, char role, string usernames[], string passwords[], char roles[]);
 // Dashboards
 int ownerDashboard();
 int salesManDashboard();
@@ -123,8 +123,27 @@ mainPage:
     }
     else if (choice == 2)
     {
-        signUp();
-        goto mainPage;
+    signUpPage:
+        system("cls");
+        printBanner();
+        string uName = inputUsername();
+        string pass = inputPassword();
+        char role = inputRole();
+        if (signUp(userCount, uName, pass, role, usernames, passwords, roles))
+        {
+            userCount++;
+            cout << "You have been signed up successfully." << endl;
+            cout << "Press any key to continue.......";
+            getch();
+            goto mainPage;
+        }
+        else
+        {
+            cout << "Username Already exists." << endl;
+            cout << "Press any key to try again...........";
+            getch();
+            goto signUpPage;
+        }
     }
 }
 void printBanner()
@@ -200,17 +219,19 @@ bool login()
     return false;
 }
 
-void signUp()
+bool signUp(int userCount, string uName, string pass, char role, string usernames[], string passwords[], char roles[])
 {
-    system("cls");
-    printBanner();
-    usernames[userCount] = inputUsername();
-    passwords[userCount] = inputPassword();
-    roles[userCount] = inputRole();
-    userCount++;
-    cout << "You have been signed up" << endl;
-    cout << "Press any key to continue.......";
-    getch();
+    bool isSignedUp = false;
+    int index = searchArray(usernames, uName);
+    if (index == -1)
+    {
+        usernames[userCount] = uName;
+        passwords[userCount]= pass;
+        roles[userCount] = role;
+        isSignedUp = true;
+    }
+    return isSignedUp;
+    
 }
 
 int ownerDashboard()

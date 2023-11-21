@@ -17,7 +17,7 @@ int ownerDashboard(string uName);
 int salesManDashboard(string uName);
 // Common Options
 void printAllBooks(int bookCount, int bookPrice[], int bookQuantity[], char currency, string bookNames[], string authorNames[]);
-bool searchBook();
+bool searchBook(string bName, string bookNames[], int bookCount);
 // Owner Option
 void addBook();
 void removeBook();
@@ -82,13 +82,13 @@ mainPage:
                     goto DashBoardOwner;
                 }
                 else if (choice == 3)
-                {
+                { // Search Book
                     printBanner();
                     cout << "Enter the name of the book: ";
                     string bName;
                     getline(cin, bName);
                     std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-                    if (searchBook())
+                    if (searchBook(bName,bookNames,bookCount))
                     {
                         int index = searchArray(bookNames, bName, bookCount);
                         cout << left << setw(20) << "Book Name" << setw(20) << "Author Name" << setw(20) << "Price" << setw(20) << "Quantity" << endl;
@@ -119,11 +119,24 @@ mainPage:
                     goto mainPage;
                 }
                 if (choice == 1)
-                {
-                    searchBook();
+                { // Search Book
+                    printBanner();
+                    cout << "Enter the name of the book: ";
+                    string bName;
+                    getline(cin, bName);
+                    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                    if (searchBook(bName,bookNames,bookCount))
+                    {
+                        int index = searchArray(bookNames, bName, bookCount);
+                        cout << left << setw(20) << "Book Name" << setw(20) << "Author Name" << setw(20) << "Price" << setw(20) << "Quantity" << endl;
+                        cout << left << setw(20) << bookNames[index] << setw(20) << authorNames[index] << setw(0) << currency << setw(20) << bookPrice[index] << setw(20) << bookQuantity[index] << endl;
+                    }
+                    else
+                    {
+                        cout << "Book Not found" << endl;
+                    }
                     cout << "Press any key to return to Dashboard................";
                     getch();
-                    goto DashBoardOwner;
                 }
                 if (choice == 3)
                 {

@@ -3,7 +3,8 @@
 #include <iomanip>
 #include <limits>
 using namespace std;
-// Start
+// While adding a book if it already exists, it should increase the quantity of the book.
+// Starting
 void printBanner();
 int startingPage();
 // Login and Signup
@@ -143,6 +144,9 @@ mainPage:
                     getch();
                     goto DashBoardOwner;
                 }
+                else if (choice == 11)
+                {
+                }
             }
             else if (roles[currentUserIdx] == 'b')
             {
@@ -171,6 +175,7 @@ mainPage:
                     }
                     cout << "Press any key to return to Dashboard................";
                     getch();
+                    goto DashBoardSalesMan;
                 }
                 if (choice == 3)
                 {
@@ -309,10 +314,10 @@ int ownerDashboard(string uName)
     cout << "4. List All Books" << endl;
     cout << "5. Add a new user" << endl;
     cout << "6. Remove an existing user" << endl;
-    cout << "7. Search for a user" << endl;
+    cout << "7. List All users" << endl;
     cout << "8. Update a user's details" << endl;
-    cout << "9. Manage Discounts" << endl;
-    cout << "10. Settings" << endl;
+    cout << "9. Change Currency Type" << endl;
+    cout << "10. Change Password" << endl;
     cout << "11. Logout" << endl;
     cout << "Your Choice (1-11): ";
     int choice;
@@ -332,9 +337,9 @@ int salesManDashboard(string uName)
     cout << "5. View Customer Order" << endl;
     cout << "6. Finalize Order" << endl;
     cout << "7. Check Balance" << endl;
-    cout << "8. Sales Target" << endl;
-    cout << "9. Return a Book" << endl;
-    cout << "10. Settings" << endl;
+    cout << "8. Return a Book" << endl;
+    cout << "9. Change Currency Type" << endl;
+    cout << "10. Change Password" << endl;
     cout << "11. Logout" << endl;
     cout << "Your Choice (1-11): ";
     int choice;

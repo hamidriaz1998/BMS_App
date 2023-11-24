@@ -144,8 +144,27 @@ mainPage:
                     getch();
                     goto DashBoardOwner;
                 }
-                else if (choice == 11)
+                else if (choice == 9)
                 {
+                    printBanner();
+                    cout << "Enter new currency type: ";
+                    cin >> currency;
+                    cout << "Currency type changed successfully." << endl;
+                    cout << "Press any key to return to Dashboard................";
+                    getch();
+                    goto DashBoardOwner;
+                }
+                else if (choice == 10)
+                {
+                    printBanner();
+                    string newPass;
+                    cout << "Enter new password: ";
+                    cin >> newPass;
+                    passwords[currentUserIdx] = newPass;
+                    cout << "Password changed successfully." << endl;
+                    cout << "Press any key to return to Dashboard................";
+                    getch();
+                    goto DashBoardOwner;
                 }
             }
             else if (roles[currentUserIdx] == 'b')
@@ -184,6 +203,27 @@ mainPage:
                     cout << "Press any key to return to Dashboard................";
                     getch();
                     goto DashBoardSalesMan;
+                }
+                else if(choice == 9){
+                    printBanner();
+                    cout << "Enter new currency type: ";
+                    cin >> currency;
+                    cout << "Currency type changed successfully." << endl;
+                    cout << "Press any key to return to Dashboard................";
+                    getch();
+                    goto DashBoardSalesMan;
+                }
+                else if(choice == 10){
+                    printBanner();
+                    string newPass;
+                    cout << "Enter new password: ";
+                    cin >> newPass;
+                    passwords[currentUserIdx] = newPass;
+                    cout << "Password changed successfully." << endl;
+                    cout << "Press any key to return to Dashboard................";
+                    getch();
+                    goto DashBoardSalesMan;
+                
                 }
             }
         }

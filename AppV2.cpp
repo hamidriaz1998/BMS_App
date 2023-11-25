@@ -25,6 +25,9 @@ bool removeBook(string bName, string auName, string bookNames[], string authorNa
 void printAllUsers(int userCount, string usernames[], string passwords[], char roles[]);
 bool removeUser(string uName, string usernames[], string passwords[], char roles[], int userCount);
 bool updateUser(string uName, string pass, char role, string usernames[], string passwords[], char roles[], int userCount);
+// Salesman Options
+bool placeOrder(string bName, int quantity, string bookNames[], int bookPrice[], int bookQuantity[], int bookCount);
+
 // Validation
 int searchArray(string arr[], string object, int userCount);
 // Data Structures
@@ -272,13 +275,69 @@ mainPage:
                     getch();
                     goto DashBoardSalesMan;
                 }
-                if (choice == 3)
+                else if (choice == 2)
+                { // Check availablity of a Book
+                    printBanner();
+                    cout << "Enter the name of the book: ";
+                    string bName;
+                    getline(cin, bName);
+                    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                    if (searchBook(bName, bookNames, bookCount))
+                    {
+                        int index = searchArray(bookNames, bName, bookCount);
+                        if (bookQuantity[index] == 0)
+                        {
+                            cout << bookNames[index] << " is out of stock." << endl;
+                        }
+                        else
+                        {
+                            cout << bookQuantity[index] << " copies of " << bookNames[index] << " are available." << endl;
+                        }
+                    }
+                    else
+                    {
+                        cout << "Book Not found" << endl;
+                        cout << "Press any key to return to Dashboard................";
+                        getch();
+                        goto DashBoardSalesMan;
+                    }
+                }
+                else if (choice == 3)
                 {
                     printBanner();
                     printAllBooks(bookCount, bookPrice, bookQuantity, currency, bookNames, authorNames);
                     cout << "Press any key to return to Dashboard................";
                     getch();
                     goto DashBoardSalesMan;
+                }
+                else if (choice == 4)
+                {
+                    printBanner();
+                    string bName;
+                    int quantity;
+                    cout << "Enter the name of the book: ";
+                    getline(cin, bName);
+                    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                    cout << "Enter quantity: ";
+                    cin >> quantity;
+                    if (searchBook(bName, bookNames, bookCount))
+                    {
+                        int index = searchArray(bookNames, bName, bookCount);
+                        if (placeOrder(bName, quantity, bookNames, bookPrice, bookQuantity, bookCount))
+                        {
+                            cout << "Order placed successfully." << endl;
+                        }
+                        else
+                        {
+                            cout << "Order could not be placed." << endl;
+                        }
+                    }
+                    else
+                    {
+                        cout << "Book Not found" << endl;
+                    }
+                    cout << "Press any key to return to Dashboard................";
+                    getch();
                 }
                 else if (choice == 9)
                 {
@@ -463,7 +522,7 @@ int salesManDashboard(string uName)
     cin >> choice;
     return choice;
 }
-
+// Common Options
 void printAllBooks(int bookCount, int bookPrice[], int bookQuantity[], char currency, string bookNames[], string authorNames[])
 {
     cout << left << setw(20) << "Book Name" << setw(20) << "Author Name" << setw(20) << "Price" << setw(20) << "Quantity" << endl;
@@ -487,6 +546,7 @@ bool searchBook(string bName, string bookNames[], int bookCount)
     return false;
 }
 
+// Owner Options
 bool addBook(string bName, string auName, int price, int quantity, string bookNames[], string authorNames[], int bookPrice[], int bookQuantity[], int bookCount)
 {
     int index = searchArray(bookNames, bName, bookCount);
@@ -551,7 +611,20 @@ bool updateUser(string uName, string pass, char role, string usernames[], string
     }
     return false;
 }
-
+// Salesman Options
+bool placeOrder(string bName, int quantity, string bookNames[], int bookPrice[], int bookQuantity[], int bookCount)
+{
+    int index = searchArray(bookNames, bName, bookCount);
+    if (index != -1)
+    {
+        if (bookQuantity[index] >= quantity)
+        {
+            bookQuantity[index] -= quantity;
+            return true;
+        }
+    }
+    return false;
+}
 // If object is not in array it will return -1, that can be used to add a condition that it does not exist.
 int searchArray(string arr[], string object, int arrLength)
 {

@@ -20,7 +20,7 @@ int salesManDashboard(string uName);
 void printAllBooks(int bookCount, int bookPrice[], int bookQuantity[], char currency, string bookNames[], string authorNames[]);
 bool searchBook(string bName, string bookNames[], int bookCount);
 // Owner Options
-bool addBook(string bName, string auName, int price, int quantity, string bookNames[], string authorNames[], int bookPrice[], int bookQuantity[], int bookCount);
+bool addBook(string bName, string auName, int price, int quantity, string bookNames[], string authorNames[], int bookPrice[], int bookQuantity[], int &bookCount);
 bool removeBook(string bName, string auName, string bookNames[], string authorNames[], int bookPrice[], int bookQuantity[], int bookCount);
 void printAllUsers(int userCount, string usernames[], string passwords[], char roles[]);
 bool removeUser(string uName, string usernames[], string passwords[], char roles[], int userCount);
@@ -30,6 +30,7 @@ bool placeOrder(string bName, int quantity, string bookNames[], int bookPrice[],
 
 // Validation
 int searchArray(string arr[], string object, int userCount);
+string getRole(char roleChar);
 // Data Structures
 
 main()
@@ -315,7 +316,7 @@ main()
                                 int quantity;
                                 cout << "Enter the name of the book: ";
                                 getline(cin, bName);
-                                std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                                // std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
                                 cout << "Enter quantity: ";
                                 cin >> quantity;
                                 if (searchBook(bName, bookNames, bookCount))
@@ -549,38 +550,45 @@ bool searchBook(string bName, string bookNames[], int bookCount)
 }
 
 // Owner Options
-bool addBook(string bName, string auName, int price, int quantity, string bookNames[], string authorNames[], int bookPrice[], int bookQuantity[], int bookCount)
+bool addBook(string bName, string auName, int price, int quantity, string bookNames[], string authorNames[], int bookPrice[], int bookQuantity[], int &bookCount)
 {
     int index = searchArray(bookNames, bName, bookCount);
-    if (index == -1 || auName != authorNames[index])
+    if (index == -1)
     {
         bookNames[bookCount] = bName;
         authorNames[bookCount] = auName;
         bookPrice[bookCount] = price;
         bookQuantity[bookCount] = quantity;
+        bookCount++;
         return true;
     }
-    return false;
-    bookCount++;
+    else
+    {
+        bookQuantity[index] += quantity;
+        return false;
+    }
 }
 
 bool removeBook(string bName, string auName, string bookNames[], string authorNames[], int bookPrice[], int bookQuantity[], int bookCount)
 { // Book might exist but it will still say that it does not if author doesn't match
     int index = searchArray(bookNames, bName, bookCount);
-    if (index != -1 && auName == authorNames[index])
+    if (index != -1)
     {
-        bookNames[index] = "";
-        authorNames[index] = "";
-        bookPrice[index] = 0;
-        bookQuantity[index] = 0;
-        return true;
+        if (authorNames[index] == auName)
+        {
+            bookNames[index] = "";
+            authorNames[index] = "";
+            bookPrice[index] = 0;
+            bookQuantity[index] = 0;
+            return true;
+        }
     }
     return false;
 }
 void printAllUsers(int userCount, string usernames[], string passwords[], char roles[])
 {
     cout << left << setw(20) << "Username" << setw(20) << "Password" << setw(20) << "Role" << endl;
-    for (int i = 0; i <= userCount; i++)
+    for (int i = 0; i < userCount; i++)
     {
         if (usernames[i] == "")
         {
@@ -630,7 +638,7 @@ bool placeOrder(string bName, int quantity, string bookNames[], int bookPrice[],
 // If object is not in array it will return -1, that can be used to add a condition that it does not exist.
 int searchArray(string arr[], string object, int arrLength)
 {
-    for (int i = 0; i <= arrLength; i++)
+    for (int i = 0; i < arrLength; i++)
     {
         if (arr[i] == object)
         {
@@ -638,4 +646,19 @@ int searchArray(string arr[], string object, int arrLength)
         }
     }
     return -1;
+}
+string getRole(char roleChar)
+{
+    if (roleChar == 'a')
+    {
+        return "Admin";
+    }
+    else if (roleChar == 'b')
+    {
+        return "Salesman";
+    }
+    else
+    {
+        return "Unknown";
+    }
 }

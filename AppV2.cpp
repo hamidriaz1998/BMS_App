@@ -19,9 +19,12 @@ int salesManDashboard(string uName);
 // Common Options
 void printAllBooks(int bookCount, int bookPrice[], int bookQuantity[], char currency, string bookNames[], string authorNames[]);
 bool searchBook(string bName, string bookNames[], int bookCount);
-// Owner Option
+// Owner Options
 bool addBook(string bName, string auName, int price, int quantity, string bookNames[], string authorNames[], int bookPrice[], int bookQuantity[], int bookCount);
 bool removeBook(string bName, string auName, string bookNames[], string authorNames[], int bookPrice[], int bookQuantity[], int bookCount);
+void printAllUsers(int userCount, string usernames[], string passwords[], char roles[]);
+bool removeUser(string uName, string usernames[], string passwords[], char roles[], int userCount);
+bool updateUser(string uName, string pass, char role, string usernames[], string passwords[], char roles[], int userCount);
 // Validation
 int searchArray(string arr[], string object, int userCount);
 // Data Structures
@@ -144,10 +147,82 @@ mainPage:
                     getch();
                     goto DashBoardOwner;
                 }
+                else if (choice == 5)
+                {
+                    // Add user
+                    printBanner();
+                    string uName, pass;
+                    char role;
+                    cout << "Enter username of the user to add: ";
+                    cin >> uName;
+                    cout << "Enter password: ";
+                    cin >> pass;
+                    cout << "Enter role ('a' for admin or 'b' for salesman): ";
+                    cin >> role;
+                    if (signUp(userCount, uName, pass, role, usernames, passwords, roles))
+                    {
+                        userCount++;
+                        cout << "User added successfully." << endl;
+                    }
+                    else
+                    {
+                        cout << "User already exists." << endl;
+                    }
+                    cout << "Press any key to return to Dashboard................";
+                    getch();
+                    goto DashBoardOwner;
+                }
+                else if (choice == 6)
+                {
+                    // Remove user
+                    printBanner();
+                    string uName;
+                    cout << "Enter username of the user to remove: ";
+                    cin >> uName;
+                    if (removeUser(uName, usernames, passwords, roles, userCount))
+                    {
+                        cout << "User removed successfully." << endl;
+                    }
+                    else
+                    {
+                        cout << "User does not exist." << endl;
+                    }
+                }
+                else if (choice == 7)
+                {
+                    // List all users
+                    printBanner();
+                    printAllUsers(userCount, usernames, passwords, roles);
+                    cout << "Press any key to return to Dashboard................";
+                    getch();
+                    goto DashBoardOwner;
+                }
+                else if (choice == 8)
+                {
+                    // Update user
+                    printBanner();
+                    string uName, pass;
+                    char role;
+                    cout << "Enter username of the user to update: ";
+                    cin >> uName;
+                    cout << "Enter new password: ";
+                    cin >> pass;
+                    cout << "Enter new role ('a' for admin or 'b' for salesman): ";
+                    cin >> role;
+                    if (updateUser(uName, pass, role, usernames, passwords, roles, userCount))
+                    {
+                        cout << "User updated successfully." << endl;
+                    }
+                    else
+                    {
+                        cout << "User does not exist." << endl;
+                    }
+                }
                 else if (choice == 9)
                 {
+                    // Change Currency Type
                     printBanner();
-                    cout << "Enter new currency type: ";
+                    cout << "Enter new currency type ('$', '€' or '¥'): ";
                     cin >> currency;
                     cout << "Currency type changed successfully." << endl;
                     cout << "Press any key to return to Dashboard................";
@@ -156,6 +231,7 @@ mainPage:
                 }
                 else if (choice == 10)
                 {
+                    // Change Password
                     printBanner();
                     string newPass;
                     cout << "Enter new password: ";
@@ -204,16 +280,18 @@ mainPage:
                     getch();
                     goto DashBoardSalesMan;
                 }
-                else if(choice == 9){
+                else if (choice == 9)
+                {
                     printBanner();
-                    cout << "Enter new currency type: ";
+                    cout << "Enter new currency type ('$', '€' or '¥'): ";
                     cin >> currency;
                     cout << "Currency type changed successfully." << endl;
                     cout << "Press any key to return to Dashboard................";
                     getch();
                     goto DashBoardSalesMan;
                 }
-                else if(choice == 10){
+                else if (choice == 10)
+                {
                     printBanner();
                     string newPass;
                     cout << "Enter new password: ";
@@ -223,7 +301,6 @@ mainPage:
                     cout << "Press any key to return to Dashboard................";
                     getch();
                     goto DashBoardSalesMan;
-                
                 }
             }
         }
@@ -371,7 +448,7 @@ int salesManDashboard(string uName)
     cout << "Logged in as " << uName << " (Salesman)" << endl;
     cout << "Choose one of the following: " << endl;
     cout << "1. Search for a Book" << endl;
-    cout << "2. Check availablity" << endl;
+    cout << "2. Check availablity of a Book" << endl;
     cout << "3. List all Books" << endl;
     cout << "4. Place Customer Order" << endl;
     cout << "5. View Customer Order" << endl;
@@ -434,6 +511,42 @@ bool removeBook(string bName, string auName, string bookNames[], string authorNa
         authorNames[index] = "";
         bookPrice[index] = 0;
         bookQuantity[index] = 0;
+        return true;
+    }
+    return false;
+}
+void printAllUsers(int userCount, string usernames[], string passwords[], char roles[])
+{
+    cout << left << setw(20) << "Username" << setw(20) << "Password" << setw(20) << "Role" << endl;
+    for (int i = 0; i <= userCount; i++)
+    {
+        if (usernames[i] == "")
+        {
+            continue;
+        }
+        cout << left << setw(20) << usernames[i] << setw(20) << passwords[i] << setw(20) << roles[i] << endl;
+    }
+}
+bool removeUser(string uName, string usernames[], string passwords[], char roles[], int userCount)
+{
+    int index = searchArray(usernames, uName, userCount);
+    if (index != -1)
+    {
+        usernames[index] = "";
+        passwords[index] = "";
+        roles[index] = ' ';
+        return true;
+    }
+    return false;
+}
+bool updateUser(string uName, string pass, char role, string usernames[], string passwords[], char roles[], int userCount)
+{
+    int index = searchArray(usernames, uName, userCount);
+    if (index != -1)
+    {
+        usernames[index] = uName;
+        passwords[index] = pass;
+        roles[index] = role;
         return true;
     }
     return false;

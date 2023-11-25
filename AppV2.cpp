@@ -48,351 +48,353 @@ main()
     // Global Settings
     char currency = '$';
 
-mainPage:
-    system("cls");
-    int choice = startingPage();
-    if (choice == 3)
+    while (true) // Main Loop
     {
-        cout << "Exiting..........";
-        return 0;
-    }
-    else if (choice == 1)
-    {
-    Login:
         system("cls");
-        printBanner();
-        string uName = inputUsername();
-        string pass = inputPassword();
-        if (login(userCount, uName, pass, usernames, passwords))
+        int choice = startingPage();
+        if (choice == 3)
         {
-            currentUserIdx = searchArray(usernames, uName, userCount);
-            if (roles[currentUserIdx] == 'a')
+            cout << "Exiting..........";
+            return 0;
+        }
+        else if (choice == 1)
+        {
+            bool loginPage = true;
+            while (loginPage) // Login Page
             {
-            DashBoardOwner:
-                choice = ownerDashboard(uName);
-                if (choice == 11)
+                system("cls");
+                printBanner();
+                string uName = inputUsername();
+                string pass = inputPassword();
+                if (login(userCount, uName, pass, usernames, passwords))
                 {
-                    goto mainPage;
+                    // Added this because it would not return to mainPage if I choose option 11.
+                    loginPage = false;
+                    currentUserIdx = searchArray(usernames, uName, userCount);
+                    if (roles[currentUserIdx] == 'a')
+                    {
+                        while (true) // Owner Dashboard
+                        {
+                            choice = ownerDashboard(uName);
+                            if (choice == 11)
+                            {
+                                break;
+                            }
+                            else if (choice == 1)
+                            { // Add Book
+                                printBanner();
+                                string bName, auName;
+                                int price, quantity;
+                                cout << "Enter name of the book: ";
+                                getline(cin, bName);
+                                std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                                cout << "Enter name of the author: ";
+                                getline(cin, auName);
+                                cout << "Enter Price: ";
+                                cin >> price;
+                                cout << "Enter Quantity: ";
+                                cin >> quantity;
+                                if (addBook(bName, auName, price, quantity, bookNames, authorNames, bookPrice, bookQuantity, bookCount))
+                                {
+                                    cout << "Book Added to the catalog" << endl;
+                                }
+                                else
+                                {
+                                    cout << "Book already exists" << endl;
+                                }
+                                cout << "Press any key to return to Dashboard................";
+                                getch();
+                            }
+                            else if (choice == 2)
+                            { // Remove Book
+                                printBanner();
+                                string bName, auName;
+                                cout << "Enter name of the book: ";
+                                getline(cin, bName);
+                                std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                                cout << "Enter name of the author: ";
+                                getline(cin, auName);
+                                if (removeBook(bName, auName, bookNames, authorNames, bookPrice, bookQuantity, bookCount))
+                                {
+                                    cout << "Book removed successfully." << endl;
+                                }
+                                else
+                                {
+                                    cout << "Book does not exist." << endl;
+                                }
+                                cout << "Press any key to return to Dashboard................";
+                                getch();
+                            }
+                            else if (choice == 3)
+                            { // Search Book
+                                printBanner();
+                                cout << "Enter the name of the book: ";
+                                string bName;
+                                getline(cin, bName);
+                                std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                                if (searchBook(bName, bookNames, bookCount))
+                                {
+                                    int index = searchArray(bookNames, bName, bookCount);
+                                    cout << left << setw(20) << "Book Name" << setw(20) << "Author Name" << setw(20) << "Price" << setw(20) << "Quantity" << endl;
+                                    cout << left << setw(20) << bookNames[index] << setw(20) << authorNames[index] << setw(0) << currency << setw(20) << bookPrice[index] << setw(20) << bookQuantity[index] << endl;
+                                }
+                                else
+                                {
+                                    cout << "Book Not found" << endl;
+                                }
+                                cout << "Press any key to return to Dashboard................";
+                                getch();
+                            }
+                            else if (choice == 4)
+                            {
+                                printBanner();
+                                printAllBooks(bookCount, bookPrice, bookQuantity, currency, bookNames, authorNames);
+                                cout << "Press any key to return to Dashboard................";
+                                getch();
+                            }
+                            else if (choice == 5)
+                            {
+                                // Add user
+                                printBanner();
+                                string uName, pass;
+                                char role;
+                                cout << "Enter username of the user to add: ";
+                                cin >> uName;
+                                cout << "Enter password: ";
+                                cin >> pass;
+                                cout << "Enter role ('a' for admin or 'b' for salesman): ";
+                                cin >> role;
+                                if (signUp(userCount, uName, pass, role, usernames, passwords, roles))
+                                {
+                                    userCount++;
+                                    cout << "User added successfully." << endl;
+                                }
+                                else
+                                {
+                                    cout << "User already exists." << endl;
+                                }
+                                cout << "Press any key to return to Dashboard................";
+                                getch();
+                            }
+                            else if (choice == 6)
+                            {
+                                // Remove user
+                                printBanner();
+                                string uName;
+                                cout << "Enter username of the user to remove: ";
+                                cin >> uName;
+                                if (removeUser(uName, usernames, passwords, roles, userCount))
+                                {
+                                    cout << "User removed successfully." << endl;
+                                }
+                                else
+                                {
+                                    cout << "User does not exist." << endl;
+                                }
+                            }
+                            else if (choice == 7)
+                            {
+                                // List all users
+                                printBanner();
+                                printAllUsers(userCount, usernames, passwords, roles);
+                                cout << "Press any key to return to Dashboard................";
+                                getch();
+                            }
+                            else if (choice == 8)
+                            {
+                                // Update user
+                                printBanner();
+                                string uName, pass;
+                                char role;
+                                cout << "Enter username of the user to update: ";
+                                cin >> uName;
+                                cout << "Enter new password: ";
+                                cin >> pass;
+                                cout << "Enter new role ('a' for admin or 'b' for salesman): ";
+                                cin >> role;
+                                if (updateUser(uName, pass, role, usernames, passwords, roles, userCount))
+                                {
+                                    cout << "User updated successfully." << endl;
+                                }
+                                else
+                                {
+                                    cout << "User does not exist." << endl;
+                                }
+                            }
+                            else if (choice == 9)
+                            {
+                                // Change Currency Type
+                                printBanner();
+                                cout << "Enter new currency type ('$', '€' or '¥'): ";
+                                cin >> currency;
+                                cout << "Currency type changed successfully." << endl;
+                                cout << "Press any key to return to Dashboard................";
+                                getch();
+                            }
+                            else if (choice == 10)
+                            {
+                                // Change Password
+                                printBanner();
+                                string newPass;
+                                cout << "Enter new password: ";
+                                cin >> newPass;
+                                passwords[currentUserIdx] = newPass;
+                                cout << "Password changed successfully." << endl;
+                                cout << "Press any key to return to Dashboard................";
+                                getch();
+                            }
+                        }
+                    }
+                    else if (roles[currentUserIdx] == 'b')
+                    {
+                        while (true) // Salesman Dashboard
+                        {
+                            choice = salesManDashboard(uName);
+                            if (choice == 11)
+                            {
+                                break;
+                            }
+                            if (choice == 1)
+                            { // Search Book
+                                printBanner();
+                                cout << "Enter the name of the book: ";
+                                string bName;
+                                getline(cin, bName);
+                                std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                                if (searchBook(bName, bookNames, bookCount))
+                                {
+                                    int index = searchArray(bookNames, bName, bookCount);
+                                    cout << left << setw(20) << "Book Name" << setw(20) << "Author Name" << setw(20) << "Price" << setw(20) << "Quantity" << endl;
+                                    cout << left << setw(20) << bookNames[index] << setw(20) << authorNames[index] << setw(0) << currency << setw(20) << bookPrice[index] << setw(20) << bookQuantity[index] << endl;
+                                }
+                                else
+                                {
+                                    cout << "Book Not found" << endl;
+                                }
+                                cout << "Press any key to return to Dashboard................";
+                                getch();
+                                ;
+                            }
+                            else if (choice == 2)
+                            { // Check availablity of a Book
+                                printBanner();
+                                cout << "Enter the name of the book: ";
+                                string bName;
+                                getline(cin, bName);
+                                std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                                if (searchBook(bName, bookNames, bookCount))
+                                {
+                                    int index = searchArray(bookNames, bName, bookCount);
+                                    if (bookQuantity[index] == 0)
+                                    {
+                                        cout << bookNames[index] << " is out of stock." << endl;
+                                    }
+                                    else
+                                    {
+                                        cout << bookQuantity[index] << " copies of " << bookNames[index] << " are available." << endl;
+                                    }
+                                }
+                                else
+                                {
+                                    cout << "Book Not found" << endl;
+                                    cout << "Press any key to return to Dashboard................";
+                                    getch();
+                                }
+                            }
+                            else if (choice == 3)
+                            {
+                                printBanner();
+                                printAllBooks(bookCount, bookPrice, bookQuantity, currency, bookNames, authorNames);
+                                cout << "Press any key to return to Dashboard................";
+                                getch();
+                            }
+                            else if (choice == 4)
+                            {
+                                printBanner();
+                                string bName;
+                                int quantity;
+                                cout << "Enter the name of the book: ";
+                                getline(cin, bName);
+                                std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                                cout << "Enter quantity: ";
+                                cin >> quantity;
+                                if (searchBook(bName, bookNames, bookCount))
+                                {
+                                    int index = searchArray(bookNames, bName, bookCount);
+                                    if (placeOrder(bName, quantity, bookNames, bookPrice, bookQuantity, bookCount))
+                                    {
+                                        cout << "Order placed successfully." << endl;
+                                    }
+                                    else
+                                    {
+                                        cout << "Order could not be placed." << endl;
+                                    }
+                                }
+                                else
+                                {
+                                    cout << "Book Not found" << endl;
+                                }
+                                cout << "Press any key to return to Dashboard................";
+                                getch();
+                            }
+                            else if (choice == 5)
+                            {
+                            }
+                            else if (choice == 9)
+                            {
+                                printBanner();
+                                cout << "Enter new currency type ('$', '€' or '¥'): ";
+                                cin >> currency;
+                                cout << "Currency type changed successfully." << endl;
+                                cout << "Press any key to return to Dashboard................";
+                                getch();
+                            }
+                            else if (choice == 10)
+                            {
+                                printBanner();
+                                string newPass;
+                                cout << "Enter new password: ";
+                                cin >> newPass;
+                                passwords[currentUserIdx] = newPass;
+                                cout << "Password changed successfully." << endl;
+                                cout << "Press any key to return to Dashboard................";
+                                getch();
+                            }
+                        }
+                    }
                 }
-                else if (choice == 1)
-                { // Add Book
-                    printBanner();
-                    string bName, auName;
-                    int price, quantity;
-                    cout << "Enter name of the book: ";
-                    getline(cin, bName);
-                    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-                    cout << "Enter name of the author: ";
-                    getline(cin, auName);
-                    cout << "Enter Price: ";
-                    cin >> price;
-                    cout << "Enter Quantity: ";
-                    cin >> quantity;
-                    if (addBook(bName, auName, price, quantity, bookNames, authorNames, bookPrice, bookQuantity, bookCount))
-                    {
-                        cout << "Book Added to the catalog" << endl;
-                    }
-                    else
-                    {
-                        cout << "Book already exists" << endl;
-                    }
-                    cout << "Press any key to return to Dashboard................";
-                    getch();
-                    goto DashBoardOwner;
-                }
-                else if (choice == 2)
-                { // Remove Book
-                    printBanner();
-                    string bName, auName;
-                    cout << "Enter name of the book: ";
-                    getline(cin, bName);
-                    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-                    cout << "Enter name of the author: ";
-                    getline(cin, auName);
-                    if (removeBook(bName, auName, bookNames, authorNames, bookPrice, bookQuantity, bookCount))
-                    {
-                        cout << "Book removed successfully." << endl;
-                    }
-                    else
-                    {
-                        cout << "Book does not exist." << endl;
-                    }
-                    cout << "Press any key to return to Dashboard................";
-                    getch();
-                    goto DashBoardOwner;
-                }
-                else if (choice == 3)
-                { // Search Book
-                    printBanner();
-                    cout << "Enter the name of the book: ";
-                    string bName;
-                    getline(cin, bName);
-                    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-                    if (searchBook(bName, bookNames, bookCount))
-                    {
-                        int index = searchArray(bookNames, bName, bookCount);
-                        cout << left << setw(20) << "Book Name" << setw(20) << "Author Name" << setw(20) << "Price" << setw(20) << "Quantity" << endl;
-                        cout << left << setw(20) << bookNames[index] << setw(20) << authorNames[index] << setw(0) << currency << setw(20) << bookPrice[index] << setw(20) << bookQuantity[index] << endl;
-                    }
-                    else
-                    {
-                        cout << "Book Not found" << endl;
-                    }
-                    cout << "Press any key to return to Dashboard................";
-                    getch();
-                    goto DashBoardOwner;
-                }
-                else if (choice == 4)
+                else
                 {
-                    printBanner();
-                    printAllBooks(bookCount, bookPrice, bookQuantity, currency, bookNames, authorNames);
-                    cout << "Press any key to return to Dashboard................";
+                    cout << "Invalid Credentials." << endl;
+                    cout << "Press any key to try again..........." << endl;
                     getch();
-                    goto DashBoardOwner;
-                }
-                else if (choice == 5)
-                {
-                    // Add user
-                    printBanner();
-                    string uName, pass;
-                    char role;
-                    cout << "Enter username of the user to add: ";
-                    cin >> uName;
-                    cout << "Enter password: ";
-                    cin >> pass;
-                    cout << "Enter role ('a' for admin or 'b' for salesman): ";
-                    cin >> role;
-                    if (signUp(userCount, uName, pass, role, usernames, passwords, roles))
-                    {
-                        userCount++;
-                        cout << "User added successfully." << endl;
-                    }
-                    else
-                    {
-                        cout << "User already exists." << endl;
-                    }
-                    cout << "Press any key to return to Dashboard................";
-                    getch();
-                    goto DashBoardOwner;
-                }
-                else if (choice == 6)
-                {
-                    // Remove user
-                    printBanner();
-                    string uName;
-                    cout << "Enter username of the user to remove: ";
-                    cin >> uName;
-                    if (removeUser(uName, usernames, passwords, roles, userCount))
-                    {
-                        cout << "User removed successfully." << endl;
-                    }
-                    else
-                    {
-                        cout << "User does not exist." << endl;
-                    }
-                }
-                else if (choice == 7)
-                {
-                    // List all users
-                    printBanner();
-                    printAllUsers(userCount, usernames, passwords, roles);
-                    cout << "Press any key to return to Dashboard................";
-                    getch();
-                    goto DashBoardOwner;
-                }
-                else if (choice == 8)
-                {
-                    // Update user
-                    printBanner();
-                    string uName, pass;
-                    char role;
-                    cout << "Enter username of the user to update: ";
-                    cin >> uName;
-                    cout << "Enter new password: ";
-                    cin >> pass;
-                    cout << "Enter new role ('a' for admin or 'b' for salesman): ";
-                    cin >> role;
-                    if (updateUser(uName, pass, role, usernames, passwords, roles, userCount))
-                    {
-                        cout << "User updated successfully." << endl;
-                    }
-                    else
-                    {
-                        cout << "User does not exist." << endl;
-                    }
-                }
-                else if (choice == 9)
-                {
-                    // Change Currency Type
-                    printBanner();
-                    cout << "Enter new currency type ('$', '€' or '¥'): ";
-                    cin >> currency;
-                    cout << "Currency type changed successfully." << endl;
-                    cout << "Press any key to return to Dashboard................";
-                    getch();
-                    goto DashBoardOwner;
-                }
-                else if (choice == 10)
-                {
-                    // Change Password
-                    printBanner();
-                    string newPass;
-                    cout << "Enter new password: ";
-                    cin >> newPass;
-                    passwords[currentUserIdx] = newPass;
-                    cout << "Password changed successfully." << endl;
-                    cout << "Press any key to return to Dashboard................";
-                    getch();
-                    goto DashBoardOwner;
                 }
             }
-            else if (roles[currentUserIdx] == 'b')
+        }
+        else if (choice == 2)
+        {
+            while (true)
             {
-            DashBoardSalesMan:
-                choice = salesManDashboard(uName);
-                if (choice == 11)
+                system("cls");
+                printBanner();
+                string uName = inputUsername();
+                string pass = inputPassword();
+                char role = inputRole();
+                if (signUp(userCount, uName, pass, role, usernames, passwords, roles))
                 {
-                    goto mainPage;
-                }
-                if (choice == 1)
-                { // Search Book
-                    printBanner();
-                    cout << "Enter the name of the book: ";
-                    string bName;
-                    getline(cin, bName);
-                    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-                    if (searchBook(bName, bookNames, bookCount))
-                    {
-                        int index = searchArray(bookNames, bName, bookCount);
-                        cout << left << setw(20) << "Book Name" << setw(20) << "Author Name" << setw(20) << "Price" << setw(20) << "Quantity" << endl;
-                        cout << left << setw(20) << bookNames[index] << setw(20) << authorNames[index] << setw(0) << currency << setw(20) << bookPrice[index] << setw(20) << bookQuantity[index] << endl;
-                    }
-                    else
-                    {
-                        cout << "Book Not found" << endl;
-                    }
-                    cout << "Press any key to return to Dashboard................";
+                    userCount++;
+                    cout << "You have been signed up successfully." << endl;
+                    cout << "Press any key to continue.......";
                     getch();
-                    goto DashBoardSalesMan;
+                    break;
                 }
-                else if (choice == 2)
-                { // Check availablity of a Book
-                    printBanner();
-                    cout << "Enter the name of the book: ";
-                    string bName;
-                    getline(cin, bName);
-                    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-                    if (searchBook(bName, bookNames, bookCount))
-                    {
-                        int index = searchArray(bookNames, bName, bookCount);
-                        if (bookQuantity[index] == 0)
-                        {
-                            cout << bookNames[index] << " is out of stock." << endl;
-                        }
-                        else
-                        {
-                            cout << bookQuantity[index] << " copies of " << bookNames[index] << " are available." << endl;
-                        }
-                    }
-                    else
-                    {
-                        cout << "Book Not found" << endl;
-                        cout << "Press any key to return to Dashboard................";
-                        getch();
-                        goto DashBoardSalesMan;
-                    }
-                }
-                else if (choice == 3)
+                else
                 {
-                    printBanner();
-                    printAllBooks(bookCount, bookPrice, bookQuantity, currency, bookNames, authorNames);
-                    cout << "Press any key to return to Dashboard................";
+                    cout << "Username Already exists." << endl;
+                    cout << "Press any key to try again...........";
                     getch();
-                    goto DashBoardSalesMan;
-                }
-                else if (choice == 4)
-                {
-                    printBanner();
-                    string bName;
-                    int quantity;
-                    cout << "Enter the name of the book: ";
-                    getline(cin, bName);
-                    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-                    cout << "Enter quantity: ";
-                    cin >> quantity;
-                    if (searchBook(bName, bookNames, bookCount))
-                    {
-                        int index = searchArray(bookNames, bName, bookCount);
-                        if (placeOrder(bName, quantity, bookNames, bookPrice, bookQuantity, bookCount))
-                        {
-                            cout << "Order placed successfully." << endl;
-                        }
-                        else
-                        {
-                            cout << "Order could not be placed." << endl;
-                        }
-                    }
-                    else
-                    {
-                        cout << "Book Not found" << endl;
-                    }
-                    cout << "Press any key to return to Dashboard................";
-                    getch();
-                }
-                else if (choice == 9)
-                {
-                    printBanner();
-                    cout << "Enter new currency type ('$', '€' or '¥'): ";
-                    cin >> currency;
-                    cout << "Currency type changed successfully." << endl;
-                    cout << "Press any key to return to Dashboard................";
-                    getch();
-                    goto DashBoardSalesMan;
-                }
-                else if (choice == 10)
-                {
-                    printBanner();
-                    string newPass;
-                    cout << "Enter new password: ";
-                    cin >> newPass;
-                    passwords[currentUserIdx] = newPass;
-                    cout << "Password changed successfully." << endl;
-                    cout << "Press any key to return to Dashboard................";
-                    getch();
-                    goto DashBoardSalesMan;
                 }
             }
-        }
-        else
-        {
-            cout << "Invalid Credentials." << endl;
-            cout << "Press any key to try again..........." << endl;
-            getch();
-            goto Login;
-        }
-    }
-    else if (choice == 2)
-    {
-    signUpPage:
-        system("cls");
-        printBanner();
-        string uName = inputUsername();
-        string pass = inputPassword();
-        char role = inputRole();
-        if (signUp(userCount, uName, pass, role, usernames, passwords, roles))
-        {
-            userCount++;
-            cout << "You have been signed up successfully." << endl;
-            cout << "Press any key to continue.......";
-            getch();
-            goto mainPage;
-        }
-        else
-        {
-            cout << "Username Already exists." << endl;
-            cout << "Press any key to try again...........";
-            getch();
-            goto signUpPage;
         }
     }
 }
@@ -526,7 +528,7 @@ int salesManDashboard(string uName)
 void printAllBooks(int bookCount, int bookPrice[], int bookQuantity[], char currency, string bookNames[], string authorNames[])
 {
     cout << left << setw(20) << "Book Name" << setw(20) << "Author Name" << setw(20) << "Price" << setw(20) << "Quantity" << endl;
-    for (int i = 0; i <= bookCount; i++)
+    for (int i = 0; i < bookCount; i++)
     {
         if (bookNames[i] == "")
         {

@@ -30,11 +30,12 @@ void printAllOrders(int orderCount, string orderBookNames[], string orderBookAut
 // Validation
 int searchArray(string arr[], string object, int userCount);
 string getRole(char roleChar);
-// Data Structures
+bool currencyCheck(char currency);
 
 main()
 {
 
+    // Data Structures
     // Credentials
     string usernames[100], passwords[100];
     char roles[100];
@@ -198,7 +199,7 @@ main()
                                 {
                                     cout << "User does not exist." << endl;
                                 }
-                                cout<<"Press any key to return to Dashboard................";
+                                cout << "Press any key to return to Dashboard................";
                                 getch();
                             }
                             else if (choice == 7)
@@ -235,8 +236,17 @@ main()
                                 // Change Currency Type
                                 printBanner();
                                 cout << "Enter new currency type ('$', '€' or '¥'): ";
-                                cin >> currency;
-                                cout << "Currency type changed successfully." << endl;
+                                char newCurrency;
+                                cin >> newCurrency;
+                                if (currencyCheck(newCurrency))
+                                {
+                                    currency = newCurrency;
+                                    cout << "Currency type changed successfully." << endl;
+                                }
+                                else
+                                {
+                                    cout << "Invalid currency type." << endl;
+                                }
                                 cout << "Press any key to return to Dashboard................";
                                 getch();
                             }
@@ -739,4 +749,13 @@ string getRole(char roleChar)
     {
         return "Unknown";
     }
+}
+
+bool currencyCheck(char currency)
+{
+    if (currency == '$' || currency == '€' || currency == '¥')
+    {
+        return true;
+    }
+    return false;
 }

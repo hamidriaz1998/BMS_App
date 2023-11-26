@@ -143,7 +143,7 @@ main()
                                 {
                                     int index = searchArray(bookNames, bName, bookCount);
                                     cout << left << setw(20) << "Book Name" << setw(20) << "Author Name" << setw(20) << "Price" << setw(20) << "Quantity" << endl;
-                                    cout << left << setw(20) << bookNames[index] << setw(20) << authorNames[index] << setw(0) << currency << setw(20) << bookPrice[index] << setw(20) << bookQuantity[index] << endl;
+                                    cout << left << setw(20) << bookNames[index] << setw(20) << authorNames[index] << setw(0) << currency[currentUserIdx] << setw(20) << bookPrice[index] << setw(20) << bookQuantity[index] << endl;
                                 }
                                 else
                                 {
@@ -296,7 +296,7 @@ main()
                                 {
                                     int index = searchArray(bookNames, bName, bookCount);
                                     cout << left << setw(20) << "Book Name" << setw(20) << "Author Name" << setw(20) << "Price" << setw(20) << "Quantity" << endl;
-                                    cout << left << setw(20) << bookNames[index] << setw(20) << authorNames[index] << setw(0) << currency << setw(20) << bookPrice[index] << setw(20) << bookQuantity[index] << endl;
+                                    cout << left << setw(20) << bookNames[index] << setw(20) << authorNames[index] << setw(0) << currency[currentUserIdx] << setw(20) << bookPrice[index] << setw(20) << bookQuantity[index] << endl;
                                 }
                                 else
                                 {
@@ -328,9 +328,9 @@ main()
                                 else
                                 {
                                     cout << "Book Not found" << endl;
-                                    cout << "Press any key to return to Dashboard................";
-                                    getch();
                                 }
+                                cout << "Press any key to return to Dashboard................";
+                                getch();
                             }
                             else if (choice == 3)
                             {
@@ -341,6 +341,7 @@ main()
                             }
                             else if (choice == 4)
                             {
+                                printBanner();
                                 string bName;
                                 int quantity;
                                 char more = 'y';
@@ -385,13 +386,15 @@ main()
                                     total += orderBookPrice[i] * orderBookQuantity[i];
                                 }
                                 earnings[currentUserIdx] += total;
-                                cout << "Order Finalized. Total amount to be paid is " << currency << total << endl;
+                                cout << "Order Finalized. Total amount to be paid is " << currency[currentUserIdx] << total << endl;
                                 cout << "Thanks for shopping with us." << endl;
+                                cout << "Press any key to return to Dashboard................";
+                                getch();
                             }
                             else if (choice == 7)
                             {
                                 printBanner();
-                                cout << "Total Earnings: " << currency << earnings[currentUserIdx] << endl;
+                                cout << "Total Earnings: " << currency[currentUserIdx] << earnings[currentUserIdx] << endl;
                                 cout << "Press any key to return to Dashboard................";
                                 getch();
                             }
@@ -431,8 +434,17 @@ main()
                             {
                                 printBanner();
                                 cout << "Enter new currency type ('$', '€' or '¥'): ";
-                                cin >> currency;
-                                cout << "Currency type changed successfully." << endl;
+                                char newCurrency;
+                                cin >> newCurrency;
+                                if (currencyCheck(newCurrency))
+                                {
+                                    currency[currentUserIdx] = newCurrency;
+                                    cout << "Currency type changed successfully." << endl;
+                                }
+                                else
+                                {
+                                    cout << "Invalid currency type." << endl;
+                                }
                                 cout << "Press any key to return to Dashboard................";
                                 getch();
                             }

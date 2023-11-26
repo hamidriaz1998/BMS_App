@@ -364,6 +364,45 @@ main()
                                 cout << "Order Finalized. Total amount to be paid is " << currency << total << endl;
                                 cout << "Thanks for shopping with us." << endl;
                             }
+                            else if (choice == 7)
+                            {
+                                printBanner();
+                                cout << "Total Earnings: " << currency << earnings[currentUserIdx] << endl;
+                                cout << "Press any key to return to Dashboard................";
+                                getch();
+                            }
+                            else if (choice == 8)
+                            {
+                                printBanner();
+                                string bName;
+                                int quantity;
+                                cout << "Enter name of the book: ";
+                                getline(cin, bName);
+                                std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                                cout << "Enter quantity: ";
+                                cin >> quantity;
+                                int index = searchArray(orderBookNames, bName, orderCount);
+                                if (index != -1)
+                                {
+                                    if (orderBookQuantity[index] >= quantity)
+                                    {
+                                        orderBookQuantity[index] -= quantity;
+                                        int bookIndex = searchArray(bookNames, bName, bookCount);
+                                        bookQuantity[bookIndex] += quantity;
+                                        cout << "Book returned successfully." << endl;
+                                    }
+                                    else
+                                    {
+                                        cout << "Quantity is greater than the amount of books ordered." << endl;
+                                    }
+                                }
+                                else
+                                {
+                                    cout << "Book not found." << endl;
+                                }
+                                cout << "Press any key to return to Dashboard................";
+                                getch();
+                            }
                             else if (choice == 9)
                             {
                                 printBanner();
@@ -539,7 +578,7 @@ int salesManDashboard(string uName)
     cout << "4. Place Customer Order" << endl;
     cout << "5. View Customer Order" << endl;
     cout << "6. Finalize Order" << endl;
-    cout << "7. Check Balance" << endl;
+    cout << "7. Total Earnings" << endl;
     cout << "8. Return a Book" << endl;
     cout << "9. Change Currency Type" << endl;
     cout << "10. Change Password" << endl;

@@ -198,6 +198,8 @@ main()
                                 {
                                     cout << "User does not exist." << endl;
                                 }
+                                cout<<"Press any key to return to Dashboard................";
+                                getch();
                             }
                             else if (choice == 7)
                             {

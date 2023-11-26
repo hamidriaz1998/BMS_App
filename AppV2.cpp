@@ -92,8 +92,8 @@ main()
                                 printBanner();
                                 string bName, auName;
                                 int price, quantity;
-                                cout << "Enter name of the book: ";
                                 std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                                cout << "Enter name of the book: ";
                                 getline(cin, bName);
                                 cout << "Enter name of the author: ";
                                 getline(cin, auName);
@@ -117,8 +117,8 @@ main()
                                 printBanner();
                                 string bName, auName;
                                 cout << "Enter name of the book: ";
-                                getline(cin, bName);
                                 std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                                getline(cin, bName);
                                 cout << "Enter name of the author: ";
                                 getline(cin, auName);
                                 if (removeBook(bName, auName, bookNames, authorNames, bookPrice, bookQuantity, bookCount))
@@ -137,8 +137,8 @@ main()
                                 printBanner();
                                 cout << "Enter the name of the book: ";
                                 string bName;
-                                getline(cin, bName);
                                 std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                                getline(cin, bName);
                                 if (searchBook(bName, bookNames, bookCount))
                                 {
                                     int index = searchArray(bookNames, bName, bookCount);
@@ -266,8 +266,8 @@ main()
                                 printBanner();
                                 cout << "Enter the name of the book: ";
                                 string bName;
-                                getline(cin, bName);
                                 std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                                getline(cin, bName);
                                 if (searchBook(bName, bookNames, bookCount))
                                 {
                                     int index = searchArray(bookNames, bName, bookCount);
@@ -287,8 +287,8 @@ main()
                                 printBanner();
                                 cout << "Enter the name of the book: ";
                                 string bName;
-                                getline(cin, bName);
                                 std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                                getline(cin, bName);
                                 if (searchBook(bName, bookNames, bookCount))
                                 {
                                     int index = searchArray(bookNames, bName, bookCount);
@@ -323,8 +323,8 @@ main()
                                 while (more == 'y')
                                 {
                                     cout << "Enter name of the book: ";
-                                    getline(cin, bName);
                                     std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                                    getline(cin, bName);
                                     cout << "Enter quantity: ";
                                     cin >> quantity;
                                     if (placeOrder(bName, quantity, bookNames, bookPrice, bookQuantity, bookCount))
@@ -377,8 +377,8 @@ main()
                                 string bName;
                                 int quantity;
                                 cout << "Enter name of the book: ";
-                                getline(cin, bName);
                                 std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                                getline(cin, bName);
                                 cout << "Enter quantity: ";
                                 cin >> quantity;
                                 int index = searchArray(orderBookNames, bName, orderCount);
@@ -622,8 +622,6 @@ bool addBook(string bName, string auName, int price, int quantity, string bookNa
         bookNames[bookCount] = bName;
         bookPrice[bookCount] = price;
         bookQuantity[bookCount] = quantity;
-        cout<<"book: "<<bookNames[bookCount]<<endl;
-        cout<<"author: "<<authorNames[bookCount]<<endl;
         bookCount++;
         return true;
     }

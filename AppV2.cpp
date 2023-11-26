@@ -11,7 +11,7 @@ string inputUsername();
 string inputPassword();
 char inputRole();
 bool login(int userCount, string uName, string pass, string usernames[], string passwords[]);
-bool signUp(int userCount, string uName, string pass, char role, string usernames[], string passwords[], char roles[], int earnings[]);
+bool signUp(int userCount, string uName, string pass, char role, string usernames[], string passwords[], char roles[], int earnings[],char currency[]);
 // Dashboards
 int ownerDashboard(string uName);
 int salesManDashboard(string uName);
@@ -40,6 +40,7 @@ main()
     string usernames[100], passwords[100];
     char roles[100];
     int earnings[100]; // This array is to store balance of each salesman. It's sum will be displayed to owner in a new option.
+    char currency[100];
     int userCount = 0;
     int currentUserIdx = 0;
     // Books
@@ -53,8 +54,6 @@ main()
     int orderBookQuantity[100];
     int orderBookPrice[100];
     int orderCount = 0;
-    // Global Settings
-    char currency = '$';
 
     while (true) // Main Loop
     {
@@ -156,7 +155,7 @@ main()
                             else if (choice == 4)
                             {
                                 printBanner();
-                                printAllBooks(bookCount, bookPrice, bookQuantity, currency, bookNames, authorNames);
+                                printAllBooks(bookCount, bookPrice, bookQuantity, currency[currentUserIdx], bookNames, authorNames);
                                 cout << "Press any key to return to Dashboard................";
                                 getch();
                             }
@@ -172,7 +171,7 @@ main()
                                 cin >> pass;
                                 cout << "Enter role ('a' for admin or 'b' for salesman): ";
                                 cin >> role;
-                                if (signUp(userCount, uName, pass, role, usernames, passwords, roles, earnings))
+                                if (signUp(userCount, uName, pass, role, usernames, passwords, roles, earnings,currency))
                                 {
                                     userCount++;
                                     cout << "User added successfully." << endl;
@@ -240,7 +239,7 @@ main()
                                 cin >> newCurrency;
                                 if (currencyCheck(newCurrency))
                                 {
-                                    currency = newCurrency;
+                                    currency[currentUserIdx] = newCurrency;
                                     cout << "Currency type changed successfully." << endl;
                                 }
                                 else
@@ -323,7 +322,7 @@ main()
                             else if (choice == 3)
                             {
                                 printBanner();
-                                printAllBooks(bookCount, bookPrice, bookQuantity, currency, bookNames, authorNames);
+                                printAllBooks(bookCount, bookPrice, bookQuantity, currency[currentUserIdx], bookNames, authorNames);
                                 cout << "Press any key to return to Dashboard................";
                                 getch();
                             }
@@ -360,7 +359,7 @@ main()
                             else if (choice == 5)
                             {
                                 printBanner();
-                                printAllOrders(orderCount, orderBookNames, orderBookAuthorNames, orderBookQuantity, orderBookPrice, currency);
+                                printAllOrders(orderCount, orderBookNames, orderBookAuthorNames, orderBookQuantity, orderBookPrice, currency[currentUserIdx]);
                                 cout << "Press any key to return to Dashboard................";
                                 getch();
                             }
@@ -455,7 +454,7 @@ main()
                 string uName = inputUsername();
                 string pass = inputPassword();
                 char role = inputRole();
-                if (signUp(userCount, uName, pass, role, usernames, passwords, roles, earnings))
+                if (signUp(userCount, uName, pass, role, usernames, passwords, roles, earnings,currency))
                 {
                     userCount++;
                     cout << "You have been signed up successfully." << endl;
@@ -542,7 +541,7 @@ bool login(int userCount, string uName, string pass, string usernames[], string 
     return false;
 }
 
-bool signUp(int userCount, string uName, string pass, char role, string usernames[], string passwords[], char roles[], int earnings[])
+bool signUp(int userCount, string uName, string pass, char role, string usernames[], string passwords[], char roles[], int earnings[],char currency[])
 {
     bool isSignedUp = false;
     int index = searchArray(usernames, uName, userCount);
@@ -552,6 +551,7 @@ bool signUp(int userCount, string uName, string pass, char role, string username
         passwords[userCount] = pass;
         roles[userCount] = role;
         earnings[userCount] = 0;
+        currency[userCount] = '$';
         isSignedUp = true;
     }
     return isSignedUp;

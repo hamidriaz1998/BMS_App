@@ -3,7 +3,6 @@
 #include <iomanip>
 #include <limits>
 using namespace std;
-// While adding a book if it already exists, it should increase the quantity of the book.
 // Starting
 void printBanner();
 int startingPage();
@@ -12,7 +11,7 @@ string inputUsername();
 string inputPassword();
 char inputRole();
 bool login(int userCount, string uName, string pass, string usernames[], string passwords[]);
-bool signUp(int userCount, string uName, string pass, char role, string usernames[], string passwords[], char roles[]);
+bool signUp(int userCount, string uName, string pass, char role, string usernames[], string passwords[], char roles[], int earnings[]);
 // Dashboards
 int ownerDashboard(string uName);
 int salesManDashboard(string uName);
@@ -27,7 +26,7 @@ bool removeUser(string uName, string usernames[], string passwords[], char roles
 bool updateUser(string uName, string pass, char role, string usernames[], string passwords[], char roles[], int userCount);
 // Salesman Options
 bool placeOrder(string bName, int quantity, string bookNames[], int bookPrice[], int bookQuantity[], int bookCount);
-
+void printAllOrders(int orderCount, string orderBookNames[], string orderBookAuthorNames[], int orderBookQuantity[], int orderBookPrice[], char currency);
 // Validation
 int searchArray(string arr[], string object, int userCount);
 string getRole(char roleChar);
@@ -39,6 +38,7 @@ main()
     // Credentials
     string usernames[100], passwords[100];
     char roles[100];
+    int earnings[100]; // This array is to store balance of each salesman. It's sum will be displayed to owner in a new option.
     int userCount = 0;
     int currentUserIdx = 0;
     // Books
@@ -46,6 +46,12 @@ main()
     string authorNames[100];
     int bookCount = 0, bookPrice[100], bookQuantity[100];
     int currentBookIdx = 0;
+    // Orders
+    string orderBookNames[100];
+    string orderBookAuthorNames[100];
+    int orderBookQuantity[100];
+    int orderBookPrice[100];
+    int orderCount = 0;
     // Global Settings
     char currency = '$';
 
@@ -165,7 +171,7 @@ main()
                                 cin >> pass;
                                 cout << "Enter role ('a' for admin or 'b' for salesman): ";
                                 cin >> role;
-                                if (signUp(userCount, uName, pass, role, usernames, passwords, roles))
+                                if (signUp(userCount, uName, pass, role, usernames, passwords, roles, earnings))
                                 {
                                     userCount++;
                                     cout << "User added successfully." << endl;
@@ -311,35 +317,52 @@ main()
                             }
                             else if (choice == 4)
                             {
-                                printBanner();
                                 string bName;
                                 int quantity;
-                                cout << "Enter the name of the book: ";
-                                getline(cin, bName);
-                                // std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-                                cout << "Enter quantity: ";
-                                cin >> quantity;
-                                if (searchBook(bName, bookNames, bookCount))
+                                char more = 'y';
+                                while (more == 'y')
                                 {
-                                    int index = searchArray(bookNames, bName, bookCount);
+                                    cout << "Enter name of the book: ";
+                                    getline(cin, bName);
+                                    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                                    cout << "Enter quantity: ";
+                                    cin >> quantity;
                                     if (placeOrder(bName, quantity, bookNames, bookPrice, bookQuantity, bookCount))
                                     {
+                                        orderBookNames[orderCount] = bName;
+                                        orderBookQuantity[orderCount] = quantity;
+                                        int index = searchArray(bookNames, bName, bookCount);
+                                        orderBookPrice[orderCount] = bookPrice[index];
+                                        orderBookAuthorNames[orderCount] = authorNames[index];
+                                        orderCount++;
                                         cout << "Order placed successfully." << endl;
                                     }
                                     else
                                     {
                                         cout << "Order could not be placed." << endl;
                                     }
+                                    cout << "Do you want to place another order? (y/n): ";
+                                    cin >> more;
                                 }
-                                else
-                                {
-                                    cout << "Book Not found" << endl;
-                                }
-                                cout << "Press any key to return to Dashboard................";
-                                getch();
                             }
                             else if (choice == 5)
                             {
+                                printBanner();
+                                printAllOrders(orderCount, orderBookNames, orderBookAuthorNames, orderBookQuantity, orderBookPrice, currency);
+                                cout << "Press any key to return to Dashboard................";
+                                getch();
+                            }
+                            else if (choice == 6)
+                            {
+                                printBanner();
+                                int total = 0;
+                                for (int i = 0; i < orderCount; i++)
+                                {
+                                    total += orderBookPrice[i] * orderBookQuantity[i];
+                                }
+                                earnings[currentUserIdx] += total;
+                                cout << "Order Finalized. Total amount to be paid is " << currency << total << endl;
+                                cout << "Thanks for shopping with us." << endl;
                             }
                             else if (choice == 9)
                             {
@@ -381,7 +404,7 @@ main()
                 string uName = inputUsername();
                 string pass = inputPassword();
                 char role = inputRole();
-                if (signUp(userCount, uName, pass, role, usernames, passwords, roles))
+                if (signUp(userCount, uName, pass, role, usernames, passwords, roles, earnings))
                 {
                     userCount++;
                     cout << "You have been signed up successfully." << endl;
@@ -468,7 +491,7 @@ bool login(int userCount, string uName, string pass, string usernames[], string 
     return false;
 }
 
-bool signUp(int userCount, string uName, string pass, char role, string usernames[], string passwords[], char roles[])
+bool signUp(int userCount, string uName, string pass, char role, string usernames[], string passwords[], char roles[], int earnings[])
 {
     bool isSignedUp = false;
     int index = searchArray(usernames, uName, userCount);
@@ -477,6 +500,7 @@ bool signUp(int userCount, string uName, string pass, char role, string username
         usernames[userCount] = uName;
         passwords[userCount] = pass;
         roles[userCount] = role;
+        earnings[userCount] = 0;
         isSignedUp = true;
     }
     return isSignedUp;
@@ -594,7 +618,7 @@ void printAllUsers(int userCount, string usernames[], string passwords[], char r
         {
             continue;
         }
-        cout << left << setw(20) << usernames[i] << setw(20) << passwords[i] << setw(20) << roles[i] << endl;
+        cout << left << setw(20) << usernames[i] << setw(20) << passwords[i] << setw(20) << getRole(roles[i]) << endl;
     }
 }
 bool removeUser(string uName, string usernames[], string passwords[], char roles[], int userCount)
@@ -635,6 +659,19 @@ bool placeOrder(string bName, int quantity, string bookNames[], int bookPrice[],
     }
     return false;
 }
+void printAllOrders(int orderCount, string orderBookNames[], string orderBookAuthorNames[], int orderBookQuantity[], int orderBookPrice[], char currency)
+{
+    cout << left << setw(20) << "Book Name" << setw(20) << "Author Name" << setw(20) << "Price" << setw(20) << "Quantity" << endl;
+    for (int i = 0; i < orderCount; i++)
+    {
+        if (orderBookNames[i] == "")
+        {
+            continue;
+        }
+        cout << left << setw(20) << orderBookNames[i] << setw(20) << orderBookAuthorNames[i] << setw(0) << currency << setw(20) << orderBookPrice[i] << setw(20) << orderBookQuantity[i] << endl;
+    }
+}
+
 // If object is not in array it will return -1, that can be used to add a condition that it does not exist.
 int searchArray(string arr[], string object, int arrLength)
 {

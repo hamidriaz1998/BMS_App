@@ -93,8 +93,8 @@ main()
                                 string bName, auName;
                                 int price, quantity;
                                 cout << "Enter name of the book: ";
-                                getline(cin, bName);
                                 std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                                getline(cin, bName);
                                 cout << "Enter name of the author: ";
                                 getline(cin, auName);
                                 cout << "Enter Price: ";
@@ -618,10 +618,12 @@ bool addBook(string bName, string auName, int price, int quantity, string bookNa
     int index = searchArray(bookNames, bName, bookCount);
     if (index == -1)
     {
-        bookNames[bookCount] = bName;
         authorNames[bookCount] = auName;
+        bookNames[bookCount] = bName;
         bookPrice[bookCount] = price;
         bookQuantity[bookCount] = quantity;
+        cout<<"book: "<<bookNames[bookCount]<<endl;
+        cout<<"author: "<<authorNames[bookCount]<<endl;
         bookCount++;
         return true;
     }

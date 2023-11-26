@@ -304,7 +304,6 @@ main()
                                 }
                                 cout << "Press any key to return to Dashboard................";
                                 getch();
-                                ;
                             }
                             else if (choice == 2)
                             { // Check availablity of a Book
@@ -585,7 +584,7 @@ bool signUp(int userCount, string uName, string pass, char role, string username
 int ownerDashboard(string uName)
 {
     printBanner();
-    cout << "Logged in as " << uName << " (Owner)" << endl;
+    cout << "Logged in as " << uName << " (Admin)" << endl;
     cout << "Choose one of the following: " << endl;
     cout << "1. Add a new Book" << endl;
     cout << "2. Remove a Book" << endl;
@@ -594,7 +593,7 @@ int ownerDashboard(string uName)
     cout << "5. Add a new user" << endl;
     cout << "6. Remove an existing user" << endl;
     cout << "7. List All users" << endl;
-    cout << "8. Update a user's details" << endl;
+    cout << "8. Update user information" << endl;
     cout << "9. Check total earnings" << endl;
     cout << "10. Change Currency Type" << endl;
     cout << "11. Change Password" << endl;

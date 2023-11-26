@@ -11,7 +11,7 @@ string inputUsername();
 string inputPassword();
 char inputRole();
 bool login(int userCount, string uName, string pass, string usernames[], string passwords[]);
-bool signUp(int userCount, string uName, string pass, char role, string usernames[], string passwords[], char roles[], int earnings[],char currency[]);
+bool signUp(int userCount, string uName, string pass, char role, string usernames[], string passwords[], char roles[], int earnings[], char currency[]);
 // Dashboards
 int ownerDashboard(string uName);
 int salesManDashboard(string uName);
@@ -83,7 +83,7 @@ main()
                         while (true) // Owner Dashboard
                         {
                             choice = ownerDashboard(uName);
-                            if (choice == 11)
+                            if (choice == 12)
                             {
                                 break;
                             }
@@ -171,7 +171,7 @@ main()
                                 cin >> pass;
                                 cout << "Enter role ('a' for admin or 'b' for salesman): ";
                                 cin >> role;
-                                if (signUp(userCount, uName, pass, role, usernames, passwords, roles, earnings,currency))
+                                if (signUp(userCount, uName, pass, role, usernames, passwords, roles, earnings, currency))
                                 {
                                     userCount++;
                                     cout << "User added successfully." << endl;
@@ -232,6 +232,19 @@ main()
                             }
                             else if (choice == 9)
                             {
+                                // Check total earnings
+                                printBanner();
+                                int total = 0;
+                                for (int i = 0; i < userCount; i++)
+                                {
+                                    total += earnings[i];
+                                }
+                                cout << "Total Earnings: " << currency[currentUserIdx] << total << endl;
+                                cout << "Press any key to return to Dashboard................";
+                                getch();
+                            }
+                            else if (choice == 10)
+                            {
                                 // Change Currency Type
                                 printBanner();
                                 cout << "Enter new currency type ('$', '€' or '¥'): ";
@@ -249,7 +262,7 @@ main()
                                 cout << "Press any key to return to Dashboard................";
                                 getch();
                             }
-                            else if (choice == 10)
+                            else if (choice == 11)
                             {
                                 // Change Password
                                 printBanner();
@@ -454,7 +467,7 @@ main()
                 string uName = inputUsername();
                 string pass = inputPassword();
                 char role = inputRole();
-                if (signUp(userCount, uName, pass, role, usernames, passwords, roles, earnings,currency))
+                if (signUp(userCount, uName, pass, role, usernames, passwords, roles, earnings, currency))
                 {
                     userCount++;
                     cout << "You have been signed up successfully." << endl;
@@ -541,7 +554,7 @@ bool login(int userCount, string uName, string pass, string usernames[], string 
     return false;
 }
 
-bool signUp(int userCount, string uName, string pass, char role, string usernames[], string passwords[], char roles[], int earnings[],char currency[])
+bool signUp(int userCount, string uName, string pass, char role, string usernames[], string passwords[], char roles[], int earnings[], char currency[])
 {
     bool isSignedUp = false;
     int index = searchArray(usernames, uName, userCount);
@@ -570,9 +583,10 @@ int ownerDashboard(string uName)
     cout << "6. Remove an existing user" << endl;
     cout << "7. List All users" << endl;
     cout << "8. Update a user's details" << endl;
-    cout << "9. Change Currency Type" << endl;
-    cout << "10. Change Password" << endl;
-    cout << "11. Logout" << endl;
+    cout << "9. Check total earnings" << endl;
+    cout << "10. Change Currency Type" << endl;
+    cout << "11. Change Password" << endl;
+    cout << "12. Logout" << endl;
     cout << "Your Choice (1-11): ";
     int choice;
     cin >> choice;

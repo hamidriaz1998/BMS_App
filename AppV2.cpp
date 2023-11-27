@@ -39,7 +39,7 @@ main()
     // Credentials
     string usernames[100], passwords[100];
     char roles[100];
-    int earnings[100]; // This array is to store balance of each salesman. It's sum will be displayed to owner in a new option.
+    int earnings[100];
     char currency[100];
     int userCount = 0;
     int currentUserIdx = 0;
@@ -153,7 +153,7 @@ main()
                                 getch();
                             }
                             else if (choice == 4)
-                            {
+                            { // PrintAllBooks
                                 printBanner();
                                 printAllBooks(bookCount, bookPrice, bookQuantity, currency[currentUserIdx], bookNames, authorNames);
                                 cout << "Press any key to return to Dashboard................";
@@ -282,7 +282,7 @@ main()
                         {
                             choice = salesManDashboard(uName);
                             if (choice == 11)
-                            {
+                            { // Logout
                                 break;
                             }
                             if (choice == 1)
@@ -332,14 +332,14 @@ main()
                                 getch();
                             }
                             else if (choice == 3)
-                            {
+                            { // List all Books
                                 printBanner();
                                 printAllBooks(bookCount, bookPrice, bookQuantity, currency[currentUserIdx], bookNames, authorNames);
                                 cout << "Press any key to return to Dashboard................";
                                 getch();
                             }
                             else if (choice == 4)
-                            {
+                            { // Place Customer Order
                                 printBanner();
                                 string bName;
                                 int quantity;
@@ -370,14 +370,14 @@ main()
                                 }
                             }
                             else if (choice == 5)
-                            {
+                            { // View Customer Order
                                 printBanner();
                                 printAllOrders(orderCount, orderBookNames, orderBookAuthorNames, orderBookQuantity, orderBookPrice, currency[currentUserIdx]);
                                 cout << "Press any key to return to Dashboard................";
                                 getch();
                             }
                             else if (choice == 6)
-                            {
+                            { // Finalize Order
                                 printBanner();
                                 int total = 0;
                                 for (int i = 0; i < orderCount; i++)
@@ -391,14 +391,14 @@ main()
                                 getch();
                             }
                             else if (choice == 7)
-                            {
+                            { // Total Earnings
                                 printBanner();
                                 cout << "Total Earnings: " << currency[currentUserIdx] << earnings[currentUserIdx] << endl;
                                 cout << "Press any key to return to Dashboard................";
                                 getch();
                             }
                             else if (choice == 8)
-                            {
+                            { // Return a Book
                                 printBanner();
                                 string bName;
                                 int quantity;
@@ -430,7 +430,7 @@ main()
                                 getch();
                             }
                             else if (choice == 9)
-                            {
+                            { // Change Currency Type
                                 printBanner();
                                 cout << "Enter new currency type ('$', '€' or '¥'): ";
                                 char newCurrency;
@@ -448,7 +448,7 @@ main()
                                 getch();
                             }
                             else if (choice == 10)
-                            {
+                            { // Change Password
                                 printBanner();
                                 string newPass;
                                 cout << "Enter new password: ";
@@ -462,7 +462,7 @@ main()
                     }
                 }
                 else
-                {
+                { // Invalid Credentials
                     cout << "Invalid Credentials." << endl;
                     cout << "Press any key to try again..........." << endl;
                     getch();
@@ -470,7 +470,7 @@ main()
             }
         }
         else if (choice == 2)
-        {
+        { // Sign Up
             while (true)
             {
                 system("cls");

@@ -1,8 +1,11 @@
 #include <iostream>
 #include <conio.h>
 #include <iomanip>
+#include <fstream>
 #include <limits>
 using namespace std;
+// have to add validations for entered range at options
+// Allow users to cancel 
 // Starting
 void printBanner();
 int startingPage();
@@ -31,7 +34,14 @@ void printAllOrders(int orderCount, string orderBookNames[], string orderBookAut
 int searchArray(string arr[], string object, int userCount);
 string getRole(char roleChar);
 bool currencyCheck(char currency);
-
+int strToInt(string);
+// File Handling
+void storeCredentials(string usernames[], string passwords[], char roles[], int earnings[], char currency[], int userCount);
+void storeBooks(string bookNames[], string authorNames[], int bookPrice[], int bookQuantity[], int bookCount);
+void storeOrders(string orderBookNames[], string orderBookAuthorNames[], int orderBookPrice[], int orderBookQuantity[], int orderCount);
+void loadCredentials(string usernames[], string passwords[], char roles[], int earnings[], char currency[], int &userCount);
+void loadBooks(string bookNames[], string authorNames[], int bookPrice[], int bookQuantity[], int &bookCount);
+void loadOrders(string orderBookNames[], string orderBookAuthorNames[], int orderBookPrice[], int orderBookQuantity[], int &orderCount);
 main()
 {
 
@@ -54,6 +64,10 @@ main()
     int orderBookQuantity[100];
     int orderBookPrice[100];
     int orderCount = 0;
+    // Load data
+    loadCredentials(usernames, passwords, roles, earnings, currency, userCount);
+    loadBooks(bookNames, authorNames, bookPrice, bookQuantity, bookCount);
+    loadOrders(orderBookNames, orderBookAuthorNames, orderBookPrice, orderBookQuantity, orderCount);
 
     while (true) // Main Loop
     {
@@ -62,6 +76,10 @@ main()
         if (choice == 3)
         {
             cout << "Exiting..........";
+            // Saving data locally
+            storeCredentials(usernames,passwords,roles,earnings,currency,userCount);
+            storeBooks(bookNames,authorNames,bookPrice,bookQuantity,bookCount);
+            storeOrders(orderBookNames,orderBookAuthorNames,orderBookPrice,orderBookQuantity,orderCount);
             return 0;
         }
         else if (choice == 1)
@@ -522,7 +540,7 @@ int startingPage()
     cout << "1. Login" << endl;
     cout << "2. Sign Up" << endl;
     cout << "3. Exit" << endl;
-    cout << "Your choice (1 or 2): ";
+    cout << "Your choice (1-3): ";
     int choice;
     cin >> choice;
     return choice;
@@ -598,7 +616,7 @@ int ownerDashboard(string uName)
     cout << "10. Change Currency Type" << endl;
     cout << "11. Change Password" << endl;
     cout << "12. Logout" << endl;
-    cout << "Your Choice (1-11): ";
+    cout << "Your Choice (1-12): ";
     int choice;
     cin >> choice;
     return choice;
@@ -783,4 +801,135 @@ bool currencyCheck(char currency)
         return true;
     }
     return false;
+}
+
+int strToInt(string s){
+
+    int result = 0;
+    for(int i = 0; s[i] != '\0'; i++){
+        result = result * 10 + (s[i] - '0');
+    }
+    return result;
+}
+
+string readField(string line, int field)
+{
+    int count = 0;
+    string result = "";
+    for (int i = 0; line[i] != '\0'; i++)
+    {
+        if (line[i] != ',')
+        {
+            result += line[i];
+        }
+        else
+        {
+            count++;
+            if (count == field)
+            {
+                return result;
+            }
+            result = "";
+        }
+    }
+}
+
+void storeCredentials(string usernames[], string passwords[], char roles[], int earnings[], char currency[], int userCount)
+{
+    fstream f;
+    f.open("credentials.txt", ios::out);
+    for (int i = 0; i < userCount; i++)
+    {
+        f << usernames[i] << ',' << passwords[i] << "," << roles[i] << "," << earnings[i] << "," << currency[i];
+        if (i != userCount - 1)
+        {
+            f << endl;
+        }
+    }
+    f.close();
+}
+
+void storeBooks(string bookNames[], string authorNames[], int bookPrice[], int bookQuantity[], int bookCount)
+{
+    fstream f;
+    f.open("books.txt", ios::out);
+    for (int i = 0; i < bookCount; i++)
+    {
+        f << bookNames[i] << "," << authorNames[i] << "," << bookPrice[i] << "," << bookQuantity[i] << ",";
+        if (i != bookCount - 1)
+        {
+            f << endl;
+        }
+    }
+    f.close();
+}
+
+void storeOrders(string orderBookNames[], string orderBookAuthorNames[], int orderBookPrice[], int orderBookQuantity[], int orderCount)
+{
+    fstream f;
+    f.open("orders.txt", ios::out);
+    for (int i = 0; i < orderCount; i++)
+    {
+        f << orderBookNames[i] << "," << orderBookAuthorNames[i] << "," << orderBookPrice[i] << "," << orderBookQuantity[i];
+        if (i != orderCount - 1)
+        {
+            f << endl;
+        }
+    }
+    f.close();
+}
+
+void loadCredentials(string usernames[], string passwords[], char roles[], int earnings[], char currency[], int &userCount)
+{
+    string line;
+    fstream f;
+    f.open("credentials.txt", ios::in);
+    int i = 0;
+    while (!f.eof())
+    {
+        getline(f, line);
+        usernames[i] = readField(line, 1);
+        passwords[i] = readField(line, 2);
+        roles[i] = readField(line, 3)[0];
+        earnings[i] = strToInt(readField(line, 4));
+        currency[i] = readField(line, 5)[0];
+        i++;
+    }
+    userCount = i;
+}
+
+void loadBooks(string bookNames[], string authorNames[], int bookPrice[], int bookQuantity[], int &bookCount)
+{
+    string line;
+    fstream f;
+    f.open("books.txt", ios::in);
+    int i = 0;
+    while (!f.eof())
+    {
+        getline(f, line);
+        bookNames[i] = readField(line, 1);
+        authorNames[i] = readField(line, 2);
+        bookPrice[i] = strToInt(readField(line, 3));
+        bookQuantity[i] = strToInt(readField(line, 4));
+        i++;
+    }
+    bookCount = i;
+}
+
+void loadOrders(string orderBookNames[], string orderBookAuthorNames[], int orderBookPrice[], int orderBookQuantity[], int &orderCount)
+{
+    string line;
+    fstream f;
+    f.open("orders.txt", ios::in);
+    int i = 0;
+    while (!f.eof())
+    {
+        getline(f, line);
+        orderBookNames[i] = readField(line, 1);
+        orderBookAuthorNames[i] = readField(line, 2);
+        orderBookPrice[i] = strToInt(readField(line, 3));
+        orderBookQuantity[i] = strToInt(readField(line, 4));
+        i++;
+    }
+    orderCount = i;
 }

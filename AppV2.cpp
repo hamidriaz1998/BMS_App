@@ -5,7 +5,7 @@
 #include <limits>
 using namespace std;
 // have to add validations for entered range at options
-// Allow users to cancel 
+// Allow users to cancel
 // Starting
 void printBanner();
 int startingPage();
@@ -30,6 +30,7 @@ bool updateUser(string uName, string pass, char role, string usernames[], string
 // Salesman Options
 bool placeOrder(string bName, int quantity, string bookNames[], int bookPrice[], int bookQuantity[], int bookCount);
 void printAllOrders(int orderCount, string orderBookNames[], string orderBookAuthorNames[], int orderBookQuantity[], int orderBookPrice[], char currency);
+void clearOrderArrays(string orderBookNames[], string orderBookAuthorNames[], int orderBookQuantity[], int orderBookPrice[], int &orderCount);
 // Validation
 int searchArray(string arr[], string object, int userCount);
 string getRole(char roleChar);
@@ -38,10 +39,8 @@ int strToInt(string);
 // File Handling
 void storeCredentials(string usernames[], string passwords[], char roles[], int earnings[], char currency[], int userCount);
 void storeBooks(string bookNames[], string authorNames[], int bookPrice[], int bookQuantity[], int bookCount);
-void storeOrders(string orderBookNames[], string orderBookAuthorNames[], int orderBookPrice[], int orderBookQuantity[], int orderCount);
 void loadCredentials(string usernames[], string passwords[], char roles[], int earnings[], char currency[], int &userCount);
 void loadBooks(string bookNames[], string authorNames[], int bookPrice[], int bookQuantity[], int &bookCount);
-void loadOrders(string orderBookNames[], string orderBookAuthorNames[], int orderBookPrice[], int orderBookQuantity[], int &orderCount);
 main()
 {
 
@@ -58,7 +57,7 @@ main()
     string authorNames[100];
     int bookCount = 0, bookPrice[100], bookQuantity[100];
     int currentBookIdx = 0;
-    // Orders
+    // Orders (Only used at runtime)
     string orderBookNames[100];
     string orderBookAuthorNames[100];
     int orderBookQuantity[100];
@@ -77,9 +76,9 @@ main()
         {
             cout << "Exiting..........";
             // Saving data locally
-            storeCredentials(usernames,passwords,roles,earnings,currency,userCount);
-            storeBooks(bookNames,authorNames,bookPrice,bookQuantity,bookCount);
-            storeOrders(orderBookNames,orderBookAuthorNames,orderBookPrice,orderBookQuantity,orderCount);
+            storeCredentials(usernames, passwords, roles, earnings, currency, userCount);
+            storeBooks(bookNames, authorNames, bookPrice, bookQuantity, bookCount);
+            storeOrders(orderBookNames, orderBookAuthorNames, orderBookPrice, orderBookQuantity, orderCount);
             return 0;
         }
         else if (choice == 1)
@@ -403,6 +402,7 @@ main()
                                     total += orderBookPrice[i] * orderBookQuantity[i];
                                 }
                                 earnings[currentUserIdx] += total;
+                                clearOrderArrays(orderBookNames, orderBookAuthorNames, orderBookQuantity, orderBookPrice, orderCount);
                                 cout << "Order Finalized. Total amount to be paid is " << currency[currentUserIdx] << total << endl;
                                 cout << "Thanks for shopping with us." << endl;
                                 cout << "Press any key to return to Dashboard................";
@@ -766,6 +766,18 @@ void printAllOrders(int orderCount, string orderBookNames[], string orderBookAut
     }
 }
 
+void clearOrderArrays(string orderBookNames[], string orderBookAuthorNames[], int orderBookQuantity[], int orderBookPrice[], int &orderCount)
+{
+    for (int i = 0; i < orderCount; i++)
+    {
+        orderBookNames[i] = "";
+        orderBookAuthorNames[i] = "";
+        orderBookQuantity[i] = 0;
+        orderBookPrice[i] = 0;
+    }
+    orderCount = 0;
+}
+
 // If object is not in array it will return -1, that can be used to add a condition that it does not exist.
 int searchArray(string arr[], string object, int arrLength)
 {
@@ -803,10 +815,12 @@ bool currencyCheck(char currency)
     return false;
 }
 
-int strToInt(string s){
+int strToInt(string s)
+{
 
     int result = 0;
-    for(int i = 0; s[i] != '\0'; i++){
+    for (int i = 0; s[i] != '\0'; i++)
+    {
         result = result * 10 + (s[i] - '0');
     }
     return result;

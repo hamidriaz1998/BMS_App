@@ -2,13 +2,15 @@
 #include <conio.h>
 #include <iomanip>
 #include <fstream>
+#include <windows.h>
 #include <limits>
 using namespace std;
+// Write a checkInt function that takes a string checks if the input is an integer or not.
 // have to add validations for entered range at options
-// Allow users to cancel
 // Starting
 void printBanner();
-int startingPage();
+void startingPage();
+int getChoice();
 // Login and Signup
 string inputUsername();
 string inputPassword();
@@ -16,8 +18,8 @@ char inputRole();
 bool login(int userCount, string uName, string pass, string usernames[], string passwords[]);
 bool signUp(int userCount, string uName, string pass, char role, string usernames[], string passwords[], char roles[], int earnings[], char currency[]);
 // Dashboards
-int ownerDashboard(string uName);
-int salesManDashboard(string uName);
+void ownerDashboard(string uName);
+void salesManDashboard(string uName);
 // Common Options
 void printAllBooks(int bookCount, int bookPrice[], int bookQuantity[], char currency, string bookNames[], string authorNames[]);
 bool searchBook(string bName, string bookNames[], int bookCount);
@@ -36,6 +38,7 @@ int searchArray(string arr[], string object, int userCount);
 string getRole(char roleChar);
 bool currencyCheck(char currency);
 int strToInt(string);
+bool checkInt(string);
 // File Handling
 void storeCredentials(string usernames[], string passwords[], char roles[], int earnings[], char currency[], int userCount);
 void storeBooks(string bookNames[], string authorNames[], int bookPrice[], int bookQuantity[], int bookCount);
@@ -66,19 +69,18 @@ main()
     // Load data
     loadCredentials(usernames, passwords, roles, earnings, currency, userCount);
     loadBooks(bookNames, authorNames, bookPrice, bookQuantity, bookCount);
-    loadOrders(orderBookNames, orderBookAuthorNames, orderBookPrice, orderBookQuantity, orderCount);
 
     while (true) // Main Loop
     {
         system("cls");
-        int choice = startingPage();
+        startingPage();
+        int choice = getChoice();
         if (choice == 3)
         {
             cout << "Exiting..........";
             // Saving data locally
             storeCredentials(usernames, passwords, roles, earnings, currency, userCount);
             storeBooks(bookNames, authorNames, bookPrice, bookQuantity, bookCount);
-            storeOrders(orderBookNames, orderBookAuthorNames, orderBookPrice, orderBookQuantity, orderCount);
             return 0;
         }
         else if (choice == 1)
@@ -99,7 +101,8 @@ main()
                     {
                         while (true) // Owner Dashboard
                         {
-                            choice = ownerDashboard(uName);
+                            ownerDashboard(uName);
+                            choice = getChoice();
                             if (choice == 12)
                             {
                                 break;
@@ -291,13 +294,20 @@ main()
                                 cout << "Press any key to return to Dashboard................";
                                 getch();
                             }
+                            else{
+                                // Invalid Input
+                                cout << "Invalid Input." << endl;
+                                cout << "Press any key to try again..........." << endl;
+                                getch();
+                            }
                         }
                     }
                     else if (roles[currentUserIdx] == 'b')
                     {
                         while (true) // Salesman Dashboard
                         {
-                            choice = salesManDashboard(uName);
+                            salesManDashboard(uName);
+                            choice = getChoice(); 
                             if (choice == 11)
                             { // Logout
                                 break;
@@ -476,11 +486,18 @@ main()
                                 cout << "Press any key to return to Dashboard................";
                                 getch();
                             }
+                            else{
+                                // Invalid Input
+                                cout << "Invalid Input." << endl;
+                                cout << "Press any key to try again..........." << endl;
+                                getch();
+                            }
                         }
                     }
                 }
                 else
-                { // Invalid Credentials
+                {
+                    // Invalid Credentials
                     cout << "Invalid Credentials." << endl;
                     cout << "Press any key to try again..........." << endl;
                     getch();
@@ -512,6 +529,12 @@ main()
                 }
             }
         }
+        else{
+            // Invalid Input
+            cout << "Invalid Input." << endl;
+            cout << "Press any key to try again..........." << endl;
+            getch();
+        }
     }
 }
 void printBanner()
@@ -532,7 +555,7 @@ void printBanner()
     cout << endl;
 }
 
-int startingPage()
+void startingPage()
 {
     printBanner();
     cout << "Welcome" << endl;
@@ -541,9 +564,26 @@ int startingPage()
     cout << "2. Sign Up" << endl;
     cout << "3. Exit" << endl;
     cout << "Your choice (1-3): ";
-    int choice;
-    cin >> choice;
-    return choice;
+}
+
+int getChoice()
+{
+    string choice;
+    while (true)
+    {
+        cin >> choice;
+        if (checkInt(choice))
+        {
+            return strToInt(choice);
+        }
+        else
+        {
+            cout << "Invalid Input." << endl;
+            cout<<"Press any key to try again..................."<<endl;
+            getch();
+            cout<<"Choice: ";
+        }
+    }
 }
 
 string inputUsername()
@@ -599,7 +639,7 @@ bool signUp(int userCount, string uName, string pass, char role, string username
     return isSignedUp;
 }
 
-int ownerDashboard(string uName)
+void ownerDashboard(string uName)
 {
     printBanner();
     cout << "Logged in as " << uName << " (Admin)" << endl;
@@ -617,12 +657,9 @@ int ownerDashboard(string uName)
     cout << "11. Change Password" << endl;
     cout << "12. Logout" << endl;
     cout << "Your Choice (1-12): ";
-    int choice;
-    cin >> choice;
-    return choice;
 }
 
-int salesManDashboard(string uName)
+void salesManDashboard(string uName)
 {
     printBanner();
     cout << "Logged in as " << uName << " (Salesman)" << endl;
@@ -639,9 +676,6 @@ int salesManDashboard(string uName)
     cout << "10. Change Password" << endl;
     cout << "11. Logout" << endl;
     cout << "Your Choice (1-11): ";
-    int choice;
-    cin >> choice;
-    return choice;
 }
 // Common Options
 void printAllBooks(int bookCount, int bookPrice[], int bookQuantity[], char currency, string bookNames[], string authorNames[])
@@ -824,6 +858,15 @@ int strToInt(string s)
         result = result * 10 + (s[i] - '0');
     }
     return result;
+}
+
+bool checkInt(string s){
+    for(int i=0; s[i]!='\0'; i++){
+        if(s[i]<'0' || s[i]>'9'){
+            return false;
+        }
+    }
+    return true;
 }
 
 string readField(string line, int field)

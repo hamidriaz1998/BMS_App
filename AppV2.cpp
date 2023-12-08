@@ -3,12 +3,10 @@
 #include <iomanip>
 #include <fstream>
 #include <windows.h>
-#include <limits>
 using namespace std;
 // Starting
 void printBanner();
 void startingPage();
-int getNum(string);
 // Login and Signup
 string inputUsername();
 string inputPassword();
@@ -33,6 +31,7 @@ void printAllOrders(int orderCount, string orderBookNames[], string orderBookAut
 void clearOrderArrays(string orderBookNames[], string orderBookAuthorNames[], int orderBookQuantity[], int orderBookPrice[], int &orderCount);
 // Validation
 int searchArray(string arr[], string object, int userCount);
+int getNum(string);
 string getRole(char roleChar);
 bool currencyCheck(char currency);
 int strToInt(string);
@@ -43,6 +42,8 @@ void storeCredentials(string usernames[], string passwords[], char roles[], int 
 void storeBooks(string bookNames[], string authorNames[], int bookPrice[], int bookQuantity[], int bookCount);
 void loadCredentials(string usernames[], string passwords[], char roles[], int earnings[], char currency[], int &userCount);
 void loadBooks(string bookNames[], string authorNames[], int bookPrice[], int bookQuantity[], int &bookCount);
+// Error Handling
+void myGetLine(string &s);
 main()
 {
 
@@ -111,11 +112,10 @@ main()
                                 printBanner();
                                 string bName, auName;
                                 int price, quantity;
-                                std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
                                 cout << "Enter name of the book: ";
-                                getline(cin, bName);
+                                myGetLine(bName);
                                 cout << "Enter name of the author: ";
-                                getline(cin, auName);
+                                myGetLine(auName);
                                 price = getNum("Enter price: ");
                                 quantity = getNum("Enter quantity: ");
                                 if (addBook(bName, auName, price, quantity, bookNames, authorNames, bookPrice, bookQuantity, bookCount))
@@ -134,10 +134,9 @@ main()
                                 printBanner();
                                 string bName, auName;
                                 cout << "Enter name of the book: ";
-                                std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-                                getline(cin, bName);
+                                myGetLine(bName);
                                 cout << "Enter name of the author: ";
-                                getline(cin, auName);
+                                myGetLine(auName);
                                 if (removeBook(bName, auName, bookNames, authorNames, bookPrice, bookQuantity, bookCount))
                                 {
                                     cout << "Book removed successfully." << endl;
@@ -154,8 +153,7 @@ main()
                                 printBanner();
                                 cout << "Enter the name of the book: ";
                                 string bName;
-                                std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-                                getline(cin, bName);
+                                myGetLine(bName);
                                 if (searchBook(bName, bookNames, bookCount))
                                 {
                                     int index = searchArray(bookNames, bName, bookCount);
@@ -299,7 +297,7 @@ main()
                         while (true) // Salesman Dashboard
                         {
                             salesManDashboard(uName);
-                            choice = getNum("Your choice (1-11): "); 
+                            choice = getNum("Your choice (1-11): ");
                             if (choice == 11)
                             { // Logout
                                 break;
@@ -309,8 +307,7 @@ main()
                                 printBanner();
                                 cout << "Enter the name of the book: ";
                                 string bName;
-                                std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-                                getline(cin, bName);
+                                myGetLine(bName);
                                 if (searchBook(bName, bookNames, bookCount))
                                 {
                                     int index = searchArray(bookNames, bName, bookCount);
@@ -329,8 +326,7 @@ main()
                                 printBanner();
                                 cout << "Enter the name of the book: ";
                                 string bName;
-                                std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-                                getline(cin, bName);
+                                myGetLine(bName);
                                 if (searchBook(bName, bookNames, bookCount))
                                 {
                                     int index = searchArray(bookNames, bName, bookCount);
@@ -366,8 +362,7 @@ main()
                                 while (more == 'y')
                                 {
                                     cout << "Enter name of the book: ";
-                                    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-                                    getline(cin, bName);
+                                    myGetLine(bName);
                                     quantity = getNum("Enter quantity: ");
                                     if (placeOrder(bName, quantity, bookNames, bookPrice, bookQuantity, bookCount))
                                     {
@@ -422,8 +417,7 @@ main()
                                 string bName;
                                 int quantity;
                                 cout << "Enter name of the book: ";
-                                std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-                                getline(cin, bName);
+                                myGetLine(bName);
                                 quantity = getNum("Enter quantity: ");
                                 int index = searchArray(orderBookNames, bName, orderCount);
                                 if (index != -1)
@@ -562,7 +556,6 @@ void startingPage()
     cout << "1. Login" << endl;
     cout << "2. Sign Up" << endl;
     cout << "3. Exit" << endl;
-    cout << "Your choice (1-3): ";
 }
 
 int getNum(string prompt)
@@ -570,6 +563,7 @@ int getNum(string prompt)
     string num;
     while (true)
     {
+        cout << prompt;
         cin >> num;
         if (checkInt(num))
         {
@@ -580,7 +574,6 @@ int getNum(string prompt)
             cout << "Invalid Input." << endl;
             cout << "Press any key to try again..................." << endl;
             getch();
-            cout << prompt;
         }
     }
 }
@@ -667,7 +660,6 @@ void ownerDashboard(string uName)
     cout << "10. Change Currency Type" << endl;
     cout << "11. Change Password" << endl;
     cout << "12. Logout" << endl;
-    cout << "Your Choice (1-12): ";
 }
 
 void salesManDashboard(string uName)
@@ -686,7 +678,6 @@ void salesManDashboard(string uName)
     cout << "9. Change Currency Type" << endl;
     cout << "10. Change Password" << endl;
     cout << "11. Logout" << endl;
-    cout << "Your Choice (1-11): ";
 }
 // Common Options
 void printAllBooks(int bookCount, int bookPrice[], int bookQuantity[], char currency, string bookNames[], string authorNames[])
@@ -1016,4 +1007,11 @@ void loadOrders(string orderBookNames[], string orderBookAuthorNames[], int orde
         i++;
     }
     orderCount = i;
+}
+
+void myGetLine(string &s)
+{
+    cin.clear();
+    cin.sync();
+    getline(cin >> ws, s);
 }

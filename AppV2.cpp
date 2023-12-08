@@ -5,12 +5,10 @@
 #include <windows.h>
 #include <limits>
 using namespace std;
-// Write a checkInt function that takes a string checks if the input is an integer or not.
-// have to add validations for entered range at options
 // Starting
 void printBanner();
 void startingPage();
-int getChoice();
+int getNum(string);
 // Login and Signup
 string inputUsername();
 string inputPassword();
@@ -39,6 +37,7 @@ string getRole(char roleChar);
 bool currencyCheck(char currency);
 int strToInt(string);
 bool checkInt(string);
+int countOccurences(string s, char c);
 // File Handling
 void storeCredentials(string usernames[], string passwords[], char roles[], int earnings[], char currency[], int userCount);
 void storeBooks(string bookNames[], string authorNames[], int bookPrice[], int bookQuantity[], int bookCount);
@@ -74,7 +73,7 @@ main()
     {
         system("cls");
         startingPage();
-        int choice = getChoice();
+        int choice = getNum("Your choice (1-3): ");
         if (choice == 3)
         {
             cout << "Exiting..........";
@@ -102,7 +101,7 @@ main()
                         while (true) // Owner Dashboard
                         {
                             ownerDashboard(uName);
-                            choice = getChoice();
+                            choice = getNum("Your choice (1-12): ");
                             if (choice == 12)
                             {
                                 break;
@@ -117,10 +116,8 @@ main()
                                 getline(cin, bName);
                                 cout << "Enter name of the author: ";
                                 getline(cin, auName);
-                                cout << "Enter Price: ";
-                                cin >> price;
-                                cout << "Enter Quantity: ";
-                                cin >> quantity;
+                                price = getNum("Enter price: ");
+                                quantity = getNum("Enter quantity: ");
                                 if (addBook(bName, auName, price, quantity, bookNames, authorNames, bookPrice, bookQuantity, bookCount))
                                 {
                                     cout << "Book Added to the catalog" << endl;
@@ -184,14 +181,11 @@ main()
                                 // Add user
                                 printBanner();
                                 string uName, pass;
-                                char role;
                                 cout << "Enter username of the user to add: ";
                                 cin >> uName;
                                 cout << "Enter password: ";
                                 cin >> pass;
-                                cout << "Enter role ('a' for admin or 'b' for salesman): ";
-                                cin >> role;
-                                if (signUp(userCount, uName, pass, role, usernames, passwords, roles, earnings, currency))
+                                if (signUp(userCount, uName, pass, 'b', usernames, passwords, roles, earnings, currency))
                                 {
                                     userCount++;
                                     cout << "User added successfully." << endl;
@@ -234,14 +228,11 @@ main()
                                 // Update user
                                 printBanner();
                                 string uName, pass;
-                                char role;
                                 cout << "Enter username of the user to update: ";
                                 cin >> uName;
                                 cout << "Enter new password: ";
                                 cin >> pass;
-                                cout << "Enter new role ('a' for admin or 'b' for salesman): ";
-                                cin >> role;
-                                if (updateUser(uName, pass, role, usernames, passwords, roles, userCount))
+                                if (updateUser(uName, pass, 'b', usernames, passwords, roles, userCount))
                                 {
                                     cout << "User updated successfully." << endl;
                                 }
@@ -294,7 +285,8 @@ main()
                                 cout << "Press any key to return to Dashboard................";
                                 getch();
                             }
-                            else{
+                            else
+                            {
                                 // Invalid Input
                                 cout << "Invalid Input." << endl;
                                 cout << "Press any key to try again..........." << endl;
@@ -307,7 +299,7 @@ main()
                         while (true) // Salesman Dashboard
                         {
                             salesManDashboard(uName);
-                            choice = getChoice(); 
+                            choice = getNum("Your choice (1-11): "); 
                             if (choice == 11)
                             { // Logout
                                 break;
@@ -376,8 +368,7 @@ main()
                                     cout << "Enter name of the book: ";
                                     std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
                                     getline(cin, bName);
-                                    cout << "Enter quantity: ";
-                                    cin >> quantity;
+                                    quantity = getNum("Enter quantity: ");
                                     if (placeOrder(bName, quantity, bookNames, bookPrice, bookQuantity, bookCount))
                                     {
                                         orderBookNames[orderCount] = bName;
@@ -433,8 +424,7 @@ main()
                                 cout << "Enter name of the book: ";
                                 std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
                                 getline(cin, bName);
-                                cout << "Enter quantity: ";
-                                cin >> quantity;
+                                quantity = getNum("Enter quantity: ");
                                 int index = searchArray(orderBookNames, bName, orderCount);
                                 if (index != -1)
                                 {
@@ -460,7 +450,7 @@ main()
                             else if (choice == 9)
                             { // Change Currency Type
                                 printBanner();
-                                cout << "Enter new currency type ('$', '€' or '¥'): ";
+                                cout << "Enter new currency type ('$', '£' or '¥'): ";
                                 char newCurrency;
                                 cin >> newCurrency;
                                 if (currencyCheck(newCurrency))
@@ -486,7 +476,8 @@ main()
                                 cout << "Press any key to return to Dashboard................";
                                 getch();
                             }
-                            else{
+                            else
+                            {
                                 // Invalid Input
                                 cout << "Invalid Input." << endl;
                                 cout << "Press any key to try again..........." << endl;
@@ -513,6 +504,13 @@ main()
                 string uName = inputUsername();
                 string pass = inputPassword();
                 char role = inputRole();
+                if (role == 'a' && countOccurences(roles, 'a') == 1)
+                {
+                    cout << "Only one admin is allowed." << endl;
+                    cout << "Press any key to try again...........";
+                    getch();
+                    continue;
+                }
                 if (signUp(userCount, uName, pass, role, usernames, passwords, roles, earnings, currency))
                 {
                     userCount++;
@@ -529,7 +527,8 @@ main()
                 }
             }
         }
-        else{
+        else
+        {
             // Invalid Input
             cout << "Invalid Input." << endl;
             cout << "Press any key to try again..........." << endl;
@@ -566,22 +565,22 @@ void startingPage()
     cout << "Your choice (1-3): ";
 }
 
-int getChoice()
+int getNum(string prompt)
 {
-    string choice;
+    string num;
     while (true)
     {
-        cin >> choice;
-        if (checkInt(choice))
+        cin >> num;
+        if (checkInt(num))
         {
-            return strToInt(choice);
+            return strToInt(num);
         }
         else
         {
             cout << "Invalid Input." << endl;
-            cout<<"Press any key to try again..................."<<endl;
+            cout << "Press any key to try again..................." << endl;
             getch();
-            cout<<"Choice: ";
+            cout << prompt;
         }
     }
 }
@@ -603,10 +602,22 @@ string inputPassword()
 
 char inputRole()
 {
-    char role;
-    cout << "Choose Role ('a' for Admin and 'b' for Salesman): ";
-    cin >> role;
-    return role;
+    while (true)
+    {
+        char role;
+        cout << "Choose Role ('a' for Admin and 'b' for Salesman): ";
+        cin >> role;
+        if (role == 'a' || role == 'b')
+        {
+            return role;
+        }
+        else
+        {
+            cout << "Invalid Input." << endl;
+            cout << "Press any key to try again..................." << endl;
+            getch();
+        }
+    }
 }
 bool login(int userCount, string uName, string pass, string usernames[], string passwords[])
 {
@@ -842,7 +853,7 @@ string getRole(char roleChar)
 
 bool currencyCheck(char currency)
 {
-    if (currency == '$' || currency == '€' || currency == '¥')
+    if (currency == '$' || currency == '£' || currency == '¥')
     {
         return true;
     }
@@ -860,13 +871,29 @@ int strToInt(string s)
     return result;
 }
 
-bool checkInt(string s){
-    for(int i=0; s[i]!='\0'; i++){
-        if(s[i]<'0' || s[i]>'9'){
+bool checkInt(string s)
+{
+    for (int i = 0; s[i] != '\0'; i++)
+    {
+        if (s[i] < '0' || s[i] > '9')
+        {
             return false;
         }
     }
     return true;
+}
+
+int countOccurences(string s, char c)
+{
+    int count = 0;
+    for (int i = 0; s[i] != '\0'; i++)
+    {
+        if (s[i] == c)
+        {
+            count++;
+        }
+    }
+    return count;
 }
 
 string readField(string line, int field)

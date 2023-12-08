@@ -1,5 +1,5 @@
 #include <iostream>
-#include <conio.h>
+#include <conio.h>              // Return a book option for salesman is not working because of array reset, Replace it with another option
 #include <iomanip>
 #include <fstream>
 #include <windows.h>
@@ -104,7 +104,7 @@ main()
                             ownerDashboard(uName);
                             choice = getNum("Your choice (1-12): ");
                             if (choice == 12)
-                            {
+                            { // Logout
                                 break;
                             }
                             else if (choice == 1)
@@ -175,8 +175,7 @@ main()
                                 getch();
                             }
                             else if (choice == 5)
-                            {
-                                // Add user
+                            { // Add user
                                 printBanner();
                                 string uName, pass;
                                 cout << "Enter username of the user to add: ";
@@ -196,8 +195,7 @@ main()
                                 getch();
                             }
                             else if (choice == 6)
-                            {
-                                // Remove user
+                            { // Remove user
                                 printBanner();
                                 string uName;
                                 cout << "Enter username of the user to remove: ";
@@ -214,16 +212,14 @@ main()
                                 getch();
                             }
                             else if (choice == 7)
-                            {
-                                // List all users
+                            { // List all users
                                 printBanner();
                                 printAllUsers(userCount, usernames, passwords, roles);
                                 cout << "Press any key to return to Dashboard................";
                                 getch();
                             }
                             else if (choice == 8)
-                            {
-                                // Update user
+                            { // Update user
                                 printBanner();
                                 string uName, pass;
                                 cout << "Enter username of the user to update: ";
@@ -240,8 +236,7 @@ main()
                                 }
                             }
                             else if (choice == 9)
-                            {
-                                // Check total earnings
+                            { // Check total earnings
                                 printBanner();
                                 int total = 0;
                                 for (int i = 0; i < userCount; i++)
@@ -253,8 +248,7 @@ main()
                                 getch();
                             }
                             else if (choice == 10)
-                            {
-                                // Change Currency Type
+                            {   // Change Currency Type
                                 printBanner();
                                 cout << "Enter new currency type ('$', '€' or '¥'): ";
                                 char newCurrency;
@@ -272,8 +266,7 @@ main()
                                 getch();
                             }
                             else if (choice == 11)
-                            {
-                                // Change Password
+                            {   // Change Password
                                 printBanner();
                                 string newPass;
                                 cout << "Enter new password: ";
@@ -419,27 +412,16 @@ main()
                                 cout << "Enter name of the book: ";
                                 myGetLine(bName);
                                 quantity = getNum("Enter quantity: ");
-                                int index = searchArray(orderBookNames, bName, orderCount);
+                                int index = searchArray(bookNames, bName, bookCount);
                                 if (index != -1)
                                 {
-                                    if (orderBookQuantity[index] >= quantity)
-                                    {
-                                        orderBookQuantity[index] -= quantity;
-                                        int bookIndex = searchArray(bookNames, bName, bookCount);
-                                        bookQuantity[bookIndex] += quantity;
-                                        cout << "Book returned successfully." << endl;
-                                    }
-                                    else
-                                    {
-                                        cout << "Quantity is greater than the amount of books ordered." << endl;
-                                    }
+                                    bookQuantity[index] += quantity;
+                                    cout << "Book returned successfully." << endl;
                                 }
                                 else
                                 {
-                                    cout << "Book not found." << endl;
+                                    cout << "Book does not exist." << endl;
                                 }
-                                cout << "Press any key to return to Dashboard................";
-                                getch();
                             }
                             else if (choice == 9)
                             { // Change Currency Type

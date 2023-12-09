@@ -1,5 +1,5 @@
 #include <iostream>
-#include <conio.h>              // write setcolor function and gotoxy function. also move the location of dashboard functions with printBanner function
+#include <conio.h> // write setcolor function and gotoxy function. also move the location of dashboard functions with printBanner function
 #include <iomanip>
 #include <fstream>
 #include <windows.h>
@@ -10,7 +10,7 @@ void startingPage();
 void ownerDashboard(string uName);
 void salesManDashboard(string uName);
 string setcolor(unsigned short color);
-void gotoxy(short int,short int);
+void gotoxy(short int, short int);
 int getScreenWidth();
 // Login and Signup
 string inputUsername();
@@ -251,7 +251,7 @@ main()
                                 getch();
                             }
                             else if (choice == 10)
-                            {   // Change Currency Type
+                            { // Change Currency Type
                                 printBanner();
                                 cout << "Enter new currency type ('$', '€' or '¥'): ";
                                 char newCurrency;
@@ -269,7 +269,7 @@ main()
                                 getch();
                             }
                             else if (choice == 11)
-                            {   // Change Password
+                            { // Change Password
                                 printBanner();
                                 string newPass;
                                 cout << "Enter new password: ";
@@ -515,32 +515,53 @@ main()
         }
     }
 }
-                                    // Start of function definitions
-                                    // User Interface function Start
+// Start of function definitions
+// User Interface function Start
 void printBanner()
 {
+    int X = (getScreenWidth() - 82) / 2;
+    int Y = 0;
     system("cls");
-    cout << "__________________________________________________________________________________" << endl;
-    cout << "|   ,   ,      ____              _        _                                       |" << endl;
-    cout << "|  /////|     | __ )  ___   ___ | | _____| |__   ___  _ __                        |" << endl;
-    cout << "| ///// |     |  _ \\ / _ \\ / _ \\| |/ / __| '_ \\ / _ \\| '_ \\                       |" << endl;
-    cout << "||~~~|  |     | |_) | (_) | (_) |   <\\__ \\ | | | (_) | |_) |                      |" << endl;
-    cout << "||===|  |     |____/ \\___/ \\___/|_|\\_\\___/_| |_|\\___/| .__/                       |" << endl;
-    cout << "||   |  |                                            |_|                          |" << endl;
-    cout << "||   |  |                                                                         |" << endl;
-    cout << "||   | /                                                                          |" << endl;
-    cout << "||===|/                                                                           |" << endl;
-    cout << "|'---'                                                                            |" << endl;
-    cout << "|_________________________________________________________________________________|" << endl;
+    gotoxy(X, Y);
+    cout << "__________________________________________________________________________________";
+    gotoxy(X, Y + 1);
+    cout << "|   ,   ,      ____              _        _                                       |";
+    gotoxy(X, Y + 2);
+    cout << "|  /////|     | __ )  ___   ___ | | _____| |__   ___  _ __                        |";
+    gotoxy(X, Y + 3);
+    cout << "| ///// |     |  _ \\ / _ \\ / _ \\| |/ / __| '_ \\ / _ \\| '_ \\                       |";
+    gotoxy(X, Y + 4);
+    cout << "||~~~|  |     | |_) | (_) | (_) |   <\\__ \\ | | | (_) | |_) |                      |";
+    gotoxy(X, Y + 5);
+    cout << "||===|  |     |____/ \\___/ \\___/|_|\\_\\___/_| |_|\\___/| .__/                       |";
+    gotoxy(X, Y + 6);
+    cout << "||   |  |                                            |_|                          |";
+    gotoxy(X, Y + 7);
+    cout << "||   |  |                                                                         |";
+    gotoxy(X, Y + 8);
+    cout << "||   | /                                                                          |";
+    gotoxy(X, Y + 9);
+    cout << "||===|/                                                                           |";
+    gotoxy(X, Y + 10);
+    cout << "|'---'                                                                            |";
+    gotoxy(X, Y + 11);
+    cout << "|_________________________________________________________________________________|";
     cout << endl;
 }
 void startingPage()
 {
     printBanner();
+    int X = (getScreenWidth() - 82) / 2;
+    int Y = 13;
+    gotoxy(X, Y);
     cout << "Welcome" << endl;
+    gotoxy(X, Y+1);
     cout << "Choose one of the following......" << endl;
+    gotoxy(X, Y+2);
     cout << "1. Login" << endl;
+    gotoxy(X, Y+3);
     cout << "2. Sign Up" << endl;
+    gotoxy(X, Y+4);
     cout << "3. Exit" << endl;
 }
 void ownerDashboard(string uName)
@@ -584,22 +605,23 @@ string setcolor(unsigned short color)
     SetConsoleTextAttribute(hcon, color);
     return "";
 }
-void gotoxy(short int x,short int y)
+void gotoxy(short int x, short int y)
 {
     COORD coordinates;
     coordinates.X = x;
     coordinates.Y = y;
     SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coordinates);
 }
-int getScreenWidth(){
+int getScreenWidth()
+{
     CONSOLE_SCREEN_BUFFER_INFO csbi;
     int columns;
     GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &csbi);
     columns = csbi.srWindow.Right - csbi.srWindow.Left + 1;
     return columns;
 }
-                                    // User Interface function End
-                                    // Login/Signup function Start
+// User Interface function End
+// Login/Signup function Start
 string inputUsername()
 {
     string username;
@@ -662,8 +684,8 @@ bool signUp(int userCount, string uName, string pass, char role, string username
     }
     return isSignedUp;
 }
-                                    // Login/Signup function End
-                                    // Common Options Start
+// Login/Signup function End
+// Common Options Start
 void printAllBooks(int bookCount, int bookPrice[], int bookQuantity[], char currency, string bookNames[], string authorNames[])
 {
     cout << left << setw(20) << "Book Name" << setw(20) << "Author Name" << setw(20) << "Price" << setw(20) << "Quantity" << endl;
@@ -685,8 +707,8 @@ bool searchBook(string bName, string bookNames[], int bookCount)
     }
     return false;
 }
-                                    // Common Options End
-                                    // Owner Options Start
+// Common Options End
+// Owner Options Start
 bool addBook(string bName, string auName, int price, int quantity, string bookNames[], string authorNames[], int bookPrice[], int bookQuantity[], int &bookCount)
 {
     int index = searchArray(bookNames, bName, bookCount);
@@ -758,8 +780,8 @@ bool updateUser(string uName, string pass, char role, string usernames[], string
     return false;
 }
 
-                                    // Owner Options End
-                                    // Salesman Options Start
+// Owner Options End
+// Salesman Options Start
 
 bool placeOrder(string bName, int quantity, string bookNames[], int bookPrice[], int bookQuantity[], int bookCount)
 {
@@ -797,8 +819,8 @@ void clearOrderArrays(string orderBookNames[], string orderBookAuthorNames[], in
     }
     orderCount = 0;
 }
-                                    // Salesman Options End
-                                    // Validation Functions Start
+// Salesman Options End
+// Validation Functions Start
 
 // If object is not in array it will return -1, that can be used to add a condition that it does not exist.
 int searchArray(string arr[], string object, int arrLength)
@@ -887,8 +909,8 @@ int countOccurences(string s, char c)
     }
     return count;
 }
-                                    // Validation Functions End
-                                    // File Handling Functions Start
+// Validation Functions End
+// File Handling Functions Start
 string readField(string line, int field)
 {
     int count = 0;
@@ -1004,8 +1026,8 @@ void loadOrders(string orderBookNames[], string orderBookAuthorNames[], int orde
     }
     orderCount = i;
 }
-                                    // File Handling Functions End
-                                    // Error Handling Functions Start
+// File Handling Functions End
+// Error Handling Functions Start
 void myGetLine(string &s)
 {
     cin.clear();

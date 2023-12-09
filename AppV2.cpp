@@ -1,5 +1,5 @@
 #include <iostream>
-#include <conio.h> // write setcolor function and gotoxy function. also move the location of dashboard functions with printBanner function
+#include <conio.h>
 #include <iomanip>
 #include <fstream>
 #include <windows.h>

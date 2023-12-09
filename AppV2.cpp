@@ -13,9 +13,9 @@ string setcolor(unsigned short color);
 void gotoxy(short int, short int);
 int getScreenWidth();
 // Login and Signup
-string inputUsername();
-string inputPassword();
-char inputRole();
+string inputUsername(int X, int &Y);
+string inputPassword(int X, int &Y);
+char inputRole(int X, int &Y);
 bool login(int userCount, string uName, string pass, string usernames[], string passwords[]);
 bool signUp(int userCount, string uName, string pass, char role, string usernames[], string passwords[], char roles[], int earnings[], char currency[]);
 // Common Options
@@ -94,9 +94,9 @@ main()
             bool loginPage = true;
             while (loginPage) // Login Page
             {
-                system("cls");
-                string uName = inputUsername();
-                string pass = inputPassword();
+                printBanner(X, Y);
+                string uName = inputUsername(X,Y);
+                string pass = inputPassword(X,Y);
                 if (login(userCount, uName, pass, usernames, passwords))
                 {
                     // Added this because it would not return to mainPage if I choose option 11.
@@ -624,11 +624,10 @@ main()
         { // Sign Up
             while (true)
             {
-                system("cls");
                 printBanner(X, Y);
-                string uName = inputUsername();
-                string pass = inputPassword();
-                char role = inputRole();
+                string uName = inputUsername(X,Y);
+                string pass = inputPassword(X,Y);
+                char role = inputRole(X,Y);
                 if (role == 'a' && countOccurences(roles, 'a') == 1)
                 {
                     gotoxy(X, Y);

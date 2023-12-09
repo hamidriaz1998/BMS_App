@@ -123,22 +123,30 @@ main()
                                 string bName, auName;
                                 int price, quantity;
                                 mygotoxy(X, Y);
+                                setcolor(yellow);
                                 cout << "Enter name of the book: ";
+                                setcolor(white);
                                 myGetLine(bName);
                                 mygotoxy(X, Y);
+                                setcolor(yellow);
                                 cout << "Enter name of the author: ";
+                                setcolor(white);
                                 myGetLine(auName);
                                 price = getNum("Enter price: ", X, Y);
                                 quantity = getNum("Enter quantity: ", X, Y);
                                 if (addBook(bName, auName, price, quantity, bookNames, authorNames, bookPrice, bookQuantity, bookCount))
                                 {
                                     mygotoxy(X, Y);
+                                    setcolor(lightgreen);
                                     cout << "Book Added to the catalog" << endl;
+                                    setcolor(white);
                                 }
                                 else
                                 {
                                     mygotoxy(X, Y);
+                                    setcolor(lightred);
                                     cout << "Book already exists" << endl;
+                                    setcolor(white);
                                 }
                                 mygotoxy(X, Y);
                                 cout << "Press any key to return to Dashboard................";
@@ -149,20 +157,28 @@ main()
                                 printBanner(X, Y);
                                 string bName, auName;
                                 mygotoxy(X, Y);
+                                setcolor(yellow);
                                 cout << "Enter name of the book: ";
+                                setcolor(white);
                                 myGetLine(bName);
                                 mygotoxy(X, Y);
+                                setcolor(yellow);
                                 cout << "Enter name of the author: ";
+                                setcolor(white);
                                 myGetLine(auName);
                                 if (removeBook(bName, auName, bookNames, authorNames, bookPrice, bookQuantity, bookCount))
                                 {
                                     mygotoxy(X, Y);
+                                    setcolor(lightgreen);
                                     cout << "Book removed successfully." << endl;
+                                    setcolor(white);
                                 }
                                 else
                                 {
                                     mygotoxy(X, Y);
+                                    setcolor(lightred);
                                     cout << "Book does not exist." << endl;
+                                    setcolor(white);
                                 }
                                 mygotoxy(X, Y);
                                 cout << "Press any key to return to Dashboard................";
@@ -172,21 +188,29 @@ main()
                             { // Search Book
                                 printBanner(X, Y);
                                 mygotoxy(X, Y);
+                                setcolor(yellow);
                                 cout << "Enter the name of the book: ";
+                                setcolor(white);
                                 string bName;
                                 myGetLine(bName);
                                 if (searchBook(bName, bookNames, bookCount))
                                 {
                                     int index = searchArray(bookNames, bName, bookCount);
                                     mygotoxy(X, Y);
+                                    setcolor(green);
                                     cout << left << setw(20) << "Book Name" << setw(20) << "Author Name" << setw(20) << "Price" << setw(20) << "Quantity" << endl;
+                                    setcolor(white);
                                     mygotoxy(X, Y);
+                                    setcolor(lightgreen);
                                     cout << left << setw(20) << bookNames[index] << setw(20) << authorNames[index] << setw(0) << currency[currentUserIdx] << setw(20) << bookPrice[index] << setw(20) << bookQuantity[index] << endl;
+                                    setcolor(white);
                                 }
                                 else
                                 {
                                     mygotoxy(X, Y);
+                                    setcolor(lightred);
                                     cout << "Book Not found" << endl;
+                                    setcolor(white);
                                 }
                                 mygotoxy(X, Y);
                                 cout << "Press any key to return to Dashboard................";
@@ -207,18 +231,24 @@ main()
                                 string bName;
                                 int price;
                                 mygotoxy(X, Y);
+                                setcolor(yellow);
                                 cout << "Enter name of the book: ";
+                                setcolor(white);
                                 myGetLine(bName);
                                 price = getNum("Enter new price: ", X, Y);
                                 if (changePrice(bName, price, bookNames, bookPrice, bookQuantity, bookCount))
                                 {
                                     mygotoxy(X, Y);
+                                    setcolor(lightgreen);
                                     cout << "Price changed successfully." << endl;
+                                    setcolor(white);
                                 }
                                 else
                                 {
                                     mygotoxy(X, Y);
+                                    setcolor(lightred);
                                     cout << "Book does not exist." << endl;
+                                    setcolor(white);
                                 }
                                 mygotoxy(X, Y);
                                 cout << "Press any key to return to Dashboard................";
@@ -231,18 +261,24 @@ main()
                                 string bName;
                                 int quantity;
                                 mygotoxy(X, Y);
+                                setcolor(yellow);
                                 cout << "Enter name of the book: ";
+                                setcolor(white);
                                 myGetLine(bName);
                                 quantity = getNum("Enter quantity to add: ", X, Y);
                                 if (incrementQuantity(bName, quantity, bookNames, bookPrice, bookQuantity, bookCount))
                                 {
                                     mygotoxy(X, Y);
+                                    setcolor(lightgreen);
                                     cout << "Quantity incremented successfully." << endl;
+                                    setcolor(white);
                                 }
                                 else
                                 {
                                     mygotoxy(X, Y);
+                                    setcolor(lightred);
                                     cout << "Book does not exist." << endl;
+                                    setcolor(white);
                                 }
                             }
                             else if (choice == 7)
@@ -250,21 +286,29 @@ main()
                                 printBanner(X, Y);
                                 string uName, pass;
                                 mygotoxy(X, Y);
+                                setcolor(yellow);
                                 cout << "Enter username of the user to add: ";
+                                setcolor(white);
                                 cin >> uName;
                                 mygotoxy(X, Y);
+                                setcolor(yellow);
                                 cout << "Enter password: ";
+                                setcolor(white);
                                 cin >> pass;
                                 if (signUp(userCount, uName, pass, 'b', usernames, passwords, roles, earnings, currency))
                                 {
                                     userCount++;
                                     mygotoxy(X, Y);
+                                    setcolor(lightgreen);
                                     cout << "User added successfully." << endl;
+                                    setcolor(white);
                                 }
                                 else
                                 {
                                     mygotoxy(X, Y);
+                                    setcolor(lightred);
                                     cout << "User already exists." << endl;
+                                    setcolor(white);
                                 }
                                 mygotoxy(X, Y);
                                 cout << "Press any key to return to Dashboard................";
@@ -275,17 +319,23 @@ main()
                                 printBanner(X, Y);
                                 string uName;
                                 mygotoxy(X, Y);
+                                setcolor(yellow);
                                 cout << "Enter username of the user to remove: ";
+                                setcolor(white);
                                 cin >> uName;
                                 if (removeUser(uName, usernames, passwords, roles, userCount))
                                 {
                                     mygotoxy(X, Y);
+                                    setcolor(lightgreen);
                                     cout << "User removed successfully." << endl;
+                                    setcolor(white);
                                 }
                                 else
                                 {
                                     mygotoxy(X, Y);
+                                    setcolor(lightred);
                                     cout << "User does not exist." << endl;
+                                    setcolor(white);
                                 }
                                 mygotoxy(X, Y);
                                 cout << "Press any key to return to Dashboard................";
@@ -304,21 +354,28 @@ main()
                                 printBanner(X, Y);
                                 string uName, pass;
                                 mygotoxy(X, Y);
+                                setcolor(yellow);
                                 cout << "Enter username of the user to update: ";
+                                setcolor(white);
                                 cin >> uName;
                                 mygotoxy(X, Y);
+                                setcolor(yellow);
                                 cout << "Enter new password: ";
+                                setcolor(white);
                                 cin >> pass;
                                 if (updateUser(uName, pass, 'b', usernames, passwords, roles, userCount))
                                 {
                                     mygotoxy(X, Y);
+                                    setcolor(lightgreen);
                                     cout << "User updated successfully." << endl;
+                                    setcolor(white);
                                 }
                                 else
                                 {
-                                    gotoxy(X, Y);
-                                    Y++;
+                                    mygotoxy(X, Y);
+                                    setcolor(lightred);
                                     cout << "User does not exist." << endl;
+                                    setcolor(white);
                                 }
                             }
                             else if (choice == 11)
@@ -330,7 +387,9 @@ main()
                                     total += earnings[i];
                                 }
                                 mygotoxy(X, Y);
+                                setcolor(lightmagenta);
                                 cout << "Total Earnings: " << currency[currentUserIdx] << total << endl;
+                                setcolor(white);
                                 mygotoxy(X, Y);
                                 cout << "Press any key to return to Dashboard................";
                                 getch();
@@ -339,19 +398,25 @@ main()
                             { // Change Currency Type
                                 printBanner(X, Y);
                                 gotoxy(X, Y);
+                                setcolor(yellow);
                                 cout << "Enter new currency type ('$', '€' or '¥'): ";
+                                setcolor(white);
                                 char newCurrency;
                                 cin >> newCurrency;
                                 if (currencyCheck(newCurrency))
                                 {
                                     currency[currentUserIdx] = newCurrency;
                                     mygotoxy(X, Y);
+                                    setcolor(lightgreen);
                                     cout << "Currency type changed successfully." << endl;
+                                    setcolor(white);
                                 }
                                 else
                                 {
                                     mygotoxy(X, Y);
+                                    setcolor(lightred);
                                     cout << "Invalid currency type." << endl;
+                                    setcolor(white);
                                 }
                                 mygotoxy(X, Y);
                                 cout << "Press any key to return to Dashboard................";
@@ -362,11 +427,15 @@ main()
                                 printBanner(X, Y);
                                 string newPass;
                                 mygotoxy(X, Y);
+                                setcolor(yellow);
                                 cout << "Enter new password: ";
+                                setcolor(white);
                                 cin >> newPass;
                                 passwords[currentUserIdx] = newPass;
                                 mygotoxy(X, Y);
+                                setcolor(lightgreen);
                                 cout << "Password changed successfully." << endl;
+                                setcolor(white);
                                 mygotoxy(X, Y);
                                 cout << "Press any key to return to Dashboard................";
                                 getch();
@@ -375,7 +444,9 @@ main()
                             {
                                 // Invalid Input
                                 mygotoxy(X, Y);
+                                setcolor(lightred);
                                 cout << "Invalid Input." << endl;
+                                setcolor(white);
                                 mygotoxy(X, Y);
                                 cout << "Press any key to try again..........." << endl;
                                 getch();
@@ -396,21 +467,29 @@ main()
                             { // Search Book
                                 printBanner(X, Y);
                                 mygotoxy(X, Y);
+                                setcolor(yellow);
                                 cout << "Enter the name of the book: ";
+                                setcolor(white);
                                 string bName;
                                 myGetLine(bName);
                                 if (searchBook(bName, bookNames, bookCount))
                                 {
                                     int index = searchArray(bookNames, bName, bookCount);
                                     mygotoxy(X, Y);
+                                    setcolor(green);
                                     cout << left << setw(20) << "Book Name" << setw(20) << "Author Name" << setw(20) << "Price" << setw(20) << "Quantity" << endl;
+                                    setcolor(white);
                                     mygotoxy(X, Y);
+                                    setcolor(lightgreen);
                                     cout << left << setw(20) << bookNames[index] << setw(20) << authorNames[index] << setw(0) << currency[currentUserIdx] << setw(20) << bookPrice[index] << setw(20) << bookQuantity[index] << endl;
+                                    setcolor(white);
                                 }
                                 else
                                 {
                                     mygotoxy(X, Y);
+                                    setcolor(lightred);
                                     cout << "Book Not found" << endl;
+                                    setcolor(white);
                                 }
                                 mygotoxy(X, Y);
                                 cout << "Press any key to return to Dashboard................";
@@ -420,7 +499,9 @@ main()
                             { // Check availablity of a Book
                                 printBanner(X, Y);
                                 mygotoxy(X, Y);
+                                setcolor(yellow);
                                 cout << "Enter the name of the book: ";
+                                setcolor(white);
                                 string bName;
                                 myGetLine(bName);
                                 if (searchBook(bName, bookNames, bookCount))
@@ -429,18 +510,24 @@ main()
                                     if (bookQuantity[index] == 0)
                                     {
                                         mygotoxy(X, Y);
+                                        setcolor(lightred);
                                         cout << bookNames[index] << " is out of stock." << endl;
+                                        setcolor(white);
                                     }
                                     else
                                     {
                                         mygotoxy(X, Y);
+                                        setcolor(lightgreen);
                                         cout << bookQuantity[index] << " copies of " << bookNames[index] << " are available." << endl;
+                                        setcolor(white);
                                     }
                                 }
                                 else
                                 {
                                     mygotoxy(X, Y);
+                                    setcolor(lightred);
                                     cout << "Book Not found" << endl;
+                                    setcolor(white);
                                 }
                                 mygotoxy(X, Y);
                                 cout << "Press any key to return to Dashboard................";
@@ -462,9 +549,13 @@ main()
                                 while (more == 'y')
                                 {
                                     mygotoxy(X, Y);
+                                    setcolor(yellow);
                                     cout << "Enter name of the book: ";
+                                    setcolor(white);
                                     myGetLine(bName);
+                                    setcolor(yellow);
                                     quantity = getNum("Enter quantity: ", X, Y);
+                                    setcolor(white);
                                     if (placeOrder(bName, quantity, bookNames, bookPrice, bookQuantity, bookCount))
                                     {
                                         orderBookNames[orderCount] = bName;
@@ -474,15 +565,21 @@ main()
                                         orderBookAuthorNames[orderCount] = authorNames[index];
                                         orderCount++;
                                         mygotoxy(X, Y);
+                                        setcolor(lightgreen);
                                         cout << "Order placed successfully." << endl;
+                                        setcolor(white);
                                     }
                                     else
                                     {
                                         mygotoxy(X, Y);
+                                        setcolor(lightred);
                                         cout << "Order could not be placed." << endl;
+                                        setcolor(white);
                                     }
                                     mygotoxy(X, Y);
+                                    setcolor(yellow);
                                     cout << "Do you want to place another order? (y/n): ";
+                                    setcolor(white);
                                     cin >> more;
                                 }
                             }
@@ -505,19 +602,23 @@ main()
                                 earnings[currentUserIdx] += total;
                                 clearOrderArrays(orderBookNames, orderBookAuthorNames, orderBookQuantity, orderBookPrice, orderCount);
                                 mygotoxy(X, Y);
+                                setcolor(lightgreen);
                                 cout << "Order Finalized. Total amount to be paid is " << currency[currentUserIdx] << total << endl;
                                 mygotoxy(X, Y);
                                 cout << "Thanks for shopping with us." << endl;
                                 mygotoxy(X, Y);
                                 cout << "Press any key to return to Dashboard................";
                                 mygotoxy(X, Y);
+                                setcolor(white);
                                 getch();
                             }
                             else if (choice == 7)
                             { // Total Earnings
                                 printBanner(X, Y);
                                 mygotoxy(X, Y);
+                                setcolor(lightmagenta);
                                 cout << "Total Earnings: " << currency[currentUserIdx] << earnings[currentUserIdx] << endl;
+                                setcolor(white);
                                 mygotoxy(X, Y);
                                 cout << "Press any key to return to Dashboard................";
                                 getch();
@@ -528,7 +629,9 @@ main()
                                 string bName;
                                 int quantity;
                                 mygotoxy(X, Y);
+                                setcolor(yellow);
                                 cout << "Enter name of the book: ";
+                                setcolor(white);
                                 myGetLine(bName);
                                 quantity = getNum("Enter quantity: ", X, Y);
                                 int index = searchArray(bookNames, bName, bookCount);
@@ -536,31 +639,41 @@ main()
                                 {
                                     bookQuantity[index] += quantity;
                                     mygotoxy(X, Y);
+                                    setcolor(lightgreen);
                                     cout << "Book returned successfully." << endl;
+                                    setcolor(white);
                                 }
                                 else
                                 {
                                     mygotoxy(X, Y);
+                                    setcolor(lightred);
                                     cout << "Book does not exist." << endl;
+                                    setcolor(white);
                                 }
                             }
                             else if (choice == 9)
                             { // Change Currency Type
                                 printBanner(X, Y);
                                 mygotoxy(X, Y);
+                                setcolor(yellow);
                                 cout << "Enter new currency type ('$', '£' or '¥'): ";
+                                setcolor(white);
                                 char newCurrency;
                                 cin >> newCurrency;
                                 if (currencyCheck(newCurrency))
                                 {
                                     currency[currentUserIdx] = newCurrency;
                                     mygotoxy(X, Y);
+                                    setcolor(lightgreen);
                                     cout << "Currency type changed successfully." << endl;
+                                    setcolor(white);
                                 }
                                 else
                                 {
                                     mygotoxy(X, Y);
+                                    setcolor(lightred);
                                     cout << "Invalid currency type." << endl;
+                                    setcolor(white);
                                 }
                                 mygotoxy(X, Y);
                                 cout << "Press any key to return to Dashboard................";
@@ -571,11 +684,15 @@ main()
                                 printBanner(X, Y);
                                 string newPass;
                                 mygotoxy(X, Y);
+                                setcolor(yellow);
                                 cout << "Enter new password: ";
+                                setcolor(white);
                                 cin >> newPass;
                                 passwords[currentUserIdx] = newPass;
                                 mygotoxy(X, Y);
+                                setcolor(lightgreen);
                                 cout << "Password changed successfully." << endl;
+                                setcolor(white);
                                 mygotoxy(X, Y);
                                 cout << "Press any key to return to Dashboard................";
                                 getch();
@@ -584,7 +701,9 @@ main()
                             {
                                 // Invalid Input
                                 mygotoxy(X, Y);
+                                setcolor(lightred);
                                 cout << "Invalid Input." << endl;
+                                setcolor(white);
                                 mygotoxy(X, Y);
                                 cout << "Press any key to try again..........." << endl;
                                 getch();
@@ -596,7 +715,9 @@ main()
                 {
                     // Invalid Credentials
                     mygotoxy(X, Y);
+                    setcolor(lightred);
                     cout << "Invalid Credentials." << endl;
+                    setcolor(white);
                     mygotoxy(X, Y);
                     cout << "Press any key to try again..........." << endl;
                     getch();
@@ -614,7 +735,9 @@ main()
                 if (role == 'a' && countOccurences(roles, 'a') == 1)
                 {
                     mygotoxy(X, Y);
+                    setcolor(lightred);
                     cout << "Only one admin is allowed." << endl;
+                    setcolor(white);
                     mygotoxy(X, Y);
                     cout << "Press any key to try again...........";
                     getch();
@@ -624,7 +747,9 @@ main()
                 {
                     userCount++;
                     mygotoxy(X, Y);
+                    setcolor(lightgreen);
                     cout << "You have been signed up successfully." << endl;
+                    setcolor(white);
                     mygotoxy(X, Y);
                     cout << "Press any key to continue.......";
                     getch();
@@ -633,7 +758,9 @@ main()
                 else
                 {
                     mygotoxy(X, Y);
+                    setcolor(lightred);
                     cout << "Username Already exists." << endl;
+                    setcolor(white);
                     mygotoxy(X, Y);
                     cout << "Press any key to try again...........";
                     getch();
@@ -644,7 +771,9 @@ main()
         {
             // Invalid Input
             mygotoxy(X, Y);
+            setcolor(lightred);
             cout << "Invalid Input." << endl;
+            setcolor(white);
             mygotoxy(X, Y);
             cout << "Press any key to try again..........." << endl;
             getch();
@@ -805,16 +934,20 @@ int getScreenWidth()
 string inputUsername(int X, int &Y)
 {
     string username;
+    setcolor(yellow);
     mygotoxy(X, Y);
     cout << "Username: ";
     cin >> username;
+    setcolor(white);
     return username;
 }
 string inputPassword(int X, int &Y)
 {
     string password;
     mygotoxy(X, Y);
+    setcolor(yellow);
     cout << "Password: ";
+    setcolor(white);
     cin >> password;
     return password;
 }
@@ -824,7 +957,9 @@ char inputRole(int X, int &Y)
     {
         char role;
         mygotoxy(X, Y);
+        setcolor(yellow);
         cout << "Choose Role ('a' for Admin and 'b' for Salesman): ";
+        setcolor(white);
         cin >> role;
         if (role == 'a' || role == 'b')
         {
@@ -833,7 +968,9 @@ char inputRole(int X, int &Y)
         else
         {
             mygotoxy(X, Y);
+            setcolor(red);
             cout << "Invalid Input." << endl;
+            setcolor(white);
             mygotoxy(X, Y);
             cout << "Press any key to try again..................." << endl;
             getch();
@@ -874,7 +1011,9 @@ bool signUp(int userCount, string uName, string pass, char role, string username
 void printAllBooks(int bookCount, int bookPrice[], int bookQuantity[], char currency, string bookNames[], string authorNames[], int X, int &Y)
 {
     mygotoxy(X, Y);
+    setcolor(green);
     cout << left << setw(20) << "Book Name" << setw(20) << "Author Name" << setw(20) << "Price" << setw(20) << "Quantity" << endl;
+    setcolor(white);
     for (int i = 0; i < bookCount; i++)
     {
         if (bookNames[i] == "")
@@ -882,7 +1021,9 @@ void printAllBooks(int bookCount, int bookPrice[], int bookQuantity[], char curr
             continue;
         }
         mygotoxy(X, Y);
+        setcolor(lightgreen);
         cout << left << setw(20) << bookNames[i] << setw(20) << authorNames[i] << setw(0) << currency << setw(20) << bookPrice[i] << setw(20) << bookQuantity[i] << endl;
+        setcolor(white);
     }
 }
 bool searchBook(string bName, string bookNames[], int bookCount)
@@ -953,7 +1094,9 @@ bool changePrice(string bName, int price, string bookNames[], int bookPrice[], i
 void printAllUsers(int userCount, string usernames[], string passwords[], char roles[], int earnings[], char currency[], int X, int &Y)
 {
     mygotoxy(X, Y);
+    setcolor(green);
     cout << left << setw(20) << "Username" << setw(20) << "Password" << setw(20) << "Role" << setw(20) << "Earnings" << endl;
+    setcolor(white);
     for (int i = 0; i < userCount; i++)
     {
         if (usernames[i] == "")
@@ -961,7 +1104,9 @@ void printAllUsers(int userCount, string usernames[], string passwords[], char r
             continue;
         }
         mygotoxy(X, Y);
+        setcolor(lightgreen);
         cout << left << setw(20) << usernames[i] << setw(20) << passwords[i] << setw(20) << getRole(roles[i]) << setw(0) << currency[i] << setw(20) << earnings[i] << endl;
+        setcolor(white);
     }
 }
 bool removeUser(string uName, string usernames[], string passwords[], char roles[], int userCount)
@@ -1008,7 +1153,9 @@ bool placeOrder(string bName, int quantity, string bookNames[], int bookPrice[],
 void printAllOrders(int orderCount, string orderBookNames[], string orderBookAuthorNames[], int orderBookQuantity[], int orderBookPrice[], char currency, int X, int &Y)
 {
     mygotoxy(X, Y);
+    setcolor(green);
     cout << left << setw(20) << "Book Name" << setw(20) << "Author Name" << setw(20) << "Price" << setw(20) << "Quantity" << endl;
+    setcolor(white);
     for (int i = 0; i < orderCount; i++)
     {
         if (orderBookNames[i] == "")
@@ -1016,7 +1163,9 @@ void printAllOrders(int orderCount, string orderBookNames[], string orderBookAut
             continue;
         }
         mygotoxy(X, Y);
+        setcolor(lightgreen);
         cout << left << setw(20) << orderBookNames[i] << setw(20) << orderBookAuthorNames[i] << setw(0) << currency << setw(20) << orderBookPrice[i] << setw(20) << orderBookQuantity[i] << endl;
+        setcolor(white);
     }
 }
 void clearOrderArrays(string orderBookNames[], string orderBookAuthorNames[], int orderBookQuantity[], int orderBookPrice[], int &orderCount)

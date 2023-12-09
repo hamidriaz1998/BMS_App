@@ -197,7 +197,8 @@ main()
                                 cout << "Press any key to return to Dashboard................";
                                 getch();
                             }
-                            else if(choice == 5){
+                            else if (choice == 5)
+                            {
                                 // Change Price
                                 printBanner(X, Y);
                                 string bName;
@@ -206,11 +207,13 @@ main()
                                 cout << "Enter name of the book: ";
                                 myGetLine(bName);
                                 price = getNum("Enter new price: ", X, Y);
-                                if(changePrice(bName, price, bookNames, bookPrice, bookQuantity, bookCount)){
+                                if (changePrice(bName, price, bookNames, bookPrice, bookQuantity, bookCount))
+                                {
                                     mygotoxy(X, Y);
                                     cout << "Price changed successfully." << endl;
                                 }
-                                else{
+                                else
+                                {
                                     mygotoxy(X, Y);
                                     cout << "Book does not exist." << endl;
                                 }
@@ -218,7 +221,8 @@ main()
                                 cout << "Press any key to return to Dashboard................";
                                 getch();
                             }
-                            else if (choice == 6){
+                            else if (choice == 6)
+                            {
                                 // Increment Quantity
                                 printBanner(X, Y);
                                 string bName;
@@ -227,11 +231,13 @@ main()
                                 cout << "Enter name of the book: ";
                                 myGetLine(bName);
                                 quantity = getNum("Enter quantity to add: ", X, Y);
-                                if(incrementQuantity(bName, quantity, bookNames, bookPrice, bookQuantity, bookCount)){
+                                if (incrementQuantity(bName, quantity, bookNames, bookPrice, bookQuantity, bookCount))
+                                {
                                     mygotoxy(X, Y);
                                     cout << "Quantity incremented successfully." << endl;
                                 }
-                                else{
+                                else
+                                {
                                     mygotoxy(X, Y);
                                     cout << "Book does not exist." << endl;
                                 }
@@ -910,6 +916,26 @@ bool removeBook(string bName, string auName, string bookNames[], string authorNa
             bookQuantity[index] = 0;
             return true;
         }
+    }
+    return false;
+}
+bool incrementQuantity(string bName, int quantity, string bookNames[], int bookPrice[], int bookQuantity[], int bookCount)
+{
+    int index = searchArray(bookNames, bName, bookCount);
+    if (index != -1)
+    {
+        bookQuantity[index] += quantity;
+        return true;
+    }
+    return false;
+}
+bool changePrice(string bName, int price, string bookNames[], int bookPrice[], int bookQuantity[], int bookCount)
+{
+    int index = searchArray(bookNames, bName, bookCount);
+    if (index != -1)
+    {
+        bookPrice[index] = price;
+        return true;
     }
     return false;
 }

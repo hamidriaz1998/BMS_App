@@ -5,10 +5,10 @@
 #include <windows.h>
 using namespace std;
 // User Interface
-void printBanner(int X,int &Y);
-void startingPage(int X,int &Y);
-void ownerDashboard(string uName,int X,int &Y);
-void salesManDashboard(string uName,int X,int &Y);
+void printBanner(int X, int &Y);
+void startingPage(int X, int &Y);
+void ownerDashboard(string uName, int X, int &Y);
+void salesManDashboard(string uName, int X, int &Y);
 string setcolor(unsigned short color);
 void gotoxy(short int, short int);
 int getScreenWidth();
@@ -33,7 +33,7 @@ void printAllOrders(int orderCount, string orderBookNames[], string orderBookAut
 void clearOrderArrays(string orderBookNames[], string orderBookAuthorNames[], int orderBookQuantity[], int orderBookPrice[], int &orderCount);
 // Validation
 int searchArray(string arr[], string object, int userCount);
-int getNum(string,int,int&);
+int getNum(string, int, int &);
 string getRole(char roleChar);
 bool currencyCheck(char currency);
 int strToInt(string);
@@ -73,13 +73,13 @@ main()
     loadCredentials(usernames, passwords, roles, earnings, currency, userCount);
     loadBooks(bookNames, authorNames, bookPrice, bookQuantity, bookCount);
     // Coordinates for printing
-        int X = (getScreenWidth() - 82) / 2;   // X coordinate for printing at center of screen
-        int Y = 0;
+    int X = (getScreenWidth() - 82) / 2; // X coordinate for printing at center of screen
+    int Y = 0;
 
     while (true) // Main Loop
     {
         system("cls");
-        startingPage(X,Y);
+        startingPage(X, Y);
         int choice = getNum("Your choice (1-3): ", X, Y);
         if (choice == 3)
         {
@@ -106,56 +106,78 @@ main()
                     {
                         while (true) // Owner Dashboard
                         {
-                            ownerDashboard(uName,X,Y);
-                            choice = getNum("Your choice (1-12): ",X,Y);
+                            ownerDashboard(uName, X, Y);
+                            choice = getNum("Your choice (1-12): ", X, Y);
                             if (choice == 12)
                             { // Logout
                                 break;
                             }
                             else if (choice == 1)
                             { // Add Book
-                                printBanner(X,Y);
+                                printBanner(X, Y);
                                 string bName, auName;
                                 int price, quantity;
+                                gotoxy(X, Y);
+                                Y++;
                                 cout << "Enter name of the book: ";
                                 myGetLine(bName);
+                                gotoxy(X, Y);
+                                Y++;
                                 cout << "Enter name of the author: ";
                                 myGetLine(auName);
-                                price = getNum("Enter price: ",X,Y);
-                                quantity = getNum("Enter quantity: ",X,Y);
+                                price = getNum("Enter price: ", X, Y);
+                                quantity = getNum("Enter quantity: ", X, Y);
                                 if (addBook(bName, auName, price, quantity, bookNames, authorNames, bookPrice, bookQuantity, bookCount))
                                 {
+                                    gotoxy(X, Y);
+                                    Y++;
                                     cout << "Book Added to the catalog" << endl;
                                 }
                                 else
                                 {
+                                    gotoxy(X, Y);
+                                    Y++;
                                     cout << "Book already exists" << endl;
                                 }
+                                gotoxy(X, Y);
+                                Y++;
                                 cout << "Press any key to return to Dashboard................";
                                 getch();
                             }
                             else if (choice == 2)
                             { // Remove Book
-                                printBanner(X,Y);
+                                printBanner(X, Y);
                                 string bName, auName;
+                                gotoxy(X, Y);
+                                Y++;
                                 cout << "Enter name of the book: ";
                                 myGetLine(bName);
+                                gotoxy(X, Y);
+                                Y++;
                                 cout << "Enter name of the author: ";
                                 myGetLine(auName);
                                 if (removeBook(bName, auName, bookNames, authorNames, bookPrice, bookQuantity, bookCount))
                                 {
+                                    gotoxy(X, Y);
+                                    Y++;
                                     cout << "Book removed successfully." << endl;
                                 }
                                 else
                                 {
+                                    gotoxy(X, Y);
+                                    Y++;
                                     cout << "Book does not exist." << endl;
                                 }
+                                gotoxy(X, Y);
+                                Y++;
                                 cout << "Press any key to return to Dashboard................";
                                 getch();
                             }
                             else if (choice == 3)
                             { // Search Book
-                                printBanner(X,Y);
+                                printBanner(X, Y);
+                                gotoxy(X, Y);
+                                Y++;
                                 cout << "Enter the name of the book: ";
                                 string bName;
                                 myGetLine(bName);
@@ -167,124 +189,180 @@ main()
                                 }
                                 else
                                 {
+                                    gotoxy(X, Y);
+                                    Y++;
                                     cout << "Book Not found" << endl;
                                 }
+                                gotoxy(X, Y);
+                                Y++;
                                 cout << "Press any key to return to Dashboard................";
                                 getch();
                             }
                             else if (choice == 4)
                             { // PrintAllBooks
-                                printBanner(X,Y);
+                                printBanner(X, Y);
                                 printAllBooks(bookCount, bookPrice, bookQuantity, currency[currentUserIdx], bookNames, authorNames);
+                                gotoxy(X, Y);
+                                Y++;
                                 cout << "Press any key to return to Dashboard................";
                                 getch();
                             }
                             else if (choice == 5)
                             { // Add user
-                                printBanner(X,Y);
+                                printBanner(X, Y);
                                 string uName, pass;
+                                gotoxy(X, Y);
+                                Y++;
                                 cout << "Enter username of the user to add: ";
                                 cin >> uName;
+                                gotoxy(X, Y);
+                                Y++;
                                 cout << "Enter password: ";
                                 cin >> pass;
                                 if (signUp(userCount, uName, pass, 'b', usernames, passwords, roles, earnings, currency))
                                 {
                                     userCount++;
+                                    gotoxy(X, Y);
+                                    Y++;
                                     cout << "User added successfully." << endl;
                                 }
                                 else
                                 {
+                                    gotoxy(X, Y);
+                                    Y++;
                                     cout << "User already exists." << endl;
                                 }
+                                gotoxy(X, Y);
+                                Y++;
                                 cout << "Press any key to return to Dashboard................";
                                 getch();
                             }
                             else if (choice == 6)
                             { // Remove user
-                                printBanner(X,Y);
+                                printBanner(X, Y);
                                 string uName;
+                                gotoxy(X, Y);
+                                Y++;
                                 cout << "Enter username of the user to remove: ";
                                 cin >> uName;
                                 if (removeUser(uName, usernames, passwords, roles, userCount))
                                 {
+                                    gotoxy(X, Y);
+                                    Y++;
                                     cout << "User removed successfully." << endl;
                                 }
                                 else
                                 {
+                                    gotoxy(X, Y);
+                                    Y++;
                                     cout << "User does not exist." << endl;
                                 }
+                                gotoxy(X, Y);
+                                Y++;
                                 cout << "Press any key to return to Dashboard................";
                                 getch();
                             }
                             else if (choice == 7)
                             { // List all users
-                                printBanner(X,Y);
+                                printBanner(X, Y);
                                 printAllUsers(userCount, usernames, passwords, roles);
+                                gotoxy(X, Y);
+                                Y++;
                                 cout << "Press any key to return to Dashboard................";
                                 getch();
                             }
                             else if (choice == 8)
                             { // Update user
-                                printBanner(X,Y);
+                                printBanner(X, Y);
                                 string uName, pass;
+                                gotoxy(X, Y);
+                                Y++;
                                 cout << "Enter username of the user to update: ";
                                 cin >> uName;
+                                gotoxy(X, Y);
+                                Y++;
                                 cout << "Enter new password: ";
                                 cin >> pass;
                                 if (updateUser(uName, pass, 'b', usernames, passwords, roles, userCount))
                                 {
+                                    gotoxy(X, Y);
+                                    Y++;
                                     cout << "User updated successfully." << endl;
                                 }
                                 else
                                 {
+                                    gotoxy(X, Y);
+                                    Y++;
                                     cout << "User does not exist." << endl;
                                 }
                             }
                             else if (choice == 9)
                             { // Check total earnings
-                                printBanner(X,Y);
+                                printBanner(X, Y);
                                 int total = 0;
                                 for (int i = 0; i < userCount; i++)
                                 {
                                     total += earnings[i];
                                 }
+                                gotoxy(X, Y);
+                                Y++;
                                 cout << "Total Earnings: " << currency[currentUserIdx] << total << endl;
+                                gotoxy(X, Y);
+                                Y++;
                                 cout << "Press any key to return to Dashboard................";
                                 getch();
                             }
                             else if (choice == 10)
                             { // Change Currency Type
-                                printBanner(X,Y);
+                                printBanner(X, Y);
+                                gotoxy(X, Y);
+                                Y++;
                                 cout << "Enter new currency type ('$', '€' or '¥'): ";
                                 char newCurrency;
                                 cin >> newCurrency;
                                 if (currencyCheck(newCurrency))
                                 {
                                     currency[currentUserIdx] = newCurrency;
+                                    gotoxy(X, Y);
+                                    Y++;
                                     cout << "Currency type changed successfully." << endl;
                                 }
                                 else
                                 {
+                                    gotoxy(X, Y);
+                                    Y++;
                                     cout << "Invalid currency type." << endl;
                                 }
+                                gotoxy(X, Y);
+                                Y++;
                                 cout << "Press any key to return to Dashboard................";
                                 getch();
                             }
                             else if (choice == 11)
                             { // Change Password
-                                printBanner(X,Y);
+                                printBanner(X, Y);
                                 string newPass;
+                                gotoxy(X, Y);
+                                Y++;
                                 cout << "Enter new password: ";
                                 cin >> newPass;
                                 passwords[currentUserIdx] = newPass;
+                                gotoxy(X, Y);
+                                Y++;
                                 cout << "Password changed successfully." << endl;
+                                gotoxy(X, Y);
+                                Y++;
                                 cout << "Press any key to return to Dashboard................";
                                 getch();
                             }
                             else
                             {
                                 // Invalid Input
+                                gotoxy(X, Y);
+                                Y++;
                                 cout << "Invalid Input." << endl;
+                                gotoxy(X, Y);
+                                Y++;
                                 cout << "Press any key to try again..........." << endl;
                                 getch();
                             }
@@ -294,15 +372,17 @@ main()
                     {
                         while (true) // Salesman Dashboard
                         {
-                            salesManDashboard(uName,X,Y);
-                            choice = getNum("Your choice (1-11): ",X,Y);
+                            salesManDashboard(uName, X, Y);
+                            choice = getNum("Your choice (1-11): ", X, Y);
                             if (choice == 11)
                             { // Logout
                                 break;
                             }
                             if (choice == 1)
                             { // Search Book
-                                printBanner(X,Y);
+                                printBanner(X, Y);
+                                gotoxy(X, Y);
+                                Y++;
                                 cout << "Enter the name of the book: ";
                                 string bName;
                                 myGetLine(bName);
@@ -314,14 +394,20 @@ main()
                                 }
                                 else
                                 {
+                                    gotoxy(X, Y);
+                                    Y++;
                                     cout << "Book Not found" << endl;
                                 }
+                                gotoxy(X, Y);
+                                Y++;
                                 cout << "Press any key to return to Dashboard................";
                                 getch();
                             }
                             else if (choice == 2)
                             { // Check availablity of a Book
-                                printBanner(X,Y);
+                                printBanner(X, Y);
+                                gotoxy(X, Y);
+                                Y++;
                                 cout << "Enter the name of the book: ";
                                 string bName;
                                 myGetLine(bName);
@@ -330,38 +416,48 @@ main()
                                     int index = searchArray(bookNames, bName, bookCount);
                                     if (bookQuantity[index] == 0)
                                     {
+                                        gotoxy(X, Y);
+                                        Y++;
                                         cout << bookNames[index] << " is out of stock." << endl;
                                     }
                                     else
                                     {
+                                        gotoxy(X, Y);
+                                        Y++;
                                         cout << bookQuantity[index] << " copies of " << bookNames[index] << " are available." << endl;
                                     }
                                 }
                                 else
                                 {
+                                    gotoxy(X, Y);
+                                    Y++;
                                     cout << "Book Not found" << endl;
                                 }
+                                gotoxy(X, Y);
+                                Y++;
                                 cout << "Press any key to return to Dashboard................";
                                 getch();
                             }
                             else if (choice == 3)
                             { // List all Books
-                                printBanner(X,Y);
+                                printBanner(X, Y);
                                 printAllBooks(bookCount, bookPrice, bookQuantity, currency[currentUserIdx], bookNames, authorNames);
                                 cout << "Press any key to return to Dashboard................";
                                 getch();
                             }
                             else if (choice == 4)
                             { // Place Customer Order
-                                printBanner(X,Y);
+                                printBanner(X, Y);
                                 string bName;
                                 int quantity;
                                 char more = 'y';
                                 while (more == 'y')
                                 {
+                                    gotoxy(X, Y);
+                                    Y++;
                                     cout << "Enter name of the book: ";
                                     myGetLine(bName);
-                                    quantity = getNum("Enter quantity: ",X,Y);
+                                    quantity = getNum("Enter quantity: ", X, Y);
                                     if (placeOrder(bName, quantity, bookNames, bookPrice, bookQuantity, bookCount))
                                     {
                                         orderBookNames[orderCount] = bName;
@@ -370,26 +466,34 @@ main()
                                         orderBookPrice[orderCount] = bookPrice[index];
                                         orderBookAuthorNames[orderCount] = authorNames[index];
                                         orderCount++;
+                                        gotoxy(X, Y);
+                                        Y++;
                                         cout << "Order placed successfully." << endl;
                                     }
                                     else
                                     {
+                                        gotoxy(X, Y);
+                                        Y++;
                                         cout << "Order could not be placed." << endl;
                                     }
+                                    gotoxy(X, Y);
+                                    Y++;
                                     cout << "Do you want to place another order? (y/n): ";
                                     cin >> more;
                                 }
                             }
                             else if (choice == 5)
                             { // View Customer Order
-                                printBanner(X,Y);
+                                printBanner(X, Y);
                                 printAllOrders(orderCount, orderBookNames, orderBookAuthorNames, orderBookQuantity, orderBookPrice, currency[currentUserIdx]);
+                                gotoxy(X, Y);
+                                Y++;
                                 cout << "Press any key to return to Dashboard................";
                                 getch();
                             }
                             else if (choice == 6)
                             { // Finalize Order
-                                printBanner(X,Y);
+                                printBanner(X, Y);
                                 int total = 0;
                                 for (int i = 0; i < orderCount; i++)
                                 {
@@ -397,70 +501,106 @@ main()
                                 }
                                 earnings[currentUserIdx] += total;
                                 clearOrderArrays(orderBookNames, orderBookAuthorNames, orderBookQuantity, orderBookPrice, orderCount);
+                                gotoxy(X, Y);
+                                Y++;
                                 cout << "Order Finalized. Total amount to be paid is " << currency[currentUserIdx] << total << endl;
+                                gotoxy(X, Y);
+                                Y++;
                                 cout << "Thanks for shopping with us." << endl;
+                                gotoxy(X, Y);
+                                Y++;
                                 cout << "Press any key to return to Dashboard................";
+                                gotoxy(X, Y);
+                                Y++;
                                 getch();
                             }
                             else if (choice == 7)
                             { // Total Earnings
-                                printBanner(X,Y);
+                                printBanner(X, Y);
+                                gotoxy(X, Y);
+                                Y++;
                                 cout << "Total Earnings: " << currency[currentUserIdx] << earnings[currentUserIdx] << endl;
+                                gotoxy(X, Y);
+                                Y++;
                                 cout << "Press any key to return to Dashboard................";
                                 getch();
                             }
                             else if (choice == 8)
                             { // Return a Book
-                                printBanner(X,Y);
+                                printBanner(X, Y);
                                 string bName;
                                 int quantity;
+                                gotoxy(X, Y);
+                                Y++;
                                 cout << "Enter name of the book: ";
                                 myGetLine(bName);
-                                quantity = getNum("Enter quantity: ",X,Y);
+                                quantity = getNum("Enter quantity: ", X, Y);
                                 int index = searchArray(bookNames, bName, bookCount);
                                 if (index != -1)
                                 {
                                     bookQuantity[index] += quantity;
+                                    gotoxy(X, Y);
+                                    Y++;
                                     cout << "Book returned successfully." << endl;
                                 }
                                 else
                                 {
+                                    gotoxy(X, Y);
+                                    Y++;
                                     cout << "Book does not exist." << endl;
                                 }
                             }
                             else if (choice == 9)
                             { // Change Currency Type
-                                printBanner(X,Y);
+                                printBanner(X, Y);
+                                gotoxy(X, Y);
+                                Y++;
                                 cout << "Enter new currency type ('$', '£' or '¥'): ";
                                 char newCurrency;
                                 cin >> newCurrency;
                                 if (currencyCheck(newCurrency))
                                 {
                                     currency[currentUserIdx] = newCurrency;
+                                    gotoxy(X, Y);
+                                    Y++;
                                     cout << "Currency type changed successfully." << endl;
                                 }
                                 else
                                 {
+                                    gotoxy(X, Y);
+                                    Y++;
                                     cout << "Invalid currency type." << endl;
                                 }
+                                gotoxy(X, Y);
+                                Y++;
                                 cout << "Press any key to return to Dashboard................";
                                 getch();
                             }
                             else if (choice == 10)
                             { // Change Password
-                                printBanner(X,Y);
+                                printBanner(X, Y);
                                 string newPass;
+                                gotoxy(X, Y);
+                                Y++;
                                 cout << "Enter new password: ";
                                 cin >> newPass;
                                 passwords[currentUserIdx] = newPass;
+                                gotoxy(X, Y);
+                                Y++;
                                 cout << "Password changed successfully." << endl;
+                                gotoxy(X, Y);
+                                Y++;
                                 cout << "Press any key to return to Dashboard................";
                                 getch();
                             }
                             else
                             {
                                 // Invalid Input
+                                gotoxy(X, Y);
+                                Y++;
                                 cout << "Invalid Input." << endl;
+                                gotoxy(X, Y);
+                                Y++;
                                 cout << "Press any key to try again..........." << endl;
                                 getch();
                             }
@@ -470,7 +610,11 @@ main()
                 else
                 {
                     // Invalid Credentials
+                    gotoxy(X, Y);
+                    Y++;
                     cout << "Invalid Credentials." << endl;
+                    gotoxy(X, Y);
+                    Y++;
                     cout << "Press any key to try again..........." << endl;
                     getch();
                 }
@@ -481,13 +625,17 @@ main()
             while (true)
             {
                 system("cls");
-                printBanner(X,Y);
+                printBanner(X, Y);
                 string uName = inputUsername();
                 string pass = inputPassword();
                 char role = inputRole();
                 if (role == 'a' && countOccurences(roles, 'a') == 1)
                 {
+                    gotoxy(X, Y);
+                    Y++;
                     cout << "Only one admin is allowed." << endl;
+                    gotoxy(X, Y);
+                    Y++;
                     cout << "Press any key to try again...........";
                     getch();
                     continue;
@@ -495,14 +643,22 @@ main()
                 if (signUp(userCount, uName, pass, role, usernames, passwords, roles, earnings, currency))
                 {
                     userCount++;
+                    gotoxy(X, Y);
+                    Y++;
                     cout << "You have been signed up successfully." << endl;
+                    gotoxy(X, Y);
+                    Y++;
                     cout << "Press any key to continue.......";
                     getch();
                     break;
                 }
                 else
                 {
+                    gotoxy(X, Y);
+                    Y++;
                     cout << "Username Already exists." << endl;
+                    gotoxy(X, Y);
+                    Y++;
                     cout << "Press any key to try again...........";
                     getch();
                 }
@@ -511,7 +667,11 @@ main()
         else
         {
             // Invalid Input
+            gotoxy(X, Y);
+            Y++;
             cout << "Invalid Input." << endl;
+            gotoxy(X, Y);
+            Y++;
             cout << "Press any key to try again..........." << endl;
             getch();
         }
@@ -519,112 +679,156 @@ main()
 }
 // Start of function definitions
 // User Interface function Start
-void printBanner(int X,int &Y)
+void printBanner(int X, int &Y)
 {
     system("cls");
-    Y =0;
-    gotoxy(X, Y); Y++;
+    Y = 0;
+    gotoxy(X, Y);
+    Y++;
     cout << "__________________________________________________________________________________";
-    gotoxy(X, Y); Y++;
+    gotoxy(X, Y);
+    Y++;
     cout << "|   ,   ,      ____              _        _                                       |";
-    gotoxy(X, Y); Y++;
+    gotoxy(X, Y);
+    Y++;
     cout << "|  /////|     | __ )  ___   ___ | | _____| |__   ___  _ __                        |";
-    gotoxy(X, Y); Y++;
+    gotoxy(X, Y);
+    Y++;
     cout << "| ///// |     |  _ \\ / _ \\ / _ \\| |/ / __| '_ \\ / _ \\| '_ \\                       |";
-    gotoxy(X, Y); Y++;
+    gotoxy(X, Y);
+    Y++;
     cout << "||~~~|  |     | |_) | (_) | (_) |   <\\__ \\ | | | (_) | |_) |                      |";
-    gotoxy(X, Y); Y++;
+    gotoxy(X, Y);
+    Y++;
     cout << "||===|  |     |____/ \\___/ \\___/|_|\\_\\___/_| |_|\\___/| .__/                       |";
-    gotoxy(X, Y); Y++;
+    gotoxy(X, Y);
+    Y++;
     cout << "||   |  |                                            |_|                          |";
-    gotoxy(X, Y); Y++;
+    gotoxy(X, Y);
+    Y++;
     cout << "||   |  |                                                                         |";
-    gotoxy(X, Y); Y++;
+    gotoxy(X, Y);
+    Y++;
     cout << "||   | /                                                                          |";
-    gotoxy(X, Y); Y++;
+    gotoxy(X, Y);
+    Y++;
     cout << "||===|/                                                                           |";
-    gotoxy(X, Y); Y++;
+    gotoxy(X, Y);
+    Y++;
     cout << "|'---'                                                                            |";
-    gotoxy(X, Y); Y++;
+    gotoxy(X, Y);
+    Y++;
     cout << "|_________________________________________________________________________________|";
     Y++;
 }
-void startingPage(int X,int &Y)
+void startingPage(int X, int &Y)
 {
-    printBanner(X,Y);
-    gotoxy(X, Y); Y++;
+    printBanner(X, Y);
+    gotoxy(X, Y);
+    Y++;
     cout << "Welcome" << endl;
-    gotoxy(X, Y); Y++;
+    gotoxy(X, Y);
+    Y++;
     cout << "Choose one of the following......" << endl;
-    gotoxy(X, Y); Y++;
+    gotoxy(X, Y);
+    Y++;
     cout << "1. Login" << endl;
-    gotoxy(X, Y); Y++;
+    gotoxy(X, Y);
+    Y++;
     cout << "2. Sign Up" << endl;
-    gotoxy(X, Y); Y++;
+    gotoxy(X, Y);
+    Y++;
     cout << "3. Exit" << endl;
     Y++;
 }
-void ownerDashboard(string uName,int X,int &Y)
+void ownerDashboard(string uName, int X, int &Y)
 {
-    printBanner(X,Y);
-    gotoxy(X, Y); Y++;
+    printBanner(X, Y);
+    gotoxy(X, Y);
+    Y++;
     cout << "Logged in as " << uName << " (Admin)" << endl;
-    gotoxy(X, Y); Y++;
+    gotoxy(X, Y);
+    Y++;
     cout << "Choose one of the following: " << endl;
-    gotoxy(X, Y); Y++;
+    gotoxy(X, Y);
+    Y++;
     cout << "1. Add a new Book" << endl;
-    gotoxy(X, Y); Y++;
+    gotoxy(X, Y);
+    Y++;
     cout << "2. Remove a Book" << endl;
-    gotoxy(X, Y); Y++;
+    gotoxy(X, Y);
+    Y++;
     cout << "3. Search for a Book" << endl;
-    gotoxy(X, Y); Y++;
+    gotoxy(X, Y);
+    Y++;
     cout << "4. List All Books" << endl;
-    gotoxy(X, Y); Y++;
+    gotoxy(X, Y);
+    Y++;
     cout << "5. Add a new user" << endl;
-    gotoxy(X, Y); Y++;
+    gotoxy(X, Y);
+    Y++;
     cout << "6. Remove an existing user" << endl;
-    gotoxy(X, Y); Y++;
+    gotoxy(X, Y);
+    Y++;
     cout << "7. List All users" << endl;
-    gotoxy(X, Y); Y++;
+    gotoxy(X, Y);
+    Y++;
     cout << "8. Update user information" << endl;
-    gotoxy(X, Y); Y++;
+    gotoxy(X, Y);
+    Y++;
     cout << "9. Check total earnings" << endl;
-    gotoxy(X, Y); Y++;
+    gotoxy(X, Y);
+    Y++;
     cout << "10. Change Currency Type" << endl;
-    gotoxy(X, Y); Y++;
+    gotoxy(X, Y);
+    Y++;
     cout << "11. Change Password" << endl;
-    gotoxy(X, Y); Y++;
+    gotoxy(X, Y);
+    Y++;
     cout << "12. Logout" << endl;
     Y++;
 }
-void salesManDashboard(string uName,int X,int &Y)
+void salesManDashboard(string uName, int X, int &Y)
 {
-    printBanner(X,Y);
-    gotoxy(X, Y); Y++;
+    printBanner(X, Y);
+    gotoxy(X, Y);
+    Y++;
     cout << "Logged in as " << uName << " (Salesman)" << endl;
-    gotoxy(X, Y); Y++;
+    gotoxy(X, Y);
+    Y++;
     cout << "Choose one of the following: " << endl;
-    gotoxy(X, Y); Y++;
+    gotoxy(X, Y);
+    Y++;
     cout << "1. Search for a Book" << endl;
-    gotoxy(X, Y); Y++;
+    gotoxy(X, Y);
+    Y++;
     cout << "2. Check availablity of a Book" << endl;
-    gotoxy(X, Y); Y++;
+    gotoxy(X, Y);
+    Y++;
     cout << "3. List all Books" << endl;
-    gotoxy(X, Y); Y++;
+    gotoxy(X, Y);
+    Y++;
     cout << "4. Place Customer Order" << endl;
-    gotoxy(X, Y); Y++;
+    gotoxy(X, Y);
+    Y++;
     cout << "5. View Customer Order" << endl;
-    gotoxy(X, Y); Y++;
+    gotoxy(X, Y);
+    Y++;
     cout << "6. Finalize Order" << endl;
-    gotoxy(X, Y); Y++;
+    gotoxy(X, Y);
+    Y++;
     cout << "7. Total Earnings" << endl;
-    gotoxy(X, Y); Y++;
+    gotoxy(X, Y);
+    Y++;
     cout << "8. Return a Book" << endl;
-    gotoxy(X, Y); Y++;
+    gotoxy(X, Y);
+    Y++;
     cout << "9. Change Currency Type" << endl;
-    gotoxy(X, Y); Y++;
+    gotoxy(X, Y);
+    Y++;
     cout << "10. Change Password" << endl;
-    gotoxy(X, Y); Y++;
+    gotoxy(X, Y);
+    Y++;
     cout << "11. Logout" << endl;
     Y++;
 }
@@ -651,25 +855,31 @@ int getScreenWidth()
 }
 // User Interface function End
 // Login/Signup function Start
-string inputUsername()
+string inputUsername(int X, int &Y)
 {
     string username;
+    gotoxy(X, Y);
+    Y++;
     cout << "Username: ";
     cin >> username;
     return username;
 }
-string inputPassword()
+string inputPassword(int X, int &Y)
 {
     string password;
+    gotoxy(X, Y);
+    Y++;
     cout << "Password: ";
     cin >> password;
     return password;
 }
-char inputRole()
+char inputRole(int X, int &Y)
 {
     while (true)
     {
         char role;
+        gotoxy(X, Y);
+        Y++;
         cout << "Choose Role ('a' for Admin and 'b' for Salesman): ";
         cin >> role;
         if (role == 'a' || role == 'b')
@@ -678,7 +888,11 @@ char inputRole()
         }
         else
         {
+            gotoxy(X, Y);
+            Y++;
             cout << "Invalid Input." << endl;
+            gotoxy(X, Y);
+            Y++;
             cout << "Press any key to try again..................." << endl;
             getch();
         }

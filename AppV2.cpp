@@ -10,6 +10,7 @@ void startingPage();
 void ownerDashboard(string uName);
 void salesManDashboard(string uName);
 string setcolor(unsigned short color);
+void gotoxy(short int,short int);
 // Login and Signup
 string inputUsername();
 string inputPassword();
@@ -581,6 +582,13 @@ string setcolor(unsigned short color)
     HANDLE hcon = GetStdHandle(STD_OUTPUT_HANDLE);
     SetConsoleTextAttribute(hcon, color);
     return "";
+}
+void gotoxy(int x, int y)
+{
+    COORD coordinates;
+    coordinates.X = x;
+    coordinates.Y = y;
+    SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coordinates);
 }
                                     // User Interface function End
                                     // Login/Signup function Start

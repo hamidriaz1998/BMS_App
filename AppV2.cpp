@@ -1,21 +1,21 @@
 #include <iostream>
-#include <conio.h>              // Return a book option for salesman is not working because of array reset, Replace it with another option
+#include <conio.h>              // write setcolor function and gotoxy function. also move the location of dashboard functions with printBanner function
 #include <iomanip>
 #include <fstream>
 #include <windows.h>
 using namespace std;
-// Starting
+// User Interface
 void printBanner();
 void startingPage();
+void ownerDashboard(string uName);
+void salesManDashboard(string uName);
+string setcolor(unsigned short color);
 // Login and Signup
 string inputUsername();
 string inputPassword();
 char inputRole();
 bool login(int userCount, string uName, string pass, string usernames[], string passwords[]);
 bool signUp(int userCount, string uName, string pass, char role, string usernames[], string passwords[], char roles[], int earnings[], char currency[]);
-// Dashboards
-void ownerDashboard(string uName);
-void salesManDashboard(string uName);
 // Common Options
 void printAllBooks(int bookCount, int bookPrice[], int bookQuantity[], char currency, string bookNames[], string authorNames[]);
 bool searchBook(string bName, string bookNames[], int bookCount);
@@ -38,6 +38,7 @@ int strToInt(string);
 bool checkInt(string);
 int countOccurences(string s, char c);
 // File Handling
+string readField(string line, int field);
 void storeCredentials(string usernames[], string passwords[], char roles[], int earnings[], char currency[], int userCount);
 void storeBooks(string bookNames[], string authorNames[], int bookPrice[], int bookQuantity[], int bookCount);
 void loadCredentials(string usernames[], string passwords[], char roles[], int earnings[], char currency[], int &userCount);
@@ -512,24 +513,25 @@ main()
         }
     }
 }
+                                    // Start of function definitions
+                                    // User Interface function Start
 void printBanner()
 {
     system("cls");
-    cout << "___________________________________________________________________" << endl;
-    cout << "   ,   ,      ____              _        _" << endl;
-    cout << "  /////|     | __ )  ___   ___ | | _____| |__   ___  _ __ " << endl;
-    cout << " ///// |     |  _ \\ / _ \\ / _ \\| |/ / __| '_ \\ / _ \\| '_ \\" << endl;
-    cout << "|~~~|  |     | |_) | (_) | (_) |   <\\__ \\ | | | (_) | |_) |" << endl;
-    cout << "|===|  |     |____/ \\___/ \\___/|_|\\_\\___/_| |_|\\___/| .__/" << endl;
-    cout << "|   |  |                                            |_|" << endl;
-    cout << "|   |  |" << endl;
-    cout << "|   | /" << endl;
-    cout << "|===|/" << endl;
-    cout << "'---'" << endl;
-    cout << "___________________________________________________________________" << endl;
+    cout << "__________________________________________________________________________________" << endl;
+    cout << "|   ,   ,      ____              _        _                                       |" << endl;
+    cout << "|  /////|     | __ )  ___   ___ | | _____| |__   ___  _ __                        |" << endl;
+    cout << "| ///// |     |  _ \\ / _ \\ / _ \\| |/ / __| '_ \\ / _ \\| '_ \\                       |" << endl;
+    cout << "||~~~|  |     | |_) | (_) | (_) |   <\\__ \\ | | | (_) | |_) |                      |" << endl;
+    cout << "||===|  |     |____/ \\___/ \\___/|_|\\_\\___/_| |_|\\___/| .__/                       |" << endl;
+    cout << "||   |  |                                            |_|                          |" << endl;
+    cout << "||   |  |                                                                         |" << endl;
+    cout << "||   | /                                                                          |" << endl;
+    cout << "||===|/                                                                           |" << endl;
+    cout << "|'---'                                                                            |" << endl;
+    cout << "|_________________________________________________________________________________|" << endl;
     cout << endl;
 }
-
 void startingPage()
 {
     printBanner();
@@ -539,27 +541,49 @@ void startingPage()
     cout << "2. Sign Up" << endl;
     cout << "3. Exit" << endl;
 }
-
-int getNum(string prompt)
+void ownerDashboard(string uName)
 {
-    string num;
-    while (true)
-    {
-        cout << prompt;
-        cin >> num;
-        if (checkInt(num))
-        {
-            return strToInt(num);
-        }
-        else
-        {
-            cout << "Invalid Input." << endl;
-            cout << "Press any key to try again..................." << endl;
-            getch();
-        }
-    }
+    printBanner();
+    cout << "Logged in as " << uName << " (Admin)" << endl;
+    cout << "Choose one of the following: " << endl;
+    cout << "1. Add a new Book" << endl;
+    cout << "2. Remove a Book" << endl;
+    cout << "3. Search for a Book" << endl;
+    cout << "4. List All Books" << endl;
+    cout << "5. Add a new user" << endl;
+    cout << "6. Remove an existing user" << endl;
+    cout << "7. List All users" << endl;
+    cout << "8. Update user information" << endl;
+    cout << "9. Check total earnings" << endl;
+    cout << "10. Change Currency Type" << endl;
+    cout << "11. Change Password" << endl;
+    cout << "12. Logout" << endl;
 }
-
+void salesManDashboard(string uName)
+{
+    printBanner();
+    cout << "Logged in as " << uName << " (Salesman)" << endl;
+    cout << "Choose one of the following: " << endl;
+    cout << "1. Search for a Book" << endl;
+    cout << "2. Check availablity of a Book" << endl;
+    cout << "3. List all Books" << endl;
+    cout << "4. Place Customer Order" << endl;
+    cout << "5. View Customer Order" << endl;
+    cout << "6. Finalize Order" << endl;
+    cout << "7. Total Earnings" << endl;
+    cout << "8. Return a Book" << endl;
+    cout << "9. Change Currency Type" << endl;
+    cout << "10. Change Password" << endl;
+    cout << "11. Logout" << endl;
+}
+string setcolor(unsigned short color)
+{
+    HANDLE hcon = GetStdHandle(STD_OUTPUT_HANDLE);
+    SetConsoleTextAttribute(hcon, color);
+    return "";
+}
+                                    // User Interface function End
+                                    // Login/Signup function Start
 string inputUsername()
 {
     string username;
@@ -574,7 +598,6 @@ string inputPassword()
     cin >> password;
     return password;
 }
-
 char inputRole()
 {
     while (true)
@@ -608,7 +631,6 @@ bool login(int userCount, string uName, string pass, string usernames[], string 
     }
     return false;
 }
-
 bool signUp(int userCount, string uName, string pass, char role, string usernames[], string passwords[], char roles[], int earnings[], char currency[])
 {
     bool isSignedUp = false;
@@ -624,44 +646,8 @@ bool signUp(int userCount, string uName, string pass, char role, string username
     }
     return isSignedUp;
 }
-
-void ownerDashboard(string uName)
-{
-    printBanner();
-    cout << "Logged in as " << uName << " (Admin)" << endl;
-    cout << "Choose one of the following: " << endl;
-    cout << "1. Add a new Book" << endl;
-    cout << "2. Remove a Book" << endl;
-    cout << "3. Search for a Book" << endl;
-    cout << "4. List All Books" << endl;
-    cout << "5. Add a new user" << endl;
-    cout << "6. Remove an existing user" << endl;
-    cout << "7. List All users" << endl;
-    cout << "8. Update user information" << endl;
-    cout << "9. Check total earnings" << endl;
-    cout << "10. Change Currency Type" << endl;
-    cout << "11. Change Password" << endl;
-    cout << "12. Logout" << endl;
-}
-
-void salesManDashboard(string uName)
-{
-    printBanner();
-    cout << "Logged in as " << uName << " (Salesman)" << endl;
-    cout << "Choose one of the following: " << endl;
-    cout << "1. Search for a Book" << endl;
-    cout << "2. Check availablity of a Book" << endl;
-    cout << "3. List all Books" << endl;
-    cout << "4. Place Customer Order" << endl;
-    cout << "5. View Customer Order" << endl;
-    cout << "6. Finalize Order" << endl;
-    cout << "7. Total Earnings" << endl;
-    cout << "8. Return a Book" << endl;
-    cout << "9. Change Currency Type" << endl;
-    cout << "10. Change Password" << endl;
-    cout << "11. Logout" << endl;
-}
-// Common Options
+                                    // Login/Signup function End
+                                    // Common Options Start
 void printAllBooks(int bookCount, int bookPrice[], int bookQuantity[], char currency, string bookNames[], string authorNames[])
 {
     cout << left << setw(20) << "Book Name" << setw(20) << "Author Name" << setw(20) << "Price" << setw(20) << "Quantity" << endl;
@@ -674,7 +660,6 @@ void printAllBooks(int bookCount, int bookPrice[], int bookQuantity[], char curr
         cout << left << setw(20) << bookNames[i] << setw(20) << authorNames[i] << setw(0) << currency << setw(20) << bookPrice[i] << setw(20) << bookQuantity[i] << endl;
     }
 }
-
 bool searchBook(string bName, string bookNames[], int bookCount)
 {
     int index = searchArray(bookNames, bName, bookCount);
@@ -684,8 +669,8 @@ bool searchBook(string bName, string bookNames[], int bookCount)
     }
     return false;
 }
-
-// Owner Options
+                                    // Common Options End
+                                    // Owner Options Start
 bool addBook(string bName, string auName, int price, int quantity, string bookNames[], string authorNames[], int bookPrice[], int bookQuantity[], int &bookCount)
 {
     int index = searchArray(bookNames, bName, bookCount);
@@ -704,7 +689,6 @@ bool addBook(string bName, string auName, int price, int quantity, string bookNa
         return false;
     }
 }
-
 bool removeBook(string bName, string auName, string bookNames[], string authorNames[], int bookPrice[], int bookQuantity[], int bookCount)
 { // Book might exist but it will still say that it does not if author doesn't match
     int index = searchArray(bookNames, bName, bookCount);
@@ -757,7 +741,10 @@ bool updateUser(string uName, string pass, char role, string usernames[], string
     }
     return false;
 }
-// Salesman Options
+
+                                    // Owner Options End
+                                    // Salesman Options Start
+
 bool placeOrder(string bName, int quantity, string bookNames[], int bookPrice[], int bookQuantity[], int bookCount)
 {
     int index = searchArray(bookNames, bName, bookCount);
@@ -783,7 +770,6 @@ void printAllOrders(int orderCount, string orderBookNames[], string orderBookAut
         cout << left << setw(20) << orderBookNames[i] << setw(20) << orderBookAuthorNames[i] << setw(0) << currency << setw(20) << orderBookPrice[i] << setw(20) << orderBookQuantity[i] << endl;
     }
 }
-
 void clearOrderArrays(string orderBookNames[], string orderBookAuthorNames[], int orderBookQuantity[], int orderBookPrice[], int &orderCount)
 {
     for (int i = 0; i < orderCount; i++)
@@ -795,6 +781,8 @@ void clearOrderArrays(string orderBookNames[], string orderBookAuthorNames[], in
     }
     orderCount = 0;
 }
+                                    // Salesman Options End
+                                    // Validation Functions Start
 
 // If object is not in array it will return -1, that can be used to add a condition that it does not exist.
 int searchArray(string arr[], string object, int arrLength)
@@ -807,6 +795,25 @@ int searchArray(string arr[], string object, int arrLength)
         }
     }
     return -1;
+}
+int getNum(string prompt)
+{
+    string num;
+    while (true)
+    {
+        cout << prompt;
+        cin >> num;
+        if (checkInt(num))
+        {
+            return strToInt(num);
+        }
+        else
+        {
+            cout << "Invalid Input." << endl;
+            cout << "Press any key to try again..................." << endl;
+            getch();
+        }
+    }
 }
 string getRole(char roleChar)
 {
@@ -823,7 +830,6 @@ string getRole(char roleChar)
         return "Unknown";
     }
 }
-
 bool currencyCheck(char currency)
 {
     if (currency == '$' || currency == '£' || currency == '¥')
@@ -832,7 +838,6 @@ bool currencyCheck(char currency)
     }
     return false;
 }
-
 int strToInt(string s)
 {
 
@@ -843,7 +848,6 @@ int strToInt(string s)
     }
     return result;
 }
-
 bool checkInt(string s)
 {
     for (int i = 0; s[i] != '\0'; i++)
@@ -855,7 +859,6 @@ bool checkInt(string s)
     }
     return true;
 }
-
 int countOccurences(string s, char c)
 {
     int count = 0;
@@ -868,7 +871,8 @@ int countOccurences(string s, char c)
     }
     return count;
 }
-
+                                    // Validation Functions End
+                                    // File Handling Functions Start
 string readField(string line, int field)
 {
     int count = 0;
@@ -890,7 +894,6 @@ string readField(string line, int field)
         }
     }
 }
-
 void storeCredentials(string usernames[], string passwords[], char roles[], int earnings[], char currency[], int userCount)
 {
     fstream f;
@@ -905,7 +908,6 @@ void storeCredentials(string usernames[], string passwords[], char roles[], int 
     }
     f.close();
 }
-
 void storeBooks(string bookNames[], string authorNames[], int bookPrice[], int bookQuantity[], int bookCount)
 {
     fstream f;
@@ -920,7 +922,6 @@ void storeBooks(string bookNames[], string authorNames[], int bookPrice[], int b
     }
     f.close();
 }
-
 void storeOrders(string orderBookNames[], string orderBookAuthorNames[], int orderBookPrice[], int orderBookQuantity[], int orderCount)
 {
     fstream f;
@@ -935,7 +936,6 @@ void storeOrders(string orderBookNames[], string orderBookAuthorNames[], int ord
     }
     f.close();
 }
-
 void loadCredentials(string usernames[], string passwords[], char roles[], int earnings[], char currency[], int &userCount)
 {
     string line;
@@ -954,7 +954,6 @@ void loadCredentials(string usernames[], string passwords[], char roles[], int e
     }
     userCount = i;
 }
-
 void loadBooks(string bookNames[], string authorNames[], int bookPrice[], int bookQuantity[], int &bookCount)
 {
     string line;
@@ -972,7 +971,6 @@ void loadBooks(string bookNames[], string authorNames[], int bookPrice[], int bo
     }
     bookCount = i;
 }
-
 void loadOrders(string orderBookNames[], string orderBookAuthorNames[], int orderBookPrice[], int orderBookQuantity[], int &orderCount)
 {
     string line;
@@ -990,7 +988,8 @@ void loadOrders(string orderBookNames[], string orderBookAuthorNames[], int orde
     }
     orderCount = i;
 }
-
+                                    // File Handling Functions End
+                                    // Error Handling Functions Start
 void myGetLine(string &s)
 {
     cin.clear();

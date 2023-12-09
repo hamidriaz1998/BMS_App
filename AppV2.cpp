@@ -19,12 +19,12 @@ char inputRole(int X, int &Y);
 bool login(int userCount, string uName, string pass, string usernames[], string passwords[]);
 bool signUp(int userCount, string uName, string pass, char role, string usernames[], string passwords[], char roles[], int earnings[], char currency[]);
 // Common Options
-void printAllBooks(int bookCount, int bookPrice[], int bookQuantity[], char currency, string bookNames[], string authorNames[]);
+void printAllBooks(int bookCount, int bookPrice[], int bookQuantity[], char currency, string bookNames[], string authorNames[], int X, int &Y);
 bool searchBook(string bName, string bookNames[], int bookCount);
 // Owner Options
 bool addBook(string bName, string auName, int price, int quantity, string bookNames[], string authorNames[], int bookPrice[], int bookQuantity[], int &bookCount);
 bool removeBook(string bName, string auName, string bookNames[], string authorNames[], int bookPrice[], int bookQuantity[], int bookCount);
-void printAllUsers(int userCount, string usernames[], string passwords[], char roles[]);
+void printAllUsers(int userCount, string usernames[], string passwords[], char roles[], int earnings[], char currency[], int X, int &Y);
 bool removeUser(string uName, string usernames[], string passwords[], char roles[], int userCount);
 bool updateUser(string uName, string pass, char role, string usernames[], string passwords[], char roles[], int userCount);
 // Salesman Options
@@ -95,8 +95,8 @@ main()
             while (loginPage) // Login Page
             {
                 printBanner(X, Y);
-                string uName = inputUsername(X,Y);
-                string pass = inputPassword(X,Y);
+                string uName = inputUsername(X, Y);
+                string pass = inputPassword(X, Y);
                 if (login(userCount, uName, pass, usernames, passwords))
                 {
                     // Added this because it would not return to mainPage if I choose option 11.
@@ -184,7 +184,9 @@ main()
                                 if (searchBook(bName, bookNames, bookCount))
                                 {
                                     int index = searchArray(bookNames, bName, bookCount);
+                                    gotoxy(X, Y); Y++;
                                     cout << left << setw(20) << "Book Name" << setw(20) << "Author Name" << setw(20) << "Price" << setw(20) << "Quantity" << endl;
+                                    gotoxy(X, Y); Y++;
                                     cout << left << setw(20) << bookNames[index] << setw(20) << authorNames[index] << setw(0) << currency[currentUserIdx] << setw(20) << bookPrice[index] << setw(20) << bookQuantity[index] << endl;
                                 }
                                 else
@@ -201,7 +203,7 @@ main()
                             else if (choice == 4)
                             { // PrintAllBooks
                                 printBanner(X, Y);
-                                printAllBooks(bookCount, bookPrice, bookQuantity, currency[currentUserIdx], bookNames, authorNames);
+                                printAllBooks(bookCount, bookPrice, bookQuantity, currency[currentUserIdx], bookNames, authorNames, X, Y);
                                 gotoxy(X, Y);
                                 Y++;
                                 cout << "Press any key to return to Dashboard................";
@@ -265,7 +267,7 @@ main()
                             else if (choice == 7)
                             { // List all users
                                 printBanner(X, Y);
-                                printAllUsers(userCount, usernames, passwords, roles);
+                                printAllUsers(userCount, usernames, passwords, roles, earnings, currency, X, Y);
                                 gotoxy(X, Y);
                                 Y++;
                                 cout << "Press any key to return to Dashboard................";
@@ -389,7 +391,9 @@ main()
                                 if (searchBook(bName, bookNames, bookCount))
                                 {
                                     int index = searchArray(bookNames, bName, bookCount);
+                                    gotoxy(X, Y); Y++;
                                     cout << left << setw(20) << "Book Name" << setw(20) << "Author Name" << setw(20) << "Price" << setw(20) << "Quantity" << endl;
+                                    gotoxy(X, Y); Y++;
                                     cout << left << setw(20) << bookNames[index] << setw(20) << authorNames[index] << setw(0) << currency[currentUserIdx] << setw(20) << bookPrice[index] << setw(20) << bookQuantity[index] << endl;
                                 }
                                 else
@@ -441,7 +445,7 @@ main()
                             else if (choice == 3)
                             { // List all Books
                                 printBanner(X, Y);
-                                printAllBooks(bookCount, bookPrice, bookQuantity, currency[currentUserIdx], bookNames, authorNames);
+                                printAllBooks(bookCount, bookPrice, bookQuantity, currency[currentUserIdx], bookNames, authorNames, X, Y);
                                 cout << "Press any key to return to Dashboard................";
                                 getch();
                             }
@@ -625,9 +629,9 @@ main()
             while (true)
             {
                 printBanner(X, Y);
-                string uName = inputUsername(X,Y);
-                string pass = inputPassword(X,Y);
-                char role = inputRole(X,Y);
+                string uName = inputUsername(X, Y);
+                string pass = inputPassword(X, Y);
+                char role = inputRole(X, Y);
                 if (role == 'a' && countOccurences(roles, 'a') == 1)
                 {
                     gotoxy(X, Y);
@@ -928,8 +932,10 @@ bool signUp(int userCount, string uName, string pass, char role, string username
 }
 // Login/Signup function End
 // Common Options Start
-void printAllBooks(int bookCount, int bookPrice[], int bookQuantity[], char currency, string bookNames[], string authorNames[])
+void printAllBooks(int bookCount, int bookPrice[], int bookQuantity[], char currency, string bookNames[], string authorNames[], int X, int &Y)
 {
+    gotoxy(X, Y);
+    Y++;
     cout << left << setw(20) << "Book Name" << setw(20) << "Author Name" << setw(20) << "Price" << setw(20) << "Quantity" << endl;
     for (int i = 0; i < bookCount; i++)
     {
@@ -937,6 +943,8 @@ void printAllBooks(int bookCount, int bookPrice[], int bookQuantity[], char curr
         {
             continue;
         }
+        gotoxy(X, Y);
+        Y++;
         cout << left << setw(20) << bookNames[i] << setw(20) << authorNames[i] << setw(0) << currency << setw(20) << bookPrice[i] << setw(20) << bookQuantity[i] << endl;
     }
 }
@@ -985,16 +993,20 @@ bool removeBook(string bName, string auName, string bookNames[], string authorNa
     }
     return false;
 }
-void printAllUsers(int userCount, string usernames[], string passwords[], char roles[])
+void printAllUsers(int userCount, string usernames[], string passwords[], char roles[], int earnings[], char currency[], int X, int &Y)
 {
-    cout << left << setw(20) << "Username" << setw(20) << "Password" << setw(20) << "Role" << endl;
+    gotoxy(X, Y);
+    Y++;
+    cout << left << setw(20) << "Username" << setw(20) << "Password" << setw(20) << "Role" << setw(20) << "Earnings" << endl;
     for (int i = 0; i < userCount; i++)
     {
         if (usernames[i] == "")
         {
             continue;
         }
-        cout << left << setw(20) << usernames[i] << setw(20) << passwords[i] << setw(20) << getRole(roles[i]) << endl;
+        gotoxy(X, Y);
+        Y++;
+        cout << left << setw(20) << usernames[i] << setw(20) << passwords[i] << setw(20) << getRole(roles[i]) << setw(0) << currency[i] << setw(20) << earnings[i] << endl;
     }
 }
 bool removeUser(string uName, string usernames[], string passwords[], char roles[], int userCount)

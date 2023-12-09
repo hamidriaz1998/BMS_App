@@ -11,6 +11,7 @@ void ownerDashboard(string uName);
 void salesManDashboard(string uName);
 string setcolor(unsigned short color);
 void gotoxy(short int,short int);
+int getScreenWidth();
 // Login and Signup
 string inputUsername();
 string inputPassword();
@@ -583,12 +584,19 @@ string setcolor(unsigned short color)
     SetConsoleTextAttribute(hcon, color);
     return "";
 }
-void gotoxy(int x, int y)
+void gotoxy(short int x,short int y)
 {
     COORD coordinates;
     coordinates.X = x;
     coordinates.Y = y;
     SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coordinates);
+}
+int getScreenWidth(){
+    CONSOLE_SCREEN_BUFFER_INFO csbi;
+    int columns;
+    GetConsoleScreenBufferInfo(GetStdHandle(STD_OUTPUT_HANDLE), &csbi);
+    columns = csbi.srWindow.Right - csbi.srWindow.Left + 1;
+    return columns;
 }
                                     // User Interface function End
                                     // Login/Signup function Start

@@ -11,6 +11,7 @@ void ownerDashboard(string uName, int X, int &Y);
 void salesManDashboard(string uName, int X, int &Y);
 string setcolor(unsigned short color);
 void gotoxy(short int, short int);
+void mygotoxy(int X, int &Y);
 int getScreenWidth();
 // Login and Signup
 string inputUsername(int X, int &Y);
@@ -49,6 +50,8 @@ void loadCredentials(string usernames[], string passwords[], char roles[], int e
 void loadBooks(string bookNames[], string authorNames[], int bookPrice[], int bookQuantity[], int &bookCount);
 // Error Handling
 void myGetLine(string &s);
+// Colors
+const int black = 0, blue = 1, green = 2, cyan = 3, red = 4, magenta = 5, brown = 6, lightwhite = 7, darkwhite = 8, lightblue = 9, lightgreen = 10, lightcyan = 11, lightred = 12, lightmagenta = 13, yellow = 14, white = 15;
 main()
 {
 
@@ -652,6 +655,7 @@ main()
 // User Interface function Start
 void printBanner(int X, int &Y)
 {
+    setcolor(cyan);
     system("cls");
     Y = 0;
     mygotoxy(X, Y);
@@ -678,11 +682,13 @@ void printBanner(int X, int &Y)
     cout << "|'---'                                                                            |";
     mygotoxy(X, Y);
     cout << "|_________________________________________________________________________________|";
+    setcolor(white);
     Y++;
 }
 void startingPage(int X, int &Y)
 {
     printBanner(X, Y);
+    setcolor(lightblue);
     mygotoxy(X, Y);
     cout << "Welcome" << endl;
     mygotoxy(X, Y);
@@ -693,11 +699,13 @@ void startingPage(int X, int &Y)
     cout << "2. Sign Up" << endl;
     mygotoxy(X, Y);
     cout << "3. Exit" << endl;
+    setcolor(white);
     Y++;
 }
 void ownerDashboard(string uName, int X, int &Y)
 {
     printBanner(X, Y);
+    setcolor(lightblue);
     mygotoxy(X, Y);
     cout << "Logged in as " << uName << " (Admin)" << endl;
     mygotoxy(X, Y);
@@ -730,11 +738,13 @@ void ownerDashboard(string uName, int X, int &Y)
     cout << "13. Change Password" << endl;
     mygotoxy(X, Y);
     cout << "14. Logout" << endl;
+    setcolor(white);
     Y++;
 }
 void salesManDashboard(string uName, int X, int &Y)
 {
     printBanner(X, Y);
+    setcolor(lightblue);
     mygotoxy(X, Y);
     cout << "Logged in as " << uName << " (Salesman)" << endl;
     mygotoxy(X, Y);
@@ -761,6 +771,7 @@ void salesManDashboard(string uName, int X, int &Y)
     cout << "10. Change Password" << endl;
     mygotoxy(X, Y);
     cout << "11. Logout" << endl;
+    setcolor(white);
     Y++;
 }
 string setcolor(unsigned short color)
@@ -1039,17 +1050,21 @@ int getNum(string prompt, int X, int &Y)
     string num;
     while (true)
     {
+        setcolor(yellow);
         mygotoxy(X, Y);
         cout << prompt;
         cin >> num;
+        setcolor(white);
         if (checkInt(num))
         {
             return strToInt(num);
         }
         else
         {
+            setcolor(red);
             mygotoxy(X, Y);
             cout << "Invalid Input." << endl;
+            setcolor(white);
             mygotoxy(X, Y);
             cout << "Press any key to try again..................." << endl;
             getch();

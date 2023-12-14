@@ -1,6 +1,6 @@
 #include <iostream>
 #include <conio.h>
-#include <iomanip> // Change currency datatype to string and apply validation to it
+#include <iomanip>
 #include <fstream>
 #include <windows.h>
 using namespace std;
@@ -944,11 +944,27 @@ string inputUsername(int X, int &Y)
 string inputPassword(int X, int &Y)
 {
     string password;
-    mygotoxy(X, Y);
-    setcolor(yellow);
-    cout << "Password: ";
-    setcolor(white);
-    cin >> password;
+    while (true){
+        mygotoxy(X, Y);
+        setcolor(yellow);
+        cout << "Password: ";
+        setcolor(white);
+        cin >> password;
+        if (password.length() < 4)
+        {
+            mygotoxy(X, Y);
+            setcolor(red);
+            cout << "Password must be atleast 8 characters long." << endl;
+            setcolor(white);
+            mygotoxy(X, Y);
+            cout << "Press any key to try again..................." << endl;
+            getch();
+        }
+        else
+        {
+            break;
+        }
+    }
     return password;
 }
 char inputRole(int X, int &Y)

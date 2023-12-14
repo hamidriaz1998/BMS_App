@@ -38,6 +38,7 @@ void clearOrderArrays(string orderBookNames[], string orderBookAuthorNames[], in
 int searchArray(string arr[], string object, int userCount);
 int getNum(string, int, int &);
 string getRole(char roleChar);
+string getValidatedInput(string prompt, int X, int &Y);
 bool currencyCheck(string currency);
 int strToInt(string);
 bool checkInt(string);
@@ -123,16 +124,8 @@ main()
                                 printBanner(X, Y);
                                 string bName, auName;
                                 int price, quantity;
-                                mygotoxy(X, Y);
-                                setcolor(yellow);
-                                cout << "Enter name of the book: ";
-                                setcolor(white);
-                                myGetLine(bName);
-                                mygotoxy(X, Y);
-                                setcolor(yellow);
-                                cout << "Enter name of the author: ";
-                                setcolor(white);
-                                myGetLine(auName);
+                                bName = getValidatedInput("Enter name of the book: ", X, Y);
+                                auName = getValidatedInput("Enter name of the author: ", X, Y);
                                 price = getNum("Enter price: ", X, Y);
                                 quantity = getNum("Enter quantity: ", X, Y);
                                 if (addBook(bName, auName, price, quantity, bookNames, authorNames, bookPrice, bookQuantity, bookCount))
@@ -972,7 +965,7 @@ string inputPassword(int X, int &Y)
         {
             mygotoxy(X, Y);
             setcolor(red);
-            cout << "Password must be atleast 8 characters long." << endl;
+            cout << "Password must be atleast 4 characters long." << endl;
             setcolor(white);
             mygotoxy(X, Y);
             cout << "Press any key to try again..................." << endl;
@@ -1278,6 +1271,31 @@ string getRole(char roleChar)
         return "Unknown";
     }
 }
+string getValidatedInput(string s, int X, int &Y){
+    while (true)
+    {
+        string input;
+        setcolor(yellow);
+        mygotoxy(X, Y);
+        cout << s;
+        myGetLine(input);
+        setcolor(white);
+        if (checkComma(input))
+        {
+            mygotoxy(X, Y);
+            setcolor(red);
+            cout << "Input cannot contain comma (,)" << endl;
+            setcolor(white);
+            mygotoxy(X, Y);
+            cout << "Press any key to try again..................." << endl;
+            getch();
+        }
+        else
+        {
+            return input;
+        }
+    }
+}
 bool currencyCheck(string currency)
 {
     if (currency == "$" || currency == "\x9C")
@@ -1383,7 +1401,7 @@ void storeBooks(string bookNames[], string authorNames[], int bookPrice[], int b
     }
     for (int i = 0; i < bookCount; i++)
     {
-        f << bookNames[i] << "," << authorNames[i] << "," << bookPrice[i] << "," << bookQuantity[i] << ",";
+        f << bookNames[i] << "," << authorNames[i] << "," << bookPrice[i] << "," << bookQuantity[i];
         if (i != bookCount - 1)
         {
             f << endl;

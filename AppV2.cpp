@@ -41,6 +41,7 @@ string getRole(char roleChar);
 bool currencyCheck(string currency);
 int strToInt(string);
 bool checkInt(string);
+bool checkComma(string);
 int countOccurences(string s, char c);
 // File Handling
 string readField(string line, int field);
@@ -933,18 +934,35 @@ int getScreenWidth()
 // Login/Signup function Start
 string inputUsername(int X, int &Y)
 {
-    string username;
-    setcolor(yellow);
-    mygotoxy(X, Y);
-    cout << "Username: ";
-    cin >> username;
-    setcolor(white);
-    return username;
+    while (true)
+    {
+        string username;
+        setcolor(yellow);
+        mygotoxy(X, Y);
+        cout << "Username: ";
+        cin >> username;
+        setcolor(white);
+        if (checkComma(username))
+        {
+            mygotoxy(X, Y);
+            setcolor(red);
+            cout << "Username cannot contain comma (,)" << endl;
+            setcolor(white);
+            mygotoxy(X, Y);
+            cout << "Press any key to try again..................." << endl;
+            getch();
+        }
+        else
+        {
+            return username;
+        }
+    }
 }
 string inputPassword(int X, int &Y)
 {
     string password;
-    while (true){
+    while (true)
+    {
         mygotoxy(X, Y);
         setcolor(yellow);
         cout << "Password: ";
@@ -960,12 +978,21 @@ string inputPassword(int X, int &Y)
             cout << "Press any key to try again..................." << endl;
             getch();
         }
+        else if (checkComma(password))
+        {
+            mygotoxy(X, Y);
+            setcolor(red);
+            cout << "Password cannot contain comma (,)" << endl;
+            setcolor(white);
+            mygotoxy(X, Y);
+            cout << "Press any key to try again..................." << endl;
+            getch();
+        }
         else
         {
-            break;
+            return password;
         }
     }
-    return password;
 }
 char inputRole(int X, int &Y)
 {
@@ -1279,6 +1306,17 @@ bool checkInt(string s)
         }
     }
     return true;
+}
+bool checkComma(string s)
+{
+    for (int i = 0; s[i] != '\0'; i++)
+    {
+        if (s[i] == ',')
+        {
+            return true;
+        }
+    }
+    return false;
 }
 int countOccurences(string s, char c)
 {

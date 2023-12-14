@@ -18,35 +18,35 @@ string inputUsername(int X, int &Y);
 string inputPassword(int X, int &Y);
 char inputRole(int X, int &Y);
 bool login(int userCount, string uName, string pass, string usernames[], string passwords[]);
-bool signUp(int userCount, string uName, string pass, char role, string usernames[], string passwords[], char roles[], int earnings[], char currency[]);
+bool signUp(int userCount, string uName, string pass, char role, string usernames[], string passwords[], char roles[], int earnings[], string currency[]);
 // Common Options
-void printAllBooks(int bookCount, int bookPrice[], int bookQuantity[], char currency, string bookNames[], string authorNames[], int X, int &Y);
+void printAllBooks(int bookCount, int bookPrice[], int bookQuantity[], string currency, string bookNames[], string authorNames[], int X, int &Y);
 bool searchBook(string bName, string bookNames[], int bookCount);
 // Owner Options
 bool addBook(string bName, string auName, int price, int quantity, string bookNames[], string authorNames[], int bookPrice[], int bookQuantity[], int &bookCount);
 bool removeBook(string bName, string auName, string bookNames[], string authorNames[], int bookPrice[], int bookQuantity[], int bookCount);
 bool incrementQuantity(string bName, int quantity, string bookNames[], int bookPrice[], int bookQuantity[], int bookCount);
 bool changePrice(string bName, int price, string bookNames[], int bookPrice[], int bookQuantity[], int bookCount);
-void printAllUsers(int userCount, string usernames[], string passwords[], char roles[], int earnings[], char currency[], int X, int &Y);
+void printAllUsers(int userCount, string usernames[], string passwords[], char roles[], int earnings[], string currency[], int X, int &Y);
 bool removeUser(string uName, string usernames[], string passwords[], char roles[], int userCount);
 bool updateUser(string uName, string pass, char role, string usernames[], string passwords[], char roles[], int userCount);
 // Salesman Options
 bool placeOrder(string bName, int quantity, string bookNames[], int bookPrice[], int bookQuantity[], int bookCount);
-void printAllOrders(int orderCount, string orderBookNames[], string orderBookAuthorNames[], int orderBookQuantity[], int orderBookPrice[], char currency, int X, int &Y);
+void printAllOrders(int orderCount, string orderBookNames[], string orderBookAuthorNames[], int orderBookQuantity[], int orderBookPrice[], string currency, int X, int &Y);
 void clearOrderArrays(string orderBookNames[], string orderBookAuthorNames[], int orderBookQuantity[], int orderBookPrice[], int &orderCount);
 // Validation
 int searchArray(string arr[], string object, int userCount);
 int getNum(string, int, int &);
 string getRole(char roleChar);
-bool currencyCheck(char currency);
+bool currencyCheck(string currency);
 int strToInt(string);
 bool checkInt(string);
 int countOccurences(string s, char c);
 // File Handling
 string readField(string line, int field);
-void storeCredentials(string usernames[], string passwords[], char roles[], int earnings[], char currency[], int userCount);
+void storeCredentials(string usernames[], string passwords[], char roles[], int earnings[], string currency[], int userCount);
 void storeBooks(string bookNames[], string authorNames[], int bookPrice[], int bookQuantity[], int bookCount);
-void loadCredentials(string usernames[], string passwords[], char roles[], int earnings[], char currency[], int &userCount);
+void loadCredentials(string usernames[], string passwords[], char roles[], int earnings[], string currency[], int &userCount);
 void loadBooks(string bookNames[], string authorNames[], int bookPrice[], int bookQuantity[], int &bookCount);
 // Error Handling
 void myGetLine(string &s);
@@ -60,7 +60,7 @@ main()
     string usernames[100], passwords[100];
     char roles[100];
     int earnings[100];
-    char currency[100];
+    string currency[100];
     int userCount = 0;
     int currentUserIdx = 0;
     // Books
@@ -401,7 +401,7 @@ main()
                                 setcolor(yellow);
                                 cout << "Enter new currency type ('$', '€' or '¥'): ";
                                 setcolor(white);
-                                char newCurrency;
+                                string newCurrency;
                                 cin >> newCurrency;
                                 if (currencyCheck(newCurrency))
                                 {
@@ -658,7 +658,7 @@ main()
                                 setcolor(yellow);
                                 cout << "Enter new currency type ('$', '£' or '¥'): ";
                                 setcolor(white);
-                                char newCurrency;
+                                string newCurrency;
                                 cin >> newCurrency;
                                 if (currencyCheck(newCurrency))
                                 {
@@ -991,7 +991,7 @@ bool login(int userCount, string uName, string pass, string usernames[], string 
     }
     return false;
 }
-bool signUp(int userCount, string uName, string pass, char role, string usernames[], string passwords[], char roles[], int earnings[], char currency[])
+bool signUp(int userCount, string uName, string pass, char role, string usernames[], string passwords[], char roles[], int earnings[], string currency[])
 {
     bool isSignedUp = false;
     int index = searchArray(usernames, uName, userCount);
@@ -1008,7 +1008,7 @@ bool signUp(int userCount, string uName, string pass, char role, string username
 }
 // Login/Signup function End
 // Common Options Start
-void printAllBooks(int bookCount, int bookPrice[], int bookQuantity[], char currency, string bookNames[], string authorNames[], int X, int &Y)
+void printAllBooks(int bookCount, int bookPrice[], int bookQuantity[], string currency, string bookNames[], string authorNames[], int X, int &Y)
 {
     mygotoxy(X, Y);
     setcolor(green);
@@ -1091,7 +1091,7 @@ bool changePrice(string bName, int price, string bookNames[], int bookPrice[], i
     }
     return false;
 }
-void printAllUsers(int userCount, string usernames[], string passwords[], char roles[], int earnings[], char currency[], int X, int &Y)
+void printAllUsers(int userCount, string usernames[], string passwords[], char roles[], int earnings[], string currency[], int X, int &Y)
 {
     mygotoxy(X, Y);
     setcolor(green);
@@ -1150,7 +1150,7 @@ bool placeOrder(string bName, int quantity, string bookNames[], int bookPrice[],
     }
     return false;
 }
-void printAllOrders(int orderCount, string orderBookNames[], string orderBookAuthorNames[], int orderBookQuantity[], int orderBookPrice[], char currency, int X, int &Y)
+void printAllOrders(int orderCount, string orderBookNames[], string orderBookAuthorNames[], int orderBookQuantity[], int orderBookPrice[], string currency, int X, int &Y)
 {
     mygotoxy(X, Y);
     setcolor(green);
@@ -1235,9 +1235,9 @@ string getRole(char roleChar)
         return "Unknown";
     }
 }
-bool currencyCheck(char currency)
+bool currencyCheck(string currency)
 {
-    if (currency == '$' || currency == '£' || currency == '¥')
+    if (currency == "$" || currency == "£" || currency == "¥")
     {
         return true;
     }
@@ -1299,7 +1299,7 @@ string readField(string line, int field)
         }
     }
 }
-void storeCredentials(string usernames[], string passwords[], char roles[], int earnings[], char currency[], int userCount)
+void storeCredentials(string usernames[], string passwords[], char roles[], int earnings[], string currency[], int userCount)
 {
     fstream f;
     f.open("credentials.txt", ios::out);
@@ -1337,7 +1337,7 @@ void storeBooks(string bookNames[], string authorNames[], int bookPrice[], int b
     }
     f.close();
 }
-void loadCredentials(string usernames[], string passwords[], char roles[], int earnings[], char currency[], int &userCount)
+void loadCredentials(string usernames[], string passwords[], char roles[], int earnings[], string currency[], int &userCount)
 {
     string line;
     fstream f;

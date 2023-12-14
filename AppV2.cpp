@@ -399,7 +399,7 @@ main()
                                 printBanner(X, Y);
                                 gotoxy(X, Y);
                                 setcolor(yellow);
-                                cout << "Enter new currency type ('$', '€' or '¥'): ";
+                                cout << "Enter new currency type ('$' or '\x9C'): ";
                                 setcolor(white);
                                 string newCurrency;
                                 cin >> newCurrency;
@@ -408,14 +408,14 @@ main()
                                     currency[currentUserIdx] = newCurrency;
                                     mygotoxy(X, Y);
                                     setcolor(lightgreen);
-                                    cout << "Currency type changed successfully." << endl;
+                                    cout << "Currency type changed successfully.       " << endl;
                                     setcolor(white);
                                 }
                                 else
                                 {
                                     mygotoxy(X, Y);
                                     setcolor(lightred);
-                                    cout << "Invalid currency type." << endl;
+                                    cout << "Invalid currency type.                 " << endl;
                                     setcolor(white);
                                 }
                                 mygotoxy(X, Y);
@@ -656,7 +656,7 @@ main()
                                 printBanner(X, Y);
                                 mygotoxy(X, Y);
                                 setcolor(yellow);
-                                cout << "Enter new currency type ('$', '£' or '¥'): ";
+                                cout << "Enter new currency type ('$' or '\x9C'): ";
                                 setcolor(white);
                                 string newCurrency;
                                 cin >> newCurrency;
@@ -1237,7 +1237,7 @@ string getRole(char roleChar)
 }
 bool currencyCheck(string currency)
 {
-    if (currency == "$" || currency == "£" || currency == "¥")
+    if (currency == "$" || currency == "\x9C")
     {
         return true;
     }

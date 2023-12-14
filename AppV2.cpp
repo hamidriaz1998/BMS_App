@@ -1,6 +1,6 @@
 #include <iostream>
 #include <conio.h>
-#include <iomanip>
+#include <iomanip> // Change currency datatype to string and apply validation to it
 #include <fstream>
 #include <windows.h>
 using namespace std;
@@ -1303,6 +1303,11 @@ void storeCredentials(string usernames[], string passwords[], char roles[], int 
 {
     fstream f;
     f.open("credentials.txt", ios::out);
+    if (f.fail())
+    {
+        cout << "Error opening file." << endl;
+        exit(1);
+    }
     for (int i = 0; i < userCount; i++)
     {
         f << usernames[i] << ',' << passwords[i] << "," << roles[i] << "," << earnings[i] << "," << currency[i];
@@ -1317,24 +1322,15 @@ void storeBooks(string bookNames[], string authorNames[], int bookPrice[], int b
 {
     fstream f;
     f.open("books.txt", ios::out);
+    if (f.fail())
+    {
+        cout << "Error opening file." << endl;
+        exit(1);
+    }
     for (int i = 0; i < bookCount; i++)
     {
         f << bookNames[i] << "," << authorNames[i] << "," << bookPrice[i] << "," << bookQuantity[i] << ",";
         if (i != bookCount - 1)
-        {
-            f << endl;
-        }
-    }
-    f.close();
-}
-void storeOrders(string orderBookNames[], string orderBookAuthorNames[], int orderBookPrice[], int orderBookQuantity[], int orderCount)
-{
-    fstream f;
-    f.open("orders.txt", ios::out);
-    for (int i = 0; i < orderCount; i++)
-    {
-        f << orderBookNames[i] << "," << orderBookAuthorNames[i] << "," << orderBookPrice[i] << "," << orderBookQuantity[i];
-        if (i != orderCount - 1)
         {
             f << endl;
         }
@@ -1346,6 +1342,11 @@ void loadCredentials(string usernames[], string passwords[], char roles[], int e
     string line;
     fstream f;
     f.open("credentials.txt", ios::in);
+    if (f.fail())
+    {
+        cout << "Error opening file." << endl;
+        exit(1);
+    }
     int i = 0;
     while (!f.eof())
     {
@@ -1364,6 +1365,11 @@ void loadBooks(string bookNames[], string authorNames[], int bookPrice[], int bo
     string line;
     fstream f;
     f.open("books.txt", ios::in);
+    if (f.fail())
+    {
+        cout << "Error opening file." << endl;
+        exit(1);
+    }
     int i = 0;
     while (!f.eof())
     {
@@ -1375,23 +1381,6 @@ void loadBooks(string bookNames[], string authorNames[], int bookPrice[], int bo
         i++;
     }
     bookCount = i;
-}
-void loadOrders(string orderBookNames[], string orderBookAuthorNames[], int orderBookPrice[], int orderBookQuantity[], int &orderCount)
-{
-    string line;
-    fstream f;
-    f.open("orders.txt", ios::in);
-    int i = 0;
-    while (!f.eof())
-    {
-        getline(f, line);
-        orderBookNames[i] = readField(line, 1);
-        orderBookAuthorNames[i] = readField(line, 2);
-        orderBookPrice[i] = strToInt(readField(line, 3));
-        orderBookQuantity[i] = strToInt(readField(line, 4));
-        i++;
-    }
-    orderCount = i;
 }
 // File Handling Functions End
 // Error Handling Functions Start

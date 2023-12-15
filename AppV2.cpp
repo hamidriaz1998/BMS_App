@@ -927,29 +927,9 @@ int getScreenWidth()
 // Login/Signup function Start
 string inputUsername(int X, int &Y)
 {
-    while (true)
-    {
-        string username;
-        setcolor(yellow);
-        mygotoxy(X, Y);
-        cout << "Username: ";
-        cin >> username;
-        setcolor(white);
-        if (checkComma(username))
-        {
-            mygotoxy(X, Y);
-            setcolor(red);
-            cout << "Username cannot contain comma (,)" << endl;
-            setcolor(white);
-            mygotoxy(X, Y);
-            cout << "Press any key to try again..................." << endl;
-            getch();
-        }
-        else
-        {
-            return username;
-        }
-    }
+    string username;
+    username = getValidatedInput("Username: ", X, Y);
+    return username;
 }
 string inputPassword(int X, int &Y)
 {
@@ -1271,14 +1251,14 @@ string getRole(char roleChar)
         return "Unknown";
     }
 }
-string getValidatedInput(string s, int X, int &Y)
+string getValidatedInput(string prompt, int X, int &Y)
 {
     while (true)
     {
         string input;
         setcolor(yellow);
         mygotoxy(X, Y);
-        cout << s;
+        cout << prompt;
         myGetLine(input);
         setcolor(white);
         if (checkComma(input))

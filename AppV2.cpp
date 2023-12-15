@@ -287,8 +287,8 @@ main()
                                 mygotoxy(X, Y);
                                 setcolor(yellow);
                                 cout << "Enter password: ";
-                                setcolor(white);
                                 cin >> pass;
+                                setcolor(white);
                                 if (signUp(userCount, uName, pass, 'b', usernames, passwords, roles, earnings, currency))
                                 {
                                     userCount++;
@@ -315,8 +315,8 @@ main()
                                 mygotoxy(X, Y);
                                 setcolor(yellow);
                                 cout << "Enter username of the user to remove: ";
-                                setcolor(white);
                                 cin >> uName;
+                                setcolor(white);
                                 if (removeUser(uName, usernames, passwords, roles, userCount))
                                 {
                                     mygotoxy(X, Y);
@@ -350,13 +350,13 @@ main()
                                 mygotoxy(X, Y);
                                 setcolor(yellow);
                                 cout << "Enter username of the user to update: ";
-                                setcolor(white);
                                 cin >> uName;
+                                setcolor(white);
                                 mygotoxy(X, Y);
                                 setcolor(yellow);
                                 cout << "Enter new password: ";
-                                setcolor(white);
                                 cin >> pass;
+                                setcolor(white);
                                 if (updateUser(uName, pass, 'b', usernames, passwords, roles, userCount))
                                 {
                                     mygotoxy(X, Y);
@@ -394,9 +394,9 @@ main()
                                 gotoxy(X, Y);
                                 setcolor(yellow);
                                 cout << "Enter new currency type ('$' or '\x9C'): ";
-                                setcolor(white);
                                 string newCurrency;
                                 cin >> newCurrency;
+                                setcolor(white);
                                 if (currencyCheck(newCurrency))
                                 {
                                     currency[currentUserIdx] = newCurrency;
@@ -423,8 +423,8 @@ main()
                                 mygotoxy(X, Y);
                                 setcolor(yellow);
                                 cout << "Enter new password: ";
-                                setcolor(white);
                                 cin >> newPass;
+                                setcolor(white);
                                 passwords[currentUserIdx] = newPass;
                                 mygotoxy(X, Y);
                                 setcolor(lightgreen);
@@ -573,8 +573,8 @@ main()
                                     mygotoxy(X, Y);
                                     setcolor(yellow);
                                     cout << "Do you want to place another order? (y/n): ";
-                                    setcolor(white);
                                     cin >> more;
+                                    setcolor(white);
                                 }
                             }
                             else if (choice == 5)
@@ -651,9 +651,9 @@ main()
                                 mygotoxy(X, Y);
                                 setcolor(yellow);
                                 cout << "Enter new currency type ('$' or '\x9C'): ";
-                                setcolor(white);
                                 string newCurrency;
                                 cin >> newCurrency;
+                                setcolor(white);
                                 if (currencyCheck(newCurrency))
                                 {
                                     currency[currentUserIdx] = newCurrency;
@@ -680,8 +680,8 @@ main()
                                 mygotoxy(X, Y);
                                 setcolor(yellow);
                                 cout << "Enter new password: ";
-                                setcolor(white);
                                 cin >> newPass;
+                                setcolor(white);
                                 passwords[currentUserIdx] = newPass;
                                 mygotoxy(X, Y);
                                 setcolor(lightgreen);
@@ -939,8 +939,8 @@ string inputPassword(int X, int &Y)
         mygotoxy(X, Y);
         setcolor(yellow);
         cout << "Password: ";
-        setcolor(white);
         cin >> password;
+        setcolor(white);
         if (password.length() < 4)
         {
             mygotoxy(X, Y);
@@ -975,8 +975,8 @@ char inputRole(int X, int &Y)
         mygotoxy(X, Y);
         setcolor(yellow);
         cout << "Choose Role ('a' for Admin and 'b' for Salesman): ";
-        setcolor(white);
         cin >> role;
+        setcolor(white);
         if (role == "a" || role == "b")
         {
             return role[0];

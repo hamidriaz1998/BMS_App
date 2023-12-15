@@ -971,15 +971,15 @@ char inputRole(int X, int &Y)
 {
     while (true)
     {
-        char role;
+        string role;
         mygotoxy(X, Y);
         setcolor(yellow);
         cout << "Choose Role ('a' for Admin and 'b' for Salesman): ";
         setcolor(white);
         cin >> role;
-        if (role == 'a' || role == 'b')
+        if (role == "a" || role == "b")
         {
-            return role;
+            return role[0];
         }
         else
         {

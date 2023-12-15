@@ -1271,7 +1271,8 @@ string getRole(char roleChar)
         return "Unknown";
     }
 }
-string getValidatedInput(string s, int X, int &Y){
+string getValidatedInput(string s, int X, int &Y)
+{
     while (true)
     {
         string input;
@@ -1375,11 +1376,6 @@ void storeCredentials(string usernames[], string passwords[], char roles[], int 
 {
     fstream f;
     f.open("credentials.txt", ios::out);
-    if (f.fail())
-    {
-        cout << "Error opening file." << endl;
-        exit(1);
-    }
     for (int i = 0; i < userCount; i++)
     {
         f << usernames[i] << ',' << passwords[i] << "," << roles[i] << "," << earnings[i] << "," << currency[i];
@@ -1394,11 +1390,6 @@ void storeBooks(string bookNames[], string authorNames[], int bookPrice[], int b
 {
     fstream f;
     f.open("books.txt", ios::out);
-    if (f.fail())
-    {
-        cout << "Error opening file." << endl;
-        exit(1);
-    }
     for (int i = 0; i < bookCount; i++)
     {
         f << bookNames[i] << "," << authorNames[i] << "," << bookPrice[i] << "," << bookQuantity[i];

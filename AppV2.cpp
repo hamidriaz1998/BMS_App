@@ -1072,16 +1072,19 @@ bool addBook(string bName, string auName, int price, int quantity, string bookNa
     }
 }
 bool removeBook(string bName, string auName, string bookNames[], string authorNames[], int bookPrice[], int bookQuantity[], int bookCount)
-{ // Book might exist but it will still say that it does not if author doesn't match
+{
     int index = searchArray(bookNames, bName, bookCount);
     if (index != -1)
     {
         if (authorNames[index] == auName)
         {
-            bookNames[index] = "";
-            authorNames[index] = "";
-            bookPrice[index] = 0;
-            bookQuantity[index] = 0;
+            for (int i = index; i < bookCount - 1; i++)
+            {
+                bookNames[i] = bookNames[i + 1];
+                authorNames[i] = authorNames[i + 1];
+                bookPrice[i] = bookPrice[i + 1];
+                bookQuantity[i] = bookQuantity[i + 1];
+            }
             return true;
         }
     }
@@ -1130,9 +1133,12 @@ bool removeUser(string uName, string usernames[], string passwords[], char roles
     int index = searchArray(usernames, uName, userCount);
     if (index != -1)
     {
-        usernames[index] = "";
-        passwords[index] = "";
-        roles[index] = ' ';
+        for (int i = index; i < userCount - 1; i++)
+        {
+            usernames[i] = usernames[i + 1];
+            passwords[i] = passwords[i + 1];
+            roles[i] = roles[i + 1];
+        }
         return true;
     }
     return false;

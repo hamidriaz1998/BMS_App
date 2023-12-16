@@ -24,11 +24,11 @@ void printAllBooks(int bookCount, int bookPrice[], int bookQuantity[], string cu
 bool searchBook(string bName, string bookNames[], int bookCount);
 // Owner Options
 bool addBook(string bName, string auName, int price, int quantity, string bookNames[], string authorNames[], int bookPrice[], int bookQuantity[], int &bookCount);
-bool removeBook(string bName, string auName, string bookNames[], string authorNames[], int bookPrice[], int bookQuantity[], int bookCount);
+bool removeBook(string bName, string bookNames[], string authorNames[], int bookPrice[], int bookQuantity[], int &bookCount);
 bool incrementQuantity(string bName, int quantity, string bookNames[], int bookPrice[], int bookQuantity[], int bookCount);
 bool changePrice(string bName, int price, string bookNames[], int bookPrice[], int bookQuantity[], int bookCount);
 void printAllUsers(int userCount, string usernames[], string passwords[], char roles[], int earnings[], string currency[], int X, int &Y);
-bool removeUser(string uName, string usernames[], string passwords[], char roles[], int userCount);
+bool removeUser(string uName, string usernames[], string passwords[], char roles[], int &userCount);
 bool updateUser(string uName, string pass, char role, string usernames[], string passwords[], char roles[], int userCount);
 // Salesman Options
 bool placeOrder(string bName, int quantity, string bookNames[], int bookPrice[], int bookQuantity[], int bookCount);
@@ -149,18 +149,14 @@ main()
                             else if (choice == 2)
                             { // Remove Book
                                 printBanner(X, Y);
-                                string bName, auName;
+                                string bName;
                                 mygotoxy(X, Y);
                                 setcolor(yellow);
                                 cout << "Enter name of the book: ";
                                 setcolor(white);
                                 myGetLine(bName);
                                 mygotoxy(X, Y);
-                                setcolor(yellow);
-                                cout << "Enter name of the author: ";
-                                setcolor(white);
-                                myGetLine(auName);
-                                if (removeBook(bName, auName, bookNames, authorNames, bookPrice, bookQuantity, bookCount))
+                                if (removeBook(bName, bookNames, authorNames, bookPrice, bookQuantity, bookCount))
                                 {
                                     mygotoxy(X, Y);
                                     setcolor(lightgreen);
@@ -1071,22 +1067,20 @@ bool addBook(string bName, string auName, int price, int quantity, string bookNa
         return false;
     }
 }
-bool removeBook(string bName, string auName, string bookNames[], string authorNames[], int bookPrice[], int bookQuantity[], int bookCount)
+bool removeBook(string bName, string bookNames[], string authorNames[], int bookPrice[], int bookQuantity[], int &bookCount)
 {
     int index = searchArray(bookNames, bName, bookCount);
     if (index != -1)
     {
-        if (authorNames[index] == auName)
+        for (int i = index; i < bookCount - 1; i++)
         {
-            for (int i = index; i < bookCount - 1; i++)
-            {
-                bookNames[i] = bookNames[i + 1];
-                authorNames[i] = authorNames[i + 1];
-                bookPrice[i] = bookPrice[i + 1];
-                bookQuantity[i] = bookQuantity[i + 1];
-            }
-            return true;
+            bookNames[i] = bookNames[i + 1];
+            authorNames[i] = authorNames[i + 1];
+            bookPrice[i] = bookPrice[i + 1];
+            bookQuantity[i] = bookQuantity[i + 1];
         }
+        bookCount--;
+        return true;
     }
     return false;
 }
@@ -1128,7 +1122,7 @@ void printAllUsers(int userCount, string usernames[], string passwords[], char r
         setcolor(white);
     }
 }
-bool removeUser(string uName, string usernames[], string passwords[], char roles[], int userCount)
+bool removeUser(string uName, string usernames[], string passwords[], char roles[], int &userCount)
 {
     int index = searchArray(usernames, uName, userCount);
     if (index != -1)
@@ -1139,6 +1133,7 @@ bool removeUser(string uName, string usernames[], string passwords[], char roles
             passwords[i] = passwords[i + 1];
             roles[i] = roles[i + 1];
         }
+        userCount--;
         return true;
     }
     return false;
